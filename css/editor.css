@@ -1,0 +1,5 @@
+.article,
+.post {
+    max-width: 1500px !important; /* 设置更宽的显示区域 */
+    margin: 0 auto;              /* 保持居中 */
+}
