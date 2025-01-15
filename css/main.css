@@ -886,7 +886,7 @@ table:not([class]) {
 }
 html {
   font-family: 等线;
-  font-size: 22px;
+  font-size: 20px;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   scroll-padding-top: 8px;
