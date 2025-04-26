@@ -29,7 +29,7 @@
 <meta property="og:description" content="CS C++ Code  Clique 团Bron-Kerbosch Algorithm 最大团搜索算法Wikipedia OI-Wiki 概念团(Clique)：一个无向图里面的一组顶点，其中任意两个顶点之间都有一条边相连（完全子图） 极大团(Maximal Clique)：是指一个团，无法通过添加任何新的相邻顶点来扩展它，可以理解为一个图里面的“饱和”团 最大团(Maximum Cliqu">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-04-26T03:23:09.868Z">
+<meta property="article:modified_time" content="2025-04-26T03:59:12.888Z">
 <meta property="article:author" content="Sky Zhou">
 <meta property="article:tag" content="CS">
 <meta property="article:tag" content="C++">
@@ -85,7 +85,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Algorithm/">Algorithm</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-04-21T16:00:00.000Z">2025-04-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-04-26T03:23:09.868Z">2025-04-26</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-04-21T16:00:00.000Z">2025-04-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-04-26T03:59:12.888Z">2025-04-26</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -186,7 +186,9 @@
 <h3 id="更多近似团的枚举"><a href="#更多近似团的枚举" class="headerlink" title="更多近似团的枚举"></a>更多近似团的枚举</h3><p>文章后面又分别了列举了<strong>最大二部团（Maximal Biclique）</strong>，**最大k-双极团（Maximal k-Biplex）**的基础枚举算法和Pivoting、Ordering优化之后的算法。过于复杂，根本理解不了（</p>
 <p>然后通过具体数据测试了一下不同算法的实际运行时间，还有发展前景，在这里就不多赘述了</p>
 <h2 id="Efficient-Maximum-s-Bundle-Search-via-Local-Vertex-Connectivity"><a href="#Efficient-Maximum-s-Bundle-Search-via-Local-Vertex-Connectivity" class="headerlink" title="Efficient Maximum s-Bundle Search via Local Vertex Connectivity"></a>Efficient Maximum s-Bundle Search via Local Vertex Connectivity</h2><p>标题大意：基于局部顶点联通性的高效最大s-Bundle搜索</p>
-<h3 id="概念-3"><a href="#概念-3" class="headerlink" title="概念"></a>概念</h3><p><strong>s-Bundle</strong>：给定一个参数s，s-bundle要求子图中任意两个顶点至少有s条独立路径连接（或者满足某种类似的高连通性条件）。可以看作是一种近似团，但和传统的近似团有所不同，更强调连通路径</p>
+<h3 id="概念-3"><a href="#概念-3" class="headerlink" title="概念"></a>概念</h3><p><strong>s-Bundle</strong>：</p>
+<p><em>The 𝑠-bundle, as a cohesive subgraph model which relaxes the clique, remains connected whenever fewer than 𝑛 − 𝑠 vertices are removed, where 𝑛 is the number of vertices inside.</em></p>
+<p>s-bundle作为一个有结合力的子团模型，比clique更松。一个图，如果他删掉少于n-s个节点还能保持连接，我们称这个图为s-bundle，n是这个图的节点数。</p>
 <p><em>接下来的内容因为某些原因就不再发blog了</em></p>
 
 
