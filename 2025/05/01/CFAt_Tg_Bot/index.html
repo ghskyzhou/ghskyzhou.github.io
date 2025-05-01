@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img.skyzhou.top/i/2025/05/01/6812f452578ff.jpg">
 <meta property="article:published_time" content="2025-04-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-05-01T04:21:03.386Z">
+<meta property="article:modified_time" content="2025-05-01T04:23:15.978Z">
 <meta property="article:author" content="Sky Zhou">
 <meta property="article:tag" content="Code">
 <meta property="article:tag" content="Tools">
@@ -86,7 +86,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Algorithm/">Algorithm</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-04-30T16:00:00.000Z">2025-05-01</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-05-01T04:21:03.386Z">2025-05-01</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-04-30T16:00:00.000Z">2025-05-01</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-05-01T04:23:15.978Z">2025-05-01</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -108,10 +108,10 @@
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>A simple CF&#x2F;At contest notification on every 8:00a.m. (UTC+8) if the day has a CF&#x2F;At contest based on Telegram Bot.</p>
 <h2 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use?"></a>How to use?</h2><p>First, you need to have a <strong>server(not in China Mainland)</strong> to deploy the Telegram Bot backend.</p>
 <p>Then, search <strong>@BotFather</strong> on Telegram and create a bot by following his instructions.</p>
-<p>After successfully created a Telegram Bot, you have to create a <code>config.json</code> like below, to put your <strong><code>TOKEN</code></strong> in it. Or you can just copy the <code>config_empty.json</code> file and rename it to <code>config.json</code>.</p>
+<p>After successfully created a Telegram Bot, you have to create a <code>config.json</code> like below, to put your <code>TOKEN</code> in it. Or you can just copy the <code>config_empty.json</code> file and rename it to <code>config.json</code>.</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;TOKEN&quot;</span><span class="punctuation">:</span> <span class="string">&quot;YOUR TOKEN HERE&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;CHAT_ID&quot;</span><span class="punctuation">:</span> <span class="number">1145141919810</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>To test whether the Bot has been created correctly and get the CHAT_ID of the messsage room where you want to use later. You can run the code <code>getChatId.py</code> first, and <code>/start</code> in Telegram. You will now get your <strong><code>CHAT_ID</code></strong>, it should be put correctly in the <code>config.json</code>, too.</p>
+<p>To test whether the Bot has been created correctly and get the <code>CHAT_ID</code> of the messsage room where you want to use later. You can run the code <code>getChatId.py</code> first, and <code>/start</code> in Telegram. You will now get your <code>CHAT_ID</code>, it should be put correctly in the <code>config.json</code>, too.</p>
 <p>The last step is to run <code>main.py</code> and wait for the alarm on every 8:00a.m. (UTC+8) if the day has a CF&#x2F;At contest. 😋</p>
 <p>P.S. Remember to use the <strong>venv</strong> by <code>requirements.txt</code></p>
 <hr>
