@@ -29,7 +29,7 @@
 <meta property="og:description" content="Densest Subgraph Discovery on Large GraphsCUHKSZ PPT 无向图上的密集子图对于一个无向图$G(V,E)$，图的密度就是边的密度，即$$\rho (G) &#x3D; \frac{\lvert E \rvert}{\lvert V \rvert}$$ 那么，最密子图挖掘就是找到密度$\rho(G)$最大的子图 目前对于这种DSD问题的exact so">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-06-05T09:32:37.442Z">
+<meta property="article:modified_time" content="2025-06-05T09:36:29.386Z">
 <meta property="article:author" content="Sky Zhou">
 <meta property="article:tag" content="Code">
 <meta property="article:tag" content="C++">
@@ -72,7 +72,7 @@
 
 <widget class="widget-wrapper slide-up post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2025/06/02/Densest_Subgraph_Discovery/"><span class="title">DSD & CSD 密集子图挖掘</span></a><a class="item title" href="/2025/01/19/JPN_Main/"><span class="title">日本語の勉強</span></a><a class="item title" href="/2025/04/30/ACM_Templates/"><span class="title">ACM模板</span></a><a class="item title" href="/2025/05/15/Python_Snake_Game/"><span class="title">Python Snake Game</span></a><a class="item title" href="/2025/04/22/Clique/"><span class="title">Clique and S-Bundle</span></a><a class="item title" href="/2025/03/20/LaTeX_Mathematics/"><span class="title">$\LaTeX$数学公式</span></a><a class="item title" href="/2025/04/13/CUHKSZ_Notes/"><span class="title">CUHKSZ Notes</span></a><a class="item title" href="/2025/05/01/CFAt_Tg_Bot/"><span class="title">CF/At Notification TG Bot</span></a><a class="item title" href="/2025/02/22/Java_Gomoku/"><span class="title">Java Gomoku Game</span></a><a class="item title" href="/2025/01/16/Java_Chat_Room/"><span class="title">Java Chat Room</span></a></div></widget>
 
-<widget class="widget-wrapper slide-up tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/Code/" style="font-size: 22px; color: #87cefa" class="tag -10">Code</a> <a href="/tags/Tools/" style="font-size: 18px; color: #6495ed" class="tag -0">Tools</a> <a href="/tags/CS/" style="font-size: 21.2px; color: #80c3f7" class="tag -8">CS</a> <a href="/tags/C/" style="font-size: 20.4px; color: #79b7f5" class="tag -6">C++</a> <a href="/tags/ACM/" style="font-size: 19.6px; color: #72acf2" class="tag -4">ACM</a> <a href="/tags/JPN/" style="font-size: 18.8px; color: #6ba0f0" class="tag -2">JPN</a> <a href="/tags/Java/" style="font-size: 18.8px; color: #6ba0f0" class="tag -2">Java</a> <a href="/tags/AI/" style="font-size: 18px; color: #6495ed" class="tag -0">AI</a> <a href="/tags/Python/" style="font-size: 18px; color: #6495ed" class="tag -0">Python</a></div></widget>
+<widget class="widget-wrapper slide-up tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/Code/" style="font-size: 22px; color: #87cefa" class="tag -10">Code</a> <a href="/tags/Tools/" style="font-size: 18px; color: #6495ed" class="tag -0">Tools</a> <a href="/tags/CS/" style="font-size: 21.2px; color: #80c3f7" class="tag -8">CS</a> <a href="/tags/C/" style="font-size: 20.4px; color: #79b7f5" class="tag -6">C++</a> <a href="/tags/ACM/" style="font-size: 19.6px; color: #72acf2" class="tag -4">ACM</a> <a href="/tags/AI/" style="font-size: 18px; color: #6495ed" class="tag -0">AI</a> <a href="/tags/JPN/" style="font-size: 18.8px; color: #6ba0f0" class="tag -2">JPN</a> <a href="/tags/Java/" style="font-size: 18.8px; color: #6ba0f0" class="tag -2">Java</a> <a href="/tags/Python/" style="font-size: 18px; color: #6495ed" class="tag -0">Python</a></div></widget>
 </div>
 
 </div></aside><div class="l_main" id="main">
@@ -85,7 +85,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Algorithm/">Algorithm</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-06-01T16:00:00.000Z">2025-06-02</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-06-05T09:32:37.442Z">2025-06-05</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2025-06-01T16:00:00.000Z">2025-06-02</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2025-06-05T09:36:29.386Z">2025-06-05</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -108,7 +108,7 @@
 <p>二分最大密度$\rho$从$0$到$m$<br>每次建立超级源点和超级汇点跑网络流最小割来判断$\rho$是不是合法的</p>
 <h3 id="LP-based-Algorithm"><a href="#LP-based-Algorithm" class="headerlink" title="LP-based Algorithm"></a>LP-based Algorithm</h3><h4 id="Original-LP"><a href="#Original-LP" class="headerlink" title="Original LP"></a>Original LP</h4><p>$S$是点集，$E(S)$是其边集</p>
 <p>$x_v&#x3D;\frac{1}{\lvert S \rvert}$表示节点$v$属于点集$S$，$y_e&#x3D;\frac{1}{\lvert S \rvert}$表示边$e$属于边集$E$</p>
-<p>$$<br>\text{maximize }\sum_{e \in E}y_e \\ \\<br>\text{subject to }y_e &lt; x_u, x_v, \forall e &#x3D; uv \in E \\<br>\sum_{v \in V} x_v \leq 1 \\<br>x_v, y_e \geq 0, \forall e \in E, \forall v \in V<br>$$z</p>
+<p>$$<br>\text{maximize }\sum_{e \in E}y_e \\ \\<br>\text{subject to }y_e &lt; x_u, x_v, \forall e &#x3D; uv \in E \\<br>\sum_{v \in V} x_v \leq 1 \\<br>x_v, y_e \geq 0, \forall e \in E, \forall v \in V<br>$$</p>
 <h4 id="Dual-LP"><a href="#Dual-LP" class="headerlink" title="Dual LP"></a>Dual LP</h4><p>$\alpha_u^e$是节点$u$从边$e$接收到的权重，例如：$\alpha_u^e &#x3D; \frac{w_e}{2}$</p>
 <p>$$<br>\text{min } \rho \\ \\<br>\text{s.t. } \rho \geq \sum_{e:u \in e} \alpha_u^e, \forall u \in V \\<br>\sum_{u \in e} \alpha_u^e \geq w_e, \forall e \in E \\<br>\alpha_u^e \geq 0, \forall u \in e \in E<br>$$</p>
 <p>然后要用Frank-Wolfe算法来解决Dual LP问题，再用网络流算法来准确计算最大密度</p>
@@ -122,9 +122,9 @@
 </li>
 <li><p>计算当前点的梯度：<br>$$<br>\nabla f(x^{(k)})<br>$$</p>
 </li>
-<li><p>线性子问题，在集合$S$上找到梯度方向下降最快的点：<br>$$<br>s^{(k)} &#x3D; \argmin_{s \in S} \nabla f(x^{(k)})^T s<br>$$</p>
+<li><p>线性子问题，在集合$S$上找到梯度方向下降最快的点：<br>$$<br>s^{(k)} &#x3D; \arg \min_{s \in S} \nabla f(x^{(k)})^T s<br>$$</p>
 </li>
-<li><p>选取步长$\gamma_k \in [0, 1]$，可以使用类似于$\gamma_k &#x3D; \frac{2}{k+2}$的固定形式，或者是使用线搜索：<br>$$<br>\gamma_k &#x3D; \argmin_{\gamma \in [0, 1]} f(x^{(k)} + \gamma(s^{(k)} - x^{(k)}))<br>$$</p>
+<li><p>选取步长$\gamma_k \in [0, 1]$，可以使用类似于$\gamma_k &#x3D; \frac{2}{k+2}$的固定形式，或者是使用线搜索：<br>$$<br>\gamma_k &#x3D; \arg \min_{\gamma \in [0, 1]} f(x^{(k)} + \gamma(s^{(k)} - x^{(k)}))<br>$$</p>
 </li>
 <li><p>更新当前点：<br>$$<br>x^{(k+1)} &#x3D; x^{(k)} + \gamma(s^{(k)} - x^{(k)})<br>$$</p>
 </li>
