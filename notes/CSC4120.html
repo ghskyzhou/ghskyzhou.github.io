@@ -177,7 +177,155 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<h3 id="main-course-topics"><a class="header" href="#main-course-topics">Main Course Topics</a></h3>
+<ul>
+<li>Key algorithm concepts (asymptotic complexity, divide-and-conquer)</li>
+<li>Basic data structure algorithms
+<ul>
+<li>Heaps (priority queues)</li>
+<li>Binary seach trees (scheduling)</li>
+<li>Hashing (cryptography, dictionaries)</li>
+</ul>
+</li>
+<li>Graph searches (reachability analysis)</li>
+<li>Shortest paths (Google maps, navigation)</li>
+<li>Greedy algorithms (minimum spanning trees, Huffman codes)</li>
+<li>Dynamic programming (any optimization problem)</li>
+<li>Network flows</li>
+<li>Compleity (NP-complete, poly reductions, approximation algorithms)</li>
+</ul>
+<p>Textbook: <strong>Algorithms</strong> by S. Dasgupta, C.H. Papadimitriou, and U.V. Vazirani.</p>
+<h2 id="l1-basic-concepts-of-algorithmic-performance"><a class="header" href="#l1-basic-concepts-of-algorithmic-performance">L1 Basic Concepts of Algorithmic Performance</a></h2>
+<h3 id="asymptotic-complexity"><a class="header" href="#asymptotic-complexity">Asymptotic Complexity</a></h3>
+<h4 id="what-is-tn"><a class="header" href="#what-is-tn">What is $T(n)$?</a></h4>
+<p>Def. $T(n)$ is the largest (worst) execution time over all inputs of size $n$.</p>
+<h4 id="asymptotic-complexity-1"><a class="header" href="#asymptotic-complexity-1">Asymptotic Complexity</a></h4>
+<p>Goal: Capture the growthm of $T(n)$ of an algorithm as the problem instance size $n \rightarrow \infty$</p>
+<p>Key idea: Keep only the rate of growth, i.e., the <strong>dominant term when $n \rightarrow \infty$</strong>, forgetting multiplicative constants and lower order terms.</p>
+<p>Def. Three Os</p>
+<ol>
+<li>
+<p>$\Theta$: Grows asymptotically as fast as ($=$)</p>
+<ul>
+<li>Tight Bound</li>
+<li>$f(n) = \Theta(g(n)) \Leftrightarrow \exists c_1, c_2 &gt; 0, n_0 \text{ s.t. } c_1 g(n) \leq f(n) \leq c_2 g(n) \text{ for } n \geq n_0$</li>
+<li>e.g. $100n^2 + 5n - 5 = 0.1n^2 + 10n^{1.5} - 5 = \Theta(n^2)$</li>
+</ul>
+</li>
+<li>
+<p>$O$: Grows asymptotically <em>at most</em> as fast as ($\leq$)</p>
+<ul>
+<li>Upper Bound</li>
+<li>$f(n) = O(g(n)) \Leftrightarrow \exists c &gt; 0, n_0 \text{ s.t. } f(n) \leq c g(n) \text{ for } n \geq n_0$</li>
+<li>e.g. $2n^{1.5}-5 \leq n^{1.5} \leq n^2 \Rightarrow 2n^{1.5}-5 = O(n^{1.5}), = O(n^2)$</li>
+<li>e.g. $n^{1.5} \leq n^2 \leq 2^n \Rightarrow n^{1.5} = O(n^2), n^2 = O(2^n), n^{1.5} = O(2^n)$</li>
+</ul>
+</li>
+<li>
+<p>$\Omega$: Grows asymptotically <em>at least</em> as fast as ($\geq$)</p>
+<ul>
+<li>Lower Bound</li>
+<li>$f(n) = \Omega(g(n)) \Leftrightarrow \exists c &gt; 0, n_0 \text{ s.t. } f(n) \geq c g(n) \text{ for } n \geq n_0$</li>
+<li>e.g. $5 \leq 2n \leq n^{1.5}+1 \leq 2^n \Rightarrow 2n = \Omega(1), 2^n = \Omega(n^{1.5})$</li>
+</ul>
+</li>
+</ol>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/11/68c25fb9eb1f1.png" height="300px">
+</p>
+<h4 id="in-practice"><a class="header" href="#in-practice">In Practice</a></h4>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/11/68c276f760fba.png" height="250px">
+</p>
+<h4 id="conclusions"><a class="header" href="#conclusions">Conclusions</a></h4>
+<ul>
+<li>To measure the performance of algorithms we measure their asymptotic complexity.</li>
+<li>Big $O$ is used to describe an <strong>upper bound</strong> for the running time of an algorithm.</li>
+<li>Big $\Omega$ is used to describe a <strong>lower bound</strong> for the running time of an algorithm.</li>
+<li>Big $\Theta$ is used to denote <strong>asymptotic equivalence</strong> of the running times of two algorithms. And when $\Omega(g(n)) = O(g(n)) = f(n)$, we can have $\Theta(g(n)) = f(n)$</li>
+</ul>
+<h3 id="divide-and-conquer-sorting-and-master-theorem"><a class="header" href="#divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</a></h3>
+<h4 id="devide-and-conquer"><a class="header" href="#devide-and-conquer">Devide and Conquer</a></h4>
+<p>Def. Three steps.</p>
+<ol>
+<li><em>Divide</em> input into multiple <strong>smaller</strong> (usually disjoint) points.</li>
+<li><em>Conquer</em> each of the parts separatelly (using recursive calls).</li>
+<li><em>Combine</em> results from different calls.</li>
+</ol>
+<p>$$
+T(n) = \text{divide time} \\
++T(n_1) + T(n_2) + \cdots + T(n_k) \\
++\text{combine time}
+$$</p>
+<h4 id="sorting"><a class="header" href="#sorting">Sorting</a></h4>
+<p>A non-D&amp;C solution: Insertion Sort</p>
+<pre><code class="language-cpp">void insertionSort(int arr[], int n) {
+    for (int i = 1; i &lt; n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j &gt;= 0 &amp;&amp; arr[j] &gt; key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+</code></pre>
+<p>We have the complexity is $O(n^2)$ since it runs two loops with $n$ steps.</p>
+<p>But $O(n^2)$ is too slow for most of the problem, can it be much faster? Of course. We can use divide and conquer here!</p>
+<p>A D&amp;C solution: Merge Sort</p>
+<pre><code class="language-cpp">void merge(vector&lt;int&gt;&amp; arr, int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    vector&lt;int&gt; L(n1), R(n2);
+    for (int i = 0; i &lt; n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j &lt; n2; j++) R[j] = arr[m + 1 + j];
+    int i = 0, j = 0, k = l;
+    while (i &lt; n1 &amp;&amp; j &lt; n2) {
+        if (L[i] &lt;= R[j]) arr[k++] = L[i++];
+        else arr[k++] = R[j++];
+    }
+    while (i &lt; n1) arr[k++] = L[i++];
+    while (j &lt; n2) arr[k++] = R[j++];
+}
+
+void mergeSort(vector&lt;int&gt;&amp; arr, int l, int r) {
+    if (l &lt; r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
+</code></pre>
+<p>From the function <code>mergeSort</code> we can see that we divide the array into $2$ parts and conquer them seperately and recursively. And the <code>merge</code> function has the time complexity of $\Theta(n)$.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/11/68c289f78a803.png" height="250px">
+</p>
+<p>From the graph we can see that there is only $\log n$ levels of recursion. Thus, we have</p>
+<p>$$
+\begin{align}
+T(n) &amp;= 2T(n/2) + cn \\
+&amp;= (cn) \log n + nT(1) \\
+&amp;= \Theta (n \log n)
+\end{align}
+$$</p>
+<p>Where $cn$ denotes for the time of divide and merge, and $T(1)$ represents for the node of the recursion tree.</p>
+<h4 id="geometric-sums"><a class="header" href="#geometric-sums">Geometric Sums</a></h4>
+<p>Consider a geometric series
+$$
+S = 1 + x + x^2 + \cdots + x^h = \frac{x^{x+1}-1}{x-1} \ \ (\text{for } x \not= 1)
+$$
+If $x &lt; 1$, then
+$$
+1 + x + x^2 + \cdots + x^h \in \left[ 1, \frac{1}{1-x} \right] \Rightarrow S = \Theta(1)
+$$
+If $x &gt; 1$ , then
+$$
+1 + x + x^2 + \cdots + x^h &lt; \frac{1}{1-x} x^h  \Rightarrow S = \Theta(x^h)
+$$</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
