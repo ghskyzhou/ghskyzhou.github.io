@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="ayu sidebar-visible" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
-            const default_light_theme = "ayu";
+            const default_light_theme = "light";
             const default_dark_theme = "ayu";
             window.path_to_searchindex_js = "searchindex.js";
         </script>
@@ -79,7 +79,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('ayu')
+            html.classList.remove('light')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+                        <h2 id="l0-introduction"><a class="header" href="#l0-introduction">L0 Introduction</a></h2>
 <h3 id="main-course-topics"><a class="header" href="#main-course-topics">Main Course Topics</a></h3>
 <ul>
 <li>Key algorithm concepts (asymptotic complexity, divide-and-conquer)</li>
@@ -199,11 +199,11 @@
 <h2 id="l1-basic-concepts-of-algorithmic-performance"><a class="header" href="#l1-basic-concepts-of-algorithmic-performance">L1 Basic Concepts of Algorithmic Performance</a></h2>
 <h3 id="asymptotic-complexity"><a class="header" href="#asymptotic-complexity">Asymptotic Complexity</a></h3>
 <h4 id="what-is-tn"><a class="header" href="#what-is-tn">What is $T(n)$?</a></h4>
-<p>Def. $T(n)$ is the largest (worst) execution time over all inputs of size $n$.</p>
+<p>$T(n)$ is the largest (worst) execution time over all inputs of size $n$.</p>
 <h4 id="asymptotic-complexity-1"><a class="header" href="#asymptotic-complexity-1">Asymptotic Complexity</a></h4>
 <p>Goal: Capture the growthm of $T(n)$ of an algorithm as the problem instance size $n \rightarrow \infty$</p>
-<p>Key idea: Keep only the rate of growth, i.e., the <strong>dominant term when $n \rightarrow \infty$</strong>, forgetting multiplicative constants and lower order terms.</p>
-<p>Def. Three Os</p>
+<p>Key Idea: Keep only the rate of growth, i.e., the <strong>dominant term when $n \rightarrow \infty$</strong>, forgetting multiplicative constants and lower order terms.</p>
+<p><strong>Three Os</strong></p>
 <ol>
 <li>
 <p>$\Theta$: Grows asymptotically as fast as ($=$)</p>
@@ -247,7 +247,7 @@
 </ul>
 <h3 id="divide-and-conquer-sorting-and-master-theorem"><a class="header" href="#divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</a></h3>
 <h4 id="devide-and-conquer"><a class="header" href="#devide-and-conquer">Devide and Conquer</a></h4>
-<p>Def. Three steps.</p>
+<p>There are 3 steps:</p>
 <ol>
 <li><em>Divide</em> input into multiple <strong>smaller</strong> (usually disjoint) points.</li>
 <li><em>Conquer</em> each of the parts separatelly (using recursive calls).</li>
@@ -259,7 +259,7 @@ T(n) = \text{divide time} \\
 +\text{combine time}
 $$</p>
 <h4 id="sorting"><a class="header" href="#sorting">Sorting</a></h4>
-<p>A non-D&amp;C solution: Insertion Sort</p>
+<p>A non-D&amp;C solution: <strong>Insertion Sort</strong></p>
 <pre><code class="language-cpp">void insertionSort(int arr[], int n) {
     for (int i = 1; i &lt; n; i++) {
         int key = arr[i];
@@ -274,7 +274,7 @@ $$</p>
 </code></pre>
 <p>We have the complexity is $O(n^2)$ since it runs two loops with $n$ steps.</p>
 <p>But $O(n^2)$ is too slow for most of the problem, can it be much faster? Of course. We can use divide and conquer here!</p>
-<p>A D&amp;C solution: Merge Sort</p>
+<p>A D&amp;C solution: <strong>Merge Sort</strong></p>
 <pre><code class="language-cpp">void merge(vector&lt;int&gt;&amp; arr, int l, int m, int r) {
     int n1 = m - l + 1;
     int n2 = r - m;

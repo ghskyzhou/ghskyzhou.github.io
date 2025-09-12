@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="ayu sidebar-visible" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
-            const default_light_theme = "ayu";
+            const default_light_theme = "light";
             const default_dark_theme = "ayu";
             window.path_to_searchindex_js = "searchindex.js";
         </script>
@@ -79,7 +79,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('ayu')
+            html.classList.remove('light')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -177,14 +177,116 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="chapter-1"><a class="header" href="#chapter-1">Chapter 1</a></h1>
-<p>$111$</p>
-<p>$222$</p>
-<p>\( \int x dx = \frac{x^2}{2} + C \)</p>
-<p>Hi</p>
+                        <h2 id="l0-introduction"><a class="header" href="#l0-introduction">L0 Introduction</a></h2>
+<h3 id="main-course-topics"><a class="header" href="#main-course-topics">Main Course Topics</a></h3>
+<ul>
+<li>Propositional Logic</li>
+<li>Sets, First-Order Logic</li>
+<li>Methods of Proofs</li>
+<li>Mathematical Induction</li>
+<li>Recursion</li>
+<li>Greatest Common Divisors</li>
+<li>Modular Arthmetic</li>
+<li>Chinese Remainder Theorem</li>
+<li>Graphs</li>
+<li>Graph Matching</li>
+<li>Graph Coloring</li>
+<li>Combinatorial Proofs and its Principles</li>
+<li>Counting by Mapping</li>
+<li>Cardinality</li>
+</ul>
+<h2 id="l1-propositional-logic"><a class="header" href="#l1-propositional-logic">L1 Propositional Logic</a></h2>
+<h3 id="statement-proposition"><a class="header" href="#statement-proposition">Statement (Proposition)</a></h3>
+<p>A <strong>Statement</strong> is a sentence that is either <em>True</em> or <em>False</em>.</p>
+<p>e.g. $2+2=4 \rightarrow \text{True}$</p>
+<p>Non e.g. $x+y&gt;0$, cause they are true for some values of $x$ and $y$, but false for others.</p>
+<h3 id="logic-operators"><a class="header" href="#logic-operators">Logic Operators</a></h3>
+<h4 id="not-lnot"><a class="header" href="#not-lnot">NOT $\lnot$</a></h4>
+<p>Alternative notation: $\lnot P = \overline{P}$</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$\lnot P$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td></tr>
+</tbody></table>
+</div>
+<h4 id="and-land"><a class="header" href="#and-land">AND $\land$</a></h4>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P\land Q$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+</tbody></table>
+</div>
+<h4 id="or-lor"><a class="header" href="#or-lor">OR $\lor$</a></h4>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P\lor Q$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+</tbody></table>
+</div>
+<h4 id="xor-oplus"><a class="header" href="#xor-oplus">XOR $\oplus$</a></h4>
+<p>Exclusive OR</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P\oplus Q$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+</tbody></table>
+</div>
+<h3 id="de-morgans-laws"><a class="header" href="#de-morgans-laws">De Morgan's Laws</a></h3>
+<p><strong>Logical Equivalence</strong>: Two statements have the same truth table.</p>
+<p>De Morgan's Laws:</p>
 <p>$$
-\int_1^n f(x) dx
+\lnot (P \land Q) \equiv \lnot P \lor \lnot Q
+$$
+$$
+\lnot (P \lor Q) \equiv \lnot P \land \lnot Q
 $$</p>
+<h3 id="tautology-and-contradiction"><a class="header" href="#tautology-and-contradiction">Tautology and Contradiction</a></h3>
+<p>A <strong>tautology</strong> is a statement that is always true.</p>
+<ul>
+<li>e.g. $P \lor \lnot P$</li>
+</ul>
+<p>A <strong>contradiction</strong> is a statement that is always false. (Negation of a tautology)</p>
+<ul>
+<li>e.g. $P \land \lnot P$</li>
+</ul>
+<h3 id="conditinal-statement"><a class="header" href="#conditinal-statement">Conditinal Statement</a></h3>
+<h4 id="if-rightarrow"><a class="header" href="#if-rightarrow">If $\rightarrow$</a></h4>
+<p>If P then Q:
+$P \rightarrow Q \equiv \lnot P \lor Q$</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P \rightarrow Q$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">F</td><td style="text-align: center">T</td></tr>
+</tbody></table>
+</div>
+<p><strong>Convention</strong>: If we don't say anything wrong, then it is not false, and thus true.</p>
+<p><strong>Negation</strong> of If-Then: $\lnot(P \rightarrow Q) \equiv P \land \lnot Q$</p>
+<p><strong>Contrapositive</strong>: The contrapositive of $P \rightarrow Q$ is $\lnot Q \rightarrow \lnot P$</p>
+<p>$$
+P \rightarrow Q \equiv \lnot P \lor Q \equiv Q \lor \lnot P \equiv \lnot Q \rightarrow \lnot P
+$$</p>
+<h4 id="if-and-only-if-iff"><a class="header" href="#if-and-only-if-iff">If and Only If $\iff$</a></h4>
+<p>P if Q means "if Q then P", or "Q implies P". We also say Q is a <strong>sufficient condition</strong> for P.</p>
+<p>P only if Q means "if P then Q", or "P implies Q". We also say Q is a <strong>necessary condition</strong> for P.</p>
+<p>P <strong>if and only if</strong> (iff) Q means P and Q are <em>logically equivalent</em>.</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P \iff Q$</th></tr></thead><tbody>
+<tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
+<tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">F</td></tr>
+<tr><td style="text-align: center">F</td><td style="text-align: center">F</td><td style="text-align: center">T</td></tr>
+</tbody></table>
+</div>
+<p>$$
+P \iff Q \equiv (P \rightarrow Q) \land (Q \rightarrow P) \equiv (P \rightarrow Q) \land (\lnot P \rightarrow \lnot Q)
+$$</p>
+<h3 id="argument"><a class="header" href="#argument">Argument</a></h3>
+<p>An <strong>argument</strong> is a sequence of statements.</p>
+<p>All statements but the final one are called <strong>assumptions</strong> or <strong>hypothesis</strong>.</p>
+<p>The final statement is called the <strong>conclusion</strong>.</p>
+<p>An argument is <strong>valid</strong> if: <em>whenever all the assumptions are true, then the conclusion is true.</em> Or we say the <em>conclusion follows from the assumptions.</em></p>
 
                     </main>
 

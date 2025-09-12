@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="ayu sidebar-visible" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root and default themes to javascript -->
         <script>
             const path_to_root = "";
-            const default_light_theme = "ayu";
+            const default_light_theme = "light";
             const default_dark_theme = "ayu";
             window.path_to_searchindex_js = "searchindex.js";
         </script>
@@ -79,7 +79,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
-            html.classList.remove('ayu')
+            html.classList.remove('light')
             html.classList.add(theme);
             html.classList.add("js");
         </script>
@@ -177,7 +177,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        
+                        <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
