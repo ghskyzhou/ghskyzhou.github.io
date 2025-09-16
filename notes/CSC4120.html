@@ -325,6 +325,55 @@ If $x &gt; 1$ , then
 $$
 1 + x + x^2 + \cdots + x^h &lt; \frac{1}{1-x} x^h  \Rightarrow S = \Theta(x^h)
 $$</p>
+<h4 id="master-theorem"><a class="header" href="#master-theorem">Master Theorem</a></h4>
+<p>Consider the recursion:</p>
+<p>$$
+T(n) = aT(n/b) + f(n)
+$$</p>
+<ul>
+<li>Number of levels: $\log_b n = \Theta(\log n)$</li>
+<li>Number of leaves: $L = a^{\log_b n} = n^{log_b a}$</li>
+</ul>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/16/68c969dd52cc1.png" height="150px">
+</p>
+<p>We use the recursion tree to calculate the cost. The cost of the $i$-th (root $i=0$) is:
+$$
+\begin{align}
+C_i &amp;= (\text{Nodes Number of } i \text{-th Level}) \times (f \text{ of Every Subproblem}) \\
+&amp;= a^i f(n/b^i)
+\end{align}
+$$
+So that, we have:
+$$
+T(n) = \sum_{i=0}^h C_i = \sum_{i=0}^{\log_b n} a^i f(n/b^i)
+$$</p>
+<p>We need to compare the time within root and leaves to get the main factor. The usual method is to compare $f(n)$ and $L(n) = n^{\log_b a}$</p>
+<p>There are 3 situations here:</p>
+<ol>
+<li>
+<p>Geometrically Increasing (<strong>Leaves</strong>):
+$$
+f(n) = O(L^{1-\epsilon}) \Rightarrow T(n) = \Theta(L)
+$$
+e.g. $T(n) = 2T(n/2) + \sqrt{n}$, we have $a=2, b=2, L=n^{\log_b a} = n$, and $\sqrt{n} = n^{1/2} = O(L^{1-\epsilon})$, thus $T(n) = \Theta(n)$</p>
+</li>
+<li>
+<p>Roughly <strong>Equal</strong> Levels:
+$$
+f(n) = \Theta(L) \Rightarrow T(n) = \Theta (L \log n) \\
+f(n) = \Theta(L \log n) \Rightarrow T(n) = \Theta (L \log^2 n)
+$$
+e.g. $T(n) = 2T(n/2) + n$, we have $L=n^{\log_2 2} = n$, and $n = O(L)$, thus $T(n) = \Theta(n \log n)$</p>
+</li>
+<li>
+<p>Geometrically Decreasing (<strong>Root</strong>) + Regularly Condition
+$$
+f(n) = \Omega(L^{1+\epsilon}) \text{ and } af(n/b) \leq sf(n), s &lt; 1 \Rightarrow T(n) = \Theta(f(n))
+$$
+e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2f(n/2) = 2(n/2)^2 \leq (1/2) f(n)$, thus $T(n) = \Theta(n^2)$</p>
+</li>
+</ol>
 
                     </main>
 
