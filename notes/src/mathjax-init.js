@@ -1,20 +1,36 @@
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],   // 单美元和 \(...\) 支持
-    displayMath: [['$$', '$$'], ['\\[', '\\]']], // 双美元和 \[...\] 支持
-    processEscapes: true,    // 支持转义 \$ 符号
-    processEnvironments: true
-  },
-  options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'], // 不在这些标签里渲染
-  }
-};
-
-// 动态加载 MathJax
-(function () {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.id = 'MathJax-script';
-  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-  document.head.appendChild(script);
-})();
+// KaTeX initialization script
+async function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+async function loadCSS(href) {
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.onload = resolve;
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+}
+document.addEventListener('DOMContentLoaded', async function() {
+  const tasks = [
+    loadCSS('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css'),
+    loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js'),
+    loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js')
+  ];
+  await Promise.all(tasks);
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false},
+      {left: '\\(', right: '\\)', display: false},
+      {left: '\\[', right: '\\]', display: true}
+    ]
+  });
+});
