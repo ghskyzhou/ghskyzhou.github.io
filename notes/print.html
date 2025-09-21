@@ -463,8 +463,9 @@ $$</p>
 <li>Big $\Omega$ is used to describe a <strong>lower bound</strong> for the running time of an algorithm.</li>
 <li>Big $\Theta$ is used to denote <strong>asymptotic equivalence</strong> of the running times of two algorithms. And when $\Omega(g(n)) = O(g(n)) = f(n)$, we can have $\Theta(g(n)) = f(n)$</li>
 </ul>
+<h2 id="l2-divide-and-conquer"><a class="header" href="#l2-divide-and-conquer">L2 Divide and Conquer</a></h2>
 <h3 id="divide-and-conquer-sorting-and-master-theorem"><a class="header" href="#divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</a></h3>
-<h4 id="devide-and-conquer"><a class="header" href="#devide-and-conquer">Devide and Conquer</a></h4>
+<h4 id="basic-devide-and-conquer"><a class="header" href="#basic-devide-and-conquer">Basic Devide and Conquer</a></h4>
 <p>There are 3 steps:</p>
 <ol>
 <li><em>Divide</em> input into multiple <strong>smaller</strong> (usually disjoint) points.</li>
@@ -592,7 +593,56 @@ $$
 e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2f(n/2) = 2(n/2)^2 \leq (1/2) f(n)$, thus $T(n) = \Theta(n^2)$</p>
 </li>
 </ol>
-<h4 id="application-of-dc"><a class="header" href="#application-of-dc">Application of D&amp;C</a></h4>
+<h3 id="applications-of-dc"><a class="header" href="#applications-of-dc">Applications of D&amp;C</a></h3>
+<h4 id="convex-hull"><a class="header" href="#convex-hull">Convex Hull</a></h4>
+<p>Given $n$ points $S = { (x_i, y_i) | i = 1, 2, \cdots, n }$ s.t. all have different $x$ and $y$ coordinates, and no three of them in a line.</p>
+<p><strong>Convex Hull (CH)</strong>: The smallest polygon containing all points in $S$. Represented by the sequence of points in the boundary in clockwise order.</p>
+<p>How to use D&amp;C here?</p>
+<ol>
+<li>Sort points by $x$-coordinate.</li>
+<li>For our input set $S$ of points:
+<ul>
+<li>Divide (by $x$-coordinates) into left-half A and right-half B.</li>
+<li>Compute CH(A) and CH(B).</li>
+<li>Merge CH(A) and CH(B) to get CH(A+B).</li>
+</ul>
+</li>
+</ol>
+<p>It has the complexity time $T(n) = 2T(n/2) + \Theta(n) \rightarrow \Theta(n \log n)$.</p>
+<p>BUT, how to merge?</p>
+<p>Algorithm: Start with $(a_1, b_1)$. While $y(i, j)$ increases, keep moving by one step either a_i counterclockwise or b_j clockwise. When cannot increase anymore, we found the upper tangent, say $a_u, b_u$. Similarly, the lower tangent $a_l, b_l$. Then the CH = points of A clockwise from $a_l$ to $a_u$ + points of B clockwise from $b_u$ + $b_l$. Hence total time $\Theta(n)$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/21/68cf96e2a2183.png" height="250px">
+</p>
+<h4 id="median-finding--peak-finding"><a class="header" href="#median-finding--peak-finding">Median Finding / Peak Finding</a></h4>
+<p>Not interested.</p>
+<h2 id="l3-randomized-algorithms"><a class="header" href="#l3-randomized-algorithms">L3 Randomized Algorithms</a></h2>
+<h3 id="basic-concepts-of-randomized-algoirthms"><a class="header" href="#basic-concepts-of-randomized-algoirthms">Basic Concepts of Randomized Algoirthms</a></h3>
+<p><strong>Randomized Algorithms</strong>:  On the same input, different executions of the same algorithm may result in <em>different running times and different outputs</em>.</p>
+<p>Type of <strong>polynomial</strong> randomized algorithms:</p>
+<ul>
+<li><strong>Monte Carlo</strong>: Bounded number of steps, but might not find the answer.
+<ul>
+<li>Runs in <em>polynomial</em> time, $P_r$(answer is correct)$=p_o &gt; \frac{1}{2}$.</li>
+<li>Always able to check the answer for correctness.</li>
+<li>How to use: Repeat if neccessary, use majority of answers.</li>
+</ul>
+</li>
+<li><strong>Las Vegas</strong>: No guarantee on max number of steps, always finds answer.
+<ul>
+<li>Runs in <em>expected polynomial</em> time.</li>
+<li>Not stop until finds the correct answer.</li>
+</ul>
+</li>
+</ul>
+<h4 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h4>
+<p>Consider combining D&amp;C and randomize</p>
+<ol>
+<li>Pick an <em>pivot</em> $x$ of the array.</li>
+<li>Divide: Partition the array into subarrays using $x$.</li>
+<li>Conquer: Recursively sort $A$, $B$.</li>
+<li>Combine: $A$, $x$, $B$.</li>
+</ol>
 
                     </main>
 
