@@ -325,18 +325,18 @@ $$</p>
 <p>And we have $|A-B| = |A| - |A \cap B|$</p>
 <p><strong>Big set operators</strong>:
 $$
-\begin{align}
+\begin{align*}
 \bigcup_{i=0}^n A_i &amp;= \{ x \in A_i \text{ for at least one } i = 0, 1, 2, \cdots, n \} \\
 \bigcap_{i=0}^n A_i &amp;= \{ x \in A_i \text{ for all } i = 0, 1, 2, \cdots, n \}
-\end{align}
+\end{align*}
 $$</p>
 <h4 id="partition-of-sets"><a class="header" href="#partition-of-sets">Partition of Sets</a></h4>
 <p><strong>Partition</strong>: A collection of nonempty sets $\{ A_1, A_2, \cdots, A_n \}$ is a partition of a set A if and only if
 $$
-\begin{align}
+\begin{align*}
 &amp; A = A_1 \cup A_2 \cup \cdots \cup A_n \\
 &amp; A_1, A_2, \cdots, A_n \text{ are mutually disjoint (or pairwise disjoint)}
-\end{align}
+\end{align*}
 $$</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/09/18/68cbab9ba45e8.png" height="250px">
@@ -524,11 +524,11 @@ void mergeSort(vector&lt;int&gt;&amp; arr, int l, int r) {
 </p>
 <p>From the graph we can see that there is only $\log n$ levels of recursion. Thus, we have</p>
 <p>$$
-\begin{align}
+\begin{align*}
 T(n) &amp;= 2T(n/2) + cn \\
 &amp;= (cn) \log n + nT(1) \\
 &amp;= \Theta (n \log n)
-\end{align}
+\end{align*}
 $$</p>
 <p>Where $cn$ denotes for the time of divide and merge, and $T(1)$ represents for the node of the recursion tree.</p>
 <h4 id="geometric-sums"><a class="header" href="#geometric-sums">Geometric Sums</a></h4>
@@ -558,10 +558,10 @@ $$</p>
 </p>
 <p>We use the recursion tree to calculate the cost. The cost of the $i$-th (root $i=0$) is:
 $$
-\begin{align}
+\begin{align*}
 C_i &amp;= (\text{Nodes Number of } i \text{-th Level}) \times (f \text{ of Every Subproblem}) \\
 &amp;= a^i f(n/b^i)
-\end{align}
+\end{align*}
 $$
 So that, we have:
 $$
@@ -635,7 +635,8 @@ e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2
 </ul>
 </li>
 </ul>
-<h4 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h4>
+<p>$\overline{T}(n)$: Expected time to terminate for a given input of size $n$.</p>
+<h3 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h3>
 <p>Consider combining D&amp;C and randomize</p>
 <ol>
 <li>Pick an <em>pivot</em> $x$ of the array.</li>
@@ -643,6 +644,48 @@ e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2
 <li>Conquer: Recursively sort $A$, $B$.</li>
 <li>Combine: $A$, $x$, $B$.</li>
 </ol>
+<p>$\overline{T}(n) = \Theta(n \log n)$ for all inputs.
+$\Rightarrow$ Random selection of $x$ makes no input to be worse.</p>
+<p>Or we can say $\Theta(n \log n)$ is the <strong>average complexity</strong> of quicksort.</p>
+<h3 id="frievalds-algorithm"><a class="header" href="#frievalds-algorithm">Frievald's Algorithm</a></h3>
+<p>Given $n \times n$ matrices $A$, $B$ and $C$, check that $AB = C$ (yes or no).</p>
+<p>It's very slow to use brute force algorithm since matrices multiplication is $O(n^3)$.</p>
+<p>Consider randomization (Frievald's Algorithm):</p>
+<ol>
+<li>Choose a random binary vector $r$.</li>
+<li>If $(A(Br) = Cr) \bmod 2$ then output "yes" else "no".</li>
+</ol>
+<p>Property: If $AB \not= C$, then $\text{Pr}[A(Br) \not= Cr] \geq \frac{1}{2}$.</p>
+<p>That is, Do 10 tests, if all say "yes", the probability of error $&lt; \left( \frac{1}{2} \right)^{10}$.</p>
+<h3 id="fast-fourier-transform"><a class="header" href="#fast-fourier-transform">Fast Fourier Transform</a></h3>
+<h4 id="multiplication-of-polynomials-as-list-of-coefficients"><a class="header" href="#multiplication-of-polynomials-as-list-of-coefficients">Multiplication of polynomials as <em>list of coefficients</em>.</a></h4>
+<p>Consider:
+$$
+\begin{align*}
+A(x) &amp;= a_0 + a_1 x + \cdots + a_d x^d \\
+B(x) &amp;= b_0 + b_1 x + \cdots + b_d x^d \\ \\
+\text{To calculate }C(x) &amp;= A(x) B(x) = c_0 + c_1 x + \cdots + c_{2d}x^{2d} \\
+\text{where }c_k &amp;= a_0 b_k + a_1 b_{k-1} + \cdots + a_k b_0 = \sum_{i=0}^k a_i b_{k-i}
+\end{align*}
+$$</p>
+<p>Complexity: For $c_k \rightarrow O(k)$, for $C(x) \rightarrow O(d^2)$</p>
+<p>Can we do it <strong>faster</strong>? Like $O(d \log d)$?</p>
+<h4 id="multiplication-of-polynomials-as-list-of-values"><a class="header" href="#multiplication-of-polynomials-as-list-of-values">Multiplication of polynomials as <em>list of values</em>.</a></h4>
+<p>Consider: A degree-$d$ polynomial is <strong>uniquely characterized</strong> by its values at <strong>any</strong> $d+1$ distinct points $x_0, x_1, \cdots, x_d$.</p>
+<p>That is, if we fix any distinct $d+1$ points, we can specify any degree-$d$ polynomial $A(x) = a_0 + a_1 x + \cdots + a_d x^d$ by the $d+1$ values:
+$$
+A(x_0), A(x_1), \cdots, A(x_d)
+$$
+Then we can have:
+$$
+\begin{align*}
+C(x) &amp;= A(x) B(x) \\
+C(x_i) &amp;= A(x_i) B(x_i) \\
+\text{where } i&amp;=0,1,\cdots,2d
+\end{align*}
+$$
+Polynomial multiplication is $O(d)$ using this representation!</p>
+<p>But how can we get the coefficients of $C(x)$ ?</p>
 
                     </main>
 
