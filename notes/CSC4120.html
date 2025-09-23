@@ -466,6 +466,58 @@ C(x_i) &amp;= A(x_i) B(x_i) \\
 $$
 Polynomial multiplication is $O(d)$ using this representation!</p>
 <p>But how can we get the coefficients of $C(x)$ ?</p>
+<h4 id="evaluation-and-interpolation"><a class="header" href="#evaluation-and-interpolation">Evaluation and Interpolation</a></h4>
+<p><strong>Evaluation</strong>: $a_0, a_1, \cdots, a_d \rightarrow A(x_0), A(x_1), \cdots, A(x_d)$</p>
+<p>$$
+A(x) = M_n(x) \cdot a \\
+$$
+$$
+\begin{bmatrix}
+A(x_0) \\
+A(x_1) \\
+\vdots \\
+A(x_{n-1})
+\end{bmatrix}=
+\begin{bmatrix}
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+a_0 \\
+a_1 \\
+\vdots \\
+a_{n-1}
+\end{bmatrix}
+$$</p>
+<p><strong>Interpolation</strong>: $A(x_0), A(x_1), \cdots, A(x_d) \rightarrow a_0, a_1, \cdots, a_d$
+$$
+a = M_n^{-1}(x) \cdot A(\omega) \\
+$$
+$$
+\begin{bmatrix}
+a_0 \\
+a_1 \\
+\vdots \\
+a_{n-1}
+\end{bmatrix}=
+\begin{bmatrix}
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+\end{bmatrix} ^{-1}
+\cdot
+\begin{bmatrix}
+A(x_0) \\
+A(x_1) \\
+\vdots \\
+A(x_{n-1})
+\end{bmatrix}
+$$</p>
+<p>Here $M_n$ is Vandermonde matrix, and we can use special $x_0, x_1, \cdots, x_{n-1}$ and FFT (D&amp;C) here to optimize the complexity to $O(n \log n)$.</p>
 
                     </main>
 
