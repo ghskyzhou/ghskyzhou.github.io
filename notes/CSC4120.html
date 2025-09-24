@@ -442,32 +442,37 @@ $\Rightarrow$ Random selection of $x$ makes no input to be worse.</p>
 <p>Consider:
 $$
 \begin{align*}
-A(x) &amp;= a_0 + a_1 x + \cdots + a_d x^d \\
-B(x) &amp;= b_0 + b_1 x + \cdots + b_d x^d \\ \\
-\text{To calculate }C(x) &amp;= A(x) B(x) = c_0 + c_1 x + \cdots + c_{2d}x^{2d} \\
+A(x) &amp;= a_0 + a_1 x + \cdots + a_n x^n = \sum_{i=0}^{n}a_i x^i \\
+B(x) &amp;= b_0 + b_1 x + \cdots + b_n x^n = \sum_{i=0}^{n}b_i x^i
+\end{align*}
+$$
+To calculate:
+$$
+\begin{align*}
+C(x) &amp;= A(x) B(x) = c_0 + c_1 x + \cdots + c_{2n}x^{2n} =\sum_{i=0}^{2n}c_i x^i \\
 \text{where }c_k &amp;= a_0 b_k + a_1 b_{k-1} + \cdots + a_k b_0 = \sum_{i=0}^k a_i b_{k-i}
 \end{align*}
 $$</p>
-<p>Complexity: For $c_k \rightarrow O(k)$, for $C(x) \rightarrow O(d^2)$</p>
-<p>Can we do it <strong>faster</strong>? Like $O(d \log d)$?</p>
+<p>Complexity: For $c_k \rightarrow O(k)$, for $C(x) \rightarrow O(n^2)$</p>
+<p>Can we do it <strong>faster</strong>? Like $O(n \log n)$?</p>
 <h4 id="multiplication-of-polynomials-as-list-of-values"><a class="header" href="#multiplication-of-polynomials-as-list-of-values">Multiplication of polynomials as <em>list of values</em>.</a></h4>
-<p>Consider: A degree-$d$ polynomial is <strong>uniquely characterized</strong> by its values at <strong>any</strong> $d+1$ distinct points $x_0, x_1, \cdots, x_d$.</p>
-<p>That is, if we fix any distinct $d+1$ points, we can specify any degree-$d$ polynomial $A(x) = a_0 + a_1 x + \cdots + a_d x^d$ by the $d+1$ values:
+<p>Consider: A degree-$n$ polynomial is <strong>uniquely characterized</strong> by its values at <strong>any</strong> $n+1$ distinct points $x_0, x_1, \cdots, x_d$.</p>
+<p>That is, if we fix any distinct $n+1$ points, we can specify any degree-$n$ polynomial $A(x) = a_0 + a_1 x + \cdots + a_d x^n$ by the $n+1$ values:
 $$
-A(x_0), A(x_1), \cdots, A(x_d)
+A(x_0), A(x_1), \cdots, A(x_n)
 $$
 Then we can have:
 $$
 \begin{align*}
 C(x) &amp;= A(x) B(x) \\
 C(x_i) &amp;= A(x_i) B(x_i) \\
-\text{where } i&amp;=0,1,\cdots,2d
+\text{where } i&amp;=0,1,\cdots,2n
 \end{align*}
 $$
-Polynomial multiplication is $O(d)$ using this representation!</p>
+Polynomial multiplication is $O(n)$ using this representation!</p>
 <p>But how can we get the coefficients of $C(x)$ ?</p>
 <h4 id="evaluation-and-interpolation"><a class="header" href="#evaluation-and-interpolation">Evaluation and Interpolation</a></h4>
-<p><strong>Evaluation</strong>: $a_0, a_1, \cdots, a_d \rightarrow A(x_0), A(x_1), \cdots, A(x_d)$</p>
+<p><strong>Evaluation</strong>: $a_0, a_1, \cdots, a_n \rightarrow A(x_0), A(x_1), \cdots, A(x_n)$</p>
 <p>$$
 A(x) = M_n(x) \cdot a \\
 $$
@@ -476,48 +481,130 @@ $$
 A(x_0) \\
 A(x_1) \\
 \vdots \\
-A(x_{n-1})
+A(x_{n})
 \end{bmatrix}=
 \begin{bmatrix}
-1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
-1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^n \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^n \\
 \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
-1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+1 &amp; x_n &amp; x_n^2 &amp; \cdots &amp; x_n^n
 \end{bmatrix}
 \cdot
 \begin{bmatrix}
 a_0 \\
 a_1 \\
 \vdots \\
-a_{n-1}
+a_{n}
 \end{bmatrix}
 $$</p>
-<p><strong>Interpolation</strong>: $A(x_0), A(x_1), \cdots, A(x_d) \rightarrow a_0, a_1, \cdots, a_d$
+<p><strong>Interpolation</strong>: $A(x_0), A(x_1), \cdots, A(x_n) \rightarrow a_0, a_1, \cdots, a_n$
 $$
-a = M_n^{-1}(x) \cdot A(\omega) \\
+a = M_n^{-1}(x) \cdot A(x) \\
 $$
 $$
 \begin{bmatrix}
 a_0 \\
 a_1 \\
 \vdots \\
-a_{n-1}
+a_n
 \end{bmatrix}=
 \begin{bmatrix}
-1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
-1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^n \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^n \\
 \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
-1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+1 &amp; x_n &amp; x_n^2 &amp; \cdots &amp; x_n^n
 \end{bmatrix} ^{-1}
 \cdot
 \begin{bmatrix}
 A(x_0) \\
 A(x_1) \\
 \vdots \\
-A(x_{n-1})
+A(x_n)
 \end{bmatrix}
 $$</p>
-<p>Here $M_n$ is Vandermonde matrix, and we can use special $x_0, x_1, \cdots, x_{n-1}$ and FFT (D&amp;C) here to optimize the complexity to $O(n \log n)$.</p>
+<p>Here $M_n$ is Vandermonde matrix.</p>
+<p>Consider $C(x_i) = A(x_i) B(x_i)$, from the two matrix multiplication we can know that: If we have every $A(x_i)$ and $B(x_i)$ we can use $O(n)$ to multiply and get $C(x_i)$, then transfer it into every coefficient $c_i$.</p>
+<p>But, using matrix multiplication directly will need time complexity of $O(n^2)$. Can we optimize it to $O(n \log n)$? Yes, and here comes <strong>Fast Fourier Tranform (FFT)</strong>.</p>
+<h4 id="fft"><a class="header" href="#fft">FFT</a></h4>
+<p>Let's calculate evaluation using FFT first.</p>
+<p>Consider a polynomial $P(x)$ with length of even number $n$ s.t.
+$$
+\begin{align*}
+P(x) &amp;= a_0 + a_1 x + a_2 x^2 + \cdots + a_{n-1} x^{n-1} \\
+&amp;= P_{\text{even}}(x^2) + x \cdot P_{\text{odd}}(x^2) \\
+\text{where } P_{\text{even}}(x) &amp;= a_0 + a_2 x + a_4 x^2 + \cdots + a_{n-2} x^{n/2} \\
+P_{\text{odd}}(x) &amp;= a_1 + a_3 x + a_5 x^2 + \cdots + a_{n-1} x^{n/2}
+\end{align*}
+$$</p>
+<p>By doing this, we <strong>divide</strong> the the length $n$ to two length $n/2$. Then, we have to <strong>conquer</strong> them each and then <strong>combine</strong> them together.</p>
+<p>Let $A_k$ denote $A(x_k)$.</p>
+<p>The question is: How can we divide $A_k$?</p>
+<p>And here's the most essencial part: We use <strong>primitive root</strong> $\omega$.</p>
+<p>Now, think about an complex equation:
+$$
+z^n = (re^{i\theta})^n = 1
+$$
+We can get the solutions:
+$$
+\begin{align*}
+r &amp;= 1 \\
+\theta &amp;= \frac{2k\pi}{n} \\
+\text{where } k &amp;= 0, 1, \cdots, n-1
+\end{align*}
+$$
+Thus,
+$$
+\begin{align*}
+\omega_n &amp;= e^{\frac{2\pi}{n}i} \\
+\omega_n^k &amp;= e^{\frac{2\pi}{n}ki} = e^{i\theta} \\
+(\omega_n^k)^n &amp;= 1
+\end{align*}
+$$
+To each $k$, we want to calculate:
+$$
+\begin{align*}
+A_k &amp;= P(\omega_n^k) \\
+&amp;= P_{\text{even}}(\omega_n^{2k}) + \omega_n^k \cdot P_{\text{odd}}(\omega_n^{2k}) \\
+&amp;= P_{\text{even}}(\omega_{n/2}^{k}) + \omega_n^k \cdot P_{\text{odd}}(\omega_{n/2}^{k})
+\end{align*}
+$$
+Since
+$$
+\omega_n^{2k} = e^{\frac{2\pi}{n} 2ki} = e^{\frac{2\pi}{n/2} ki} = \omega_{n/2}^k
+$$
+This is called the <strong>Discrete Fourier Tranform (DFT)</strong> of $A_k$.</p>
+<p>And we found that:
+$$
+\begin{align*}
+A_{k+n/2} &amp;= P(\omega_n^{k+n/2}) \\
+&amp;= P_{\text{even}}(\omega_{n/2}^{k+n/2}) + \omega_n^{k+n/2} \cdot P_{\text{odd}}(\omega_{n/2}^{k+n/2}) \\
+&amp;= P_{\text{even}}(\omega_{n/2}^{k} \cdot \omega_{n/2}^{n/2}) + \omega_n^k \cdot \omega_n^{n/2} \cdot P_{\text{odd}}(\omega_{n/2}^{k} \cdot \omega_{n/2}^{n/2}) \\
+&amp;= P_{\text{even}}(\omega_{n/2}^{k}) - \omega_n^k \cdot P_{\text{odd}}(\omega_{n/2}^{k})
+\end{align*}
+$$
+Since
+$$
+\omega_n^n = e^{\frac{2\pi}{n}ni} = e^{2\pi i} = 1 \\
+\omega_n^{n/2} = e^{\frac{2\pi}{n} (n/2)i} = e^{\pi i} = -1
+$$</p>
+<p>Combining $A_k$ and $A_{k+n/2}$ together for $0 \leq k &lt; n/2$, we can do D&amp;C here! Since $P_{\text{even}}(\omega_{n/2}^{k})$ and $P_{\text{odd}}(\omega_{n/2}^{k})$ can calculate from the half DFT.</p>
+<p>The time complexity is $T(n) = 2T(n/2) + O(n) = O(n \log n)$. We get the whole evaluation.</p>
+<h4 id="ifft"><a class="header" href="#ifft">IFFT</a></h4>
+<p>To do interpolation, we need <strong>Inverse Fast Fourier Tranfrom (IFFT)</strong>.</p>
+<p>Inverse FFT is easy to explain using Linear Algebra.</p>
+<p>It's easy since:
+$$
+a = M_n^{-1}(\omega) \cdot A(\omega) = \frac{1}{n} M_n(\omega^{-1}) \cdot A(\omega)
+$$
+And it's over.</p>
+<p>Let $A(\omega) = \text{FFT}(a, \omega)$, then $a = \frac{1}{n} \text{FFT}(A, \omega^{-1})$.</p>
+<h4 id="the-whole-progress"><a class="header" href="#the-whole-progress">The Whole Progress</a></h4>
+<ol>
+<li>Filled $A(x)$ and $B(x)$ to length of $n=2^k$ by $0$ due to easier FFT D&amp;C.</li>
+<li>Calculate $A(\omega^k)$ and $B(\omega^k)$ for each $k=0,1,\cdots,n-1$, where $\omega = e^{\frac{2\pi}{n}i}$ using FFT.</li>
+<li>Calculate $C(\omega^k) = A(\omega^k) \cdot B(\omega^k)$.</li>
+<li>Calculate $c_i$ using IFFT.</li>
+</ol>
 
                     </main>
 
