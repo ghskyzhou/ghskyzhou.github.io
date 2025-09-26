@@ -197,7 +197,7 @@
 <h2 id="l1-propositional-logic"><a class="header" href="#l1-propositional-logic">L1 Propositional Logic</a></h2>
 <h3 id="statement-proposition"><a class="header" href="#statement-proposition">Statement (Proposition)</a></h3>
 <p>A <strong>Statement</strong> is a sentence that is either <em>True</em> or <em>False</em>.</p>
-<p>e.g. $2+2=4 \rightarrow \text{True}$</p>
+<p>e.g. $2+2=4 \to \text{True}$</p>
 <p>Non e.g. $x+y&gt;0$, cause they are true for some values of $x$ and $y$, but false for others.</p>
 <h3 id="logic-operators"><a class="header" href="#logic-operators">Logic Operators</a></h3>
 <h4 id="not-lnot"><a class="header" href="#not-lnot">NOT $\lnot$</a></h4>
@@ -251,10 +251,10 @@ $$</p>
 <li>e.g. $P \land \lnot P$</li>
 </ul>
 <h3 id="conditinal-statement"><a class="header" href="#conditinal-statement">Conditinal Statement</a></h3>
-<h4 id="if-rightarrow"><a class="header" href="#if-rightarrow">If $\rightarrow$</a></h4>
+<h4 id="if-to"><a class="header" href="#if-to">If $\to$</a></h4>
 <p>If P then Q:
-$P \rightarrow Q \equiv \lnot P \lor Q$</p>
-<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P \rightarrow Q$</th></tr></thead><tbody>
+$P \to Q \equiv \lnot P \lor Q$</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: center">$P$</th><th style="text-align: center">$Q$</th><th style="text-align: center">$P \to Q$</th></tr></thead><tbody>
 <tr><td style="text-align: center">T</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
 <tr><td style="text-align: center">T</td><td style="text-align: center">F</td><td style="text-align: center">F</td></tr>
 <tr><td style="text-align: center">F</td><td style="text-align: center">T</td><td style="text-align: center">T</td></tr>
@@ -262,10 +262,10 @@ $P \rightarrow Q \equiv \lnot P \lor Q$</p>
 </tbody></table>
 </div>
 <p><strong>Convention</strong>: If we don't say anything wrong, then it is not false, and thus true.</p>
-<p><strong>Negation</strong> of If-Then: $\lnot(P \rightarrow Q) \equiv P \land \lnot Q$</p>
-<p><strong>Contrapositive</strong>: The contrapositive of $P \rightarrow Q$ is $\lnot Q \rightarrow \lnot P$</p>
+<p><strong>Negation</strong> of If-Then: $\lnot(P \to Q) \equiv P \land \lnot Q$</p>
+<p><strong>Contrapositive</strong>: The contrapositive of $P \to Q$ is $\lnot Q \to \lnot P$</p>
 <p>$$
-P \rightarrow Q \equiv \lnot P \lor Q \equiv Q \lor \lnot P \equiv \lnot Q \rightarrow \lnot P
+P \to Q \equiv \lnot P \lor Q \equiv Q \lor \lnot P \equiv \lnot Q \to \lnot P
 $$</p>
 <h4 id="if-and-only-if-iff"><a class="header" href="#if-and-only-if-iff">If and Only If $\iff$</a></h4>
 <p>P if Q means "if Q then P", or "Q implies P". We also say Q is a <strong>sufficient condition</strong> for P.</p>
@@ -279,7 +279,7 @@ $$</p>
 </tbody></table>
 </div>
 <p>$$
-P \iff Q \equiv (P \rightarrow Q) \land (Q \rightarrow P) \equiv (P \rightarrow Q) \land (\lnot P \rightarrow \lnot Q)
+P \iff Q \equiv (P \to Q) \land (Q \to P) \equiv (P \to Q) \land (\lnot P \to \lnot Q)
 $$</p>
 <h3 id="argument"><a class="header" href="#argument">Argument</a></h3>
 <p>An <strong>argument</strong> is a sequence of statements.</p>
@@ -394,6 +394,80 @@ $$</p>
 </ul>
 </li>
 </ul>
+<h2 id="l3-first-order-logic"><a class="header" href="#l3-first-order-logic">L3 First-order Logic</a></h2>
+<h3 id="quantifiers"><a class="header" href="#quantifiers">Quantifiers</a></h3>
+<h4 id="predicates"><a class="header" href="#predicates">Predicates</a></h4>
+<p><strong>Predicate</strong>: Propositions (i.e. statments) with variables.</p>
+<ul>
+<li>e.g. $P(x, y): x + 2 = y$</li>
+</ul>
+<p>The <strong>domain</strong> of a variable is the set of all values that may be substituted in place of the variable.</p>
+<p><em>The truth of a quantified statement depends on the domain.</em></p>
+<h4 id="the-universal-quantifier-forall"><a class="header" href="#the-universal-quantifier-forall">The Universal Quantifier $\forall$</a></h4>
+<p>$\forall x$: For <strong>ALL</strong> $x$</p>
+<ul>
+<li>e.g. $\forall x,  x^2 \geq x$</li>
+</ul>
+<h4 id="the-existential-quantifier-exists"><a class="header" href="#the-existential-quantifier-exists">The Existential Quantifier $\exists$</a></h4>
+<p>$\exists x$: There <strong>EXISTS</strong> some $x$ (perhaps one)</p>
+<ul>
+<li>e.g. $\exists x \in \mathbb{Z}^+, x=x^2$</li>
+</ul>
+<h4 id="eg-how-to-write-primep-"><a class="header" href="#eg-how-to-write-primep-">e.g. How to write prime(p) ?</a></h4>
+<p>A <strong>prime number</strong> is a natural number greater than $1$ that has no positive divisors other than $1$ and itself.</p>
+<ol>
+<li>Conditions: $p \not= ab$</li>
+<li>Variables: $p, a, b$</li>
+<li>Domains: $p, a, b &gt; 1, p, a, b \in \mathbb{Z}$</li>
+<li>Add quantifiers and reconcile the order:</li>
+</ol>
+<p>$$
+(p &gt; 1) \land (p \in \mathbb{Z}) \land (\forall a, b, \in \mathbb{Z}^+, (p \not= ab) \lor (a=1) \lor (a=p))
+$$</p>
+<h3 id="negation"><a class="header" href="#negation">Negation</a></h3>
+<p>One simple equivalence:
+$$
+\lnot \forall x, P(x) \equiv \exists x, \lnot P(x)
+$$
+e.g. Not every like you = There exists someone who doesn't like you.</p>
+<h3 id="multiple-quantifiers"><a class="header" href="#multiple-quantifiers">Multiple Quantifiers</a></h3>
+<p>The <strong>order of quantifiers</strong> is very important.</p>
+<h3 id="arguments-of-quantified-statements"><a class="header" href="#arguments-of-quantified-statements">Arguments of Quantified Statements</a></h3>
+<h4 id="predicate-calculus-validity"><a class="header" href="#predicate-calculus-validity">Predicate Calculus Validity</a></h4>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/09/26/68d63f196862f.png" height="250px">
+</p>
+<p>A <strong>quantified argument</strong> is <strong>valid</strong> if the conclusion is true whenever the assumptions are true.</p>
+<h4 id="arguments-with-quantified-statements"><a class="header" href="#arguments-with-quantified-statements">Arguments with Quantified Statements</a></h4>
+<p>Universal Instantiation:
+$$
+\begin{align*}
+&amp; \forall x , P(x) \\
+\therefore \ &amp; P(a)
+\end{align*}
+$$</p>
+<p>Universal Modus Ponens
+$$
+\begin{align*}
+&amp; \forall x , (P(x) \to Q(x)) \\
+&amp; P(a) \\
+\therefore \ &amp; Q(a)
+\end{align*}
+$$</p>
+<p>Universal Modus Tollens:
+$$
+\begin{align*}
+&amp; \forall x, P(x) \to Q(x) \\
+&amp; \lnot Q(A) \\
+\therefore \ &amp; \lnot P(A)
+\end{align*}
+$$</p>
+<p>Universal Generalization:
+$$
+\frac{A \to R(c)}{A \to \forall x , R(x)}
+\qquad \\
+\text{(valid rule, provided $c$ is independent of $A$)}
+$$</p>
 <div style="break-before: page; page-break-before: always;"></div><h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
 <p>Teaching C++ first.</p>
 <p>Then data sturctures.</p>
