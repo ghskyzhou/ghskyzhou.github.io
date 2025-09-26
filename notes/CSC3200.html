@@ -176,6 +176,259 @@
                 <div id="content" class="content">
                     <main>
                         <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>Teaching C++ first.</p>
+<p>Then data sturctures.</p>
+<h2 id="assignment-1"><a class="header" href="#assignment-1">Assignment 1</a></h2>
+<h3 id="trigonometric-functions"><a class="header" href="#trigonometric-functions">Trigonometric Functions</a></h3>
+<p>Implement some of the trigonometric functions from scratch without using any mathematical functions from STL.</p>
+<h4 id="student_mathh"><a class="header" href="#student_mathh">student_math.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_MATH_H
+#define STUDENT_MATH_H
+
+namespace student_std {
+    double sin(double x); //x is an angle in radian
+    double sin_deg(double x); //x is an angle in degree
+    double cos(double x); //x is an angle in radian
+    double cos_deg(double x); //x is an angle in degree
+    double tan(double x); //x is an angle in radian
+    double tan_deg(double x); //x is an angle in degree
+    double cot(double x); //x is an angle in radian
+    double cot_deg(double x); //x is an angle in degree
+}
+
+#endif
+</code></pre>
+<h4 id="student_mathcpp"><a class="header" href="#student_mathcpp">student_math.cpp</a></h4>
+<pre><code class="language-cpp">#include "student_math.h"
+
+const double pi = 3.1415926535897932384626;
+const double esp = 1e-8;
+
+double toRadian(double x) {
+    return pi*x/180.0;
+}
+
+double dcmp(double x) {
+    return (x &lt; -esp ? -1 : (x &gt; esp ? 1 : 0));
+}
+
+double fabs(double x) {
+    return (dcmp(x) == -1 ? -x : x);
+}
+
+double TrigonometricLagrange(double x, bool issin) {
+    while(x &gt; 2.0*pi) x -= 2.0*pi;
+    while(x &lt; -2.0*pi) x += 2.0*pi;
+    double numerator = 1, denominator = 1;
+    double timescnt = 1;
+    if(issin) {
+        numerator = x;
+        timescnt = 2;
+    }
+    double current = numerator/denominator, last = numerator/denominator;
+    double re = current;
+    while(fabs(current) &gt; esp) {
+        current = current*x*x/(timescnt)/(timescnt+1.0)*(-1.0);
+        timescnt += 2;
+        re += current;
+    }
+    return (fabs(re) &gt; esp ? re : 0);
+}
+
+namespace student_std {
+    double sin(double x) {
+        return TrigonometricLagrange(x, 1);
+    }
+    double sin_deg(double x) {
+        return sin(toRadian(x));
+    }
+    double cos(double x) {
+        return TrigonometricLagrange(x, 0);
+    }
+    double cos_deg(double x) {
+        return cos(toRadian(x));
+    }
+    double tan(double x) {
+        return sin(x)/cos(x);
+    }
+    double tan_deg(double x) {
+        return sin(toRadian(x))/cos(toRadian(x));
+    }
+    double cot(double x) {
+        return 1.0/tan(x);
+    }
+    double cot_deg(double x) {
+        return 1.0/tan(toRadian(x));
+    }
+}
+</code></pre>
+<h3 id="string"><a class="header" href="#string">String</a></h3>
+<p>Implement a C++ string class from scratch without using STL.</p>
+<h4 id="student_stringh"><a class="header" href="#student_stringh">student_string.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_STRING_H
+#define STUDENT_STRING_H
+
+#define MAXLEN 256
+namespace student_std {
+    class string {
+        public:
+            string();
+            string(const char* str);
+            string(string const&amp;);
+            ~string();
+            int get_strlen() const;
+            const char* get_c_str() const;
+            void strcat(string const&amp;);
+            string&amp; operator=(string const&amp;);
+            string&amp; operator+=(string const&amp;);
+            char&amp; operator[](int);
+            const char&amp; operator[](int) const;
+            void to_upper();
+            void to_lower();
+            void strcopy(string const&amp;);
+            bool equals(string const&amp;) const;
+            bool equals_ignore_case(string const&amp;) const;
+            void trim(); // Removes spaces ' ' from beginning and end
+            bool is_alphabetic() const;
+        private: // hint
+            char c_str[MAXLEN];
+            int strlen;
+    };
+}
+
+#endif
+</code></pre>
+<h4 id="student_stringcpp"><a class="header" href="#student_stringcpp">student_string.cpp</a></h4>
+<pre><code class="language-cpp">#include "student_string.h"
+
+namespace student_std {
+    string::string() {
+        this-&gt;c_str[0] = '\0';
+        this-&gt;strlen = 0;
+    }
+
+    string::string(const char* str) {
+        int len = 0;
+        while(str[len] != '\0') {
+            len++;
+        }
+        this-&gt;strlen = len;
+        for(int i = 0; i &lt;= len; i++) {
+            this-&gt;c_str[i] = str[i];
+        }
+    }
+
+    string::string(string const&amp; str) {
+        this-&gt;strlen = str.strlen;
+        for(int i = 0; i &lt;= this-&gt;strlen; i++) {
+            this-&gt;c_str[i] = str.c_str[i];
+        }
+    }
+
+    string::~string() {}
+
+    int string::get_strlen() const {
+        return this-&gt;strlen;
+    }
+
+    const char* string::get_c_str() const {
+        return this-&gt;c_str;
+    }
+
+    void string::strcat(string const&amp; str) {
+        int len = this-&gt;strlen;
+        for(int i = 0; i &lt;= str.strlen; i++) {
+            this-&gt;c_str[i+len] = str.c_str[i];
+        }
+        this-&gt;strlen = len+str.strlen;
+    }
+
+    string&amp; string::operator=(string const&amp; str) {
+        if(this == &amp;str) {
+            return *this;
+        }
+        this-&gt;strlen = str.strlen;
+        for(int i = 0; i &lt;= this-&gt;strlen; i++) {
+            this-&gt;c_str[i] = str.c_str[i];
+        }
+        return *this;
+    }
+
+    string&amp; string::operator+=(string const&amp; str) {
+        this-&gt;strcat(str);
+        return *this;
+    }
+
+    char&amp; string::operator[](int i) {
+        return this-&gt;c_str[i];
+    }
+
+    const char&amp; string::operator[](int i) const {
+        return this-&gt;c_str[i];
+    }
+
+    void string::to_upper() {
+        for(int i = 0; i &lt; this-&gt;strlen; i++) {
+            if(this-&gt;c_str[i] &gt;= 'a' &amp;&amp; this-&gt;c_str[i] &lt;= 'z') {
+                this-&gt;c_str[i] = char(c_str[i]+('A'-'a'));
+            }
+        }
+    }
+
+    void string::to_lower() {
+        for(int i = 0; i &lt; this-&gt;strlen; i++) {
+            if(this-&gt;c_str[i] &gt;= 'A' &amp;&amp; this-&gt;c_str[i] &lt;= 'Z') {
+                this-&gt;c_str[i] = char(c_str[i]+('a'-'A'));
+            }
+        }
+    }
+
+    void string::strcopy(string const&amp; str) {
+        *this = str;
+    }
+
+    bool string::equals(string const&amp; str) const {
+        if(this-&gt;strlen != str.strlen) return false;
+        for(int i = 0; i &lt; this-&gt;strlen; i++) {
+            if(this-&gt;c_str[i] != str.c_str[i]) return false;
+        }
+        return true;
+    }
+
+    bool string::equals_ignore_case(string const&amp; str) const {
+        string a = *this, b = str;
+        a.to_lower();
+        b.to_lower();
+        return a.equals(b);
+    }
+
+    void string::trim() {
+        int l = 0, r = this-&gt;strlen-1;
+        while(this-&gt;c_str[l] == ' ') {
+            l++;
+        }
+        while(this-&gt;c_str[r] == ' ') {
+            r--;
+        }
+        for(int i = 0; i &lt; r-l+1; i++) {
+            this-&gt;c_str[i] = this-&gt;c_str[i+l];
+        }
+        for(int i = r-l+1; i &lt;= this-&gt;strlen; i++) {
+            this-&gt;c_str[i] = '\0';
+        }
+        this-&gt;strlen = r-l+1;
+    }
+
+    bool string::is_alphabetic() const {
+        for(int i = 0; i &lt; this-&gt;strlen; i++) {
+            if(!((this-&gt;c_str[i] &gt;= 'a' &amp;&amp; this-&gt;c_str[i] &lt;= 'z') || (this-&gt;c_str[i] &gt;= 'A' &amp;&amp; this-&gt;c_str[i] &lt;= 'Z'))) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+</code></pre>
 
                     </main>
 
