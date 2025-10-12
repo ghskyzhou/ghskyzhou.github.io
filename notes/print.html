@@ -744,6 +744,7 @@ namespace student_std {
 <li>Compleity (NP-complete, poly reductions, approximation algorithms)</li>
 </ul>
 <p>Textbook: <strong>Algorithms</strong> by S. Dasgupta, C.H. Papadimitriou, and U.V. Vazirani.</p>
+<hr />
 <h2 id="l1-basic-concepts-of-algorithmic-performance"><a class="header" href="#l1-basic-concepts-of-algorithmic-performance">L1 Basic Concepts of Algorithmic Performance</a></h2>
 <h3 id="asymptotic-complexity"><a class="header" href="#asymptotic-complexity">Asymptotic Complexity</a></h3>
 <h4 id="what-is-tn"><a class="header" href="#what-is-tn">What is $T(n)$?</a></h4>
@@ -793,6 +794,7 @@ namespace student_std {
 <li>Big $\Omega$ is used to describe a <strong>lower bound</strong> for the running time of an algorithm.</li>
 <li>Big $\Theta$ is used to denote <strong>asymptotic equivalence</strong> of the running times of two algorithms. And when $\Omega(g(n)) = O(g(n)) = f(n)$, we can have $\Theta(g(n)) = f(n)$</li>
 </ul>
+<hr />
 <h2 id="l2-divide-and-conquer"><a class="header" href="#l2-divide-and-conquer">L2 Divide and Conquer</a></h2>
 <h3 id="divide-and-conquer-sorting-and-master-theorem"><a class="header" href="#divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</a></h3>
 <h4 id="basic-devide-and-conquer"><a class="header" href="#basic-devide-and-conquer">Basic Devide and Conquer</a></h4>
@@ -946,47 +948,6 @@ e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2
 </p>
 <h4 id="median-finding--peak-finding"><a class="header" href="#median-finding--peak-finding">Median Finding / Peak Finding</a></h4>
 <p>Not interested.</p>
-<h2 id="l3-randomized-algorithms"><a class="header" href="#l3-randomized-algorithms">L3 Randomized Algorithms</a></h2>
-<h3 id="basic-concepts-of-randomized-algoirthms"><a class="header" href="#basic-concepts-of-randomized-algoirthms">Basic Concepts of Randomized Algoirthms</a></h3>
-<p><strong>Randomized Algorithms</strong>:  On the same input, different executions of the same algorithm may result in <em>different running times and different outputs</em>.</p>
-<p>Type of <strong>polynomial</strong> randomized algorithms:</p>
-<ul>
-<li><strong>Monte Carlo</strong>: Bounded number of steps, but might not find the answer.
-<ul>
-<li>Runs in <em>polynomial</em> time, $P_r$(answer is correct)$=p_o &gt; \frac{1}{2}$.</li>
-<li>Always able to check the answer for correctness.</li>
-<li>How to use: Repeat if neccessary, use majority of answers.</li>
-</ul>
-</li>
-<li><strong>Las Vegas</strong>: No guarantee on max number of steps, always finds answer.
-<ul>
-<li>Runs in <em>expected polynomial</em> time.</li>
-<li>Not stop until finds the correct answer.</li>
-</ul>
-</li>
-</ul>
-<p>$\overline{T}(n)$: Expected time to terminate for a given input of size $n$.</p>
-<h3 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h3>
-<p>Consider combining D&amp;C and randomize</p>
-<ol>
-<li>Pick an <em>pivot</em> $x$ of the array.</li>
-<li>Divide: Partition the array into subarrays using $x$.</li>
-<li>Conquer: Recursively sort $A$, $B$.</li>
-<li>Combine: $A$, $x$, $B$.</li>
-</ol>
-<p>$\overline{T}(n) = \Theta(n \log n)$ for all inputs.
-$\Rightarrow$ Random selection of $x$ makes no input to be worse.</p>
-<p>Or we can say $\Theta(n \log n)$ is the <strong>average complexity</strong> of quicksort.</p>
-<h3 id="frievalds-algorithm"><a class="header" href="#frievalds-algorithm">Frievald's Algorithm</a></h3>
-<p>Given $n \times n$ matrices $A$, $B$ and $C$, check that $AB = C$ (yes or no).</p>
-<p>It's very slow to use brute force algorithm since matrices multiplication is $O(n^3)$.</p>
-<p>Consider randomization (Frievald's Algorithm):</p>
-<ol>
-<li>Choose a random binary vector $r$.</li>
-<li>If $(A(Br) = Cr) \bmod 2$ then output "yes" else "no".</li>
-</ol>
-<p>Property: If $AB \not= C$, then $\text{Pr}[A(Br) \not= Cr] \geq \frac{1}{2}$.</p>
-<p>That is, Do 10 tests, if all say "yes", the probability of error $&lt; \left( \frac{1}{2} \right)^{10}$.</p>
 <h3 id="fast-fourier-transform"><a class="header" href="#fast-fourier-transform">Fast Fourier Transform</a></h3>
 <h4 id="multiplication-of-polynomials-as-list-of-coefficients"><a class="header" href="#multiplication-of-polynomials-as-list-of-coefficients">Multiplication of polynomials as <em>list of coefficients</em>.</a></h4>
 <p>Consider:
@@ -1155,6 +1116,111 @@ And it's over.</p>
 <li>Calculate $C(\omega^k) = A(\omega^k) \cdot B(\omega^k)$.</li>
 <li>Calculate $c_i$ using IFFT.</li>
 </ol>
+<hr />
+<h2 id="l3-randomized-algorithms"><a class="header" href="#l3-randomized-algorithms">L3 Randomized Algorithms</a></h2>
+<h3 id="basic-concepts-of-randomized-algoirthms"><a class="header" href="#basic-concepts-of-randomized-algoirthms">Basic Concepts of Randomized Algoirthms</a></h3>
+<p><strong>Randomized Algorithms</strong>:  On the same input, different executions of the same algorithm may result in <em>different running times and different outputs</em>.</p>
+<p>Type of <strong>polynomial</strong> randomized algorithms:</p>
+<ul>
+<li><strong>Monte Carlo</strong>: Bounded number of steps, but might not find the answer.
+<ul>
+<li>Runs in <em>polynomial</em> time, $P_r$(answer is correct)$=p_o &gt; \frac{1}{2}$.</li>
+<li>Always able to check the answer for correctness.</li>
+<li>How to use: Repeat if neccessary, use majority of answers.</li>
+</ul>
+</li>
+<li><strong>Las Vegas</strong>: No guarantee on max number of steps, always finds answer.
+<ul>
+<li>Runs in <em>expected polynomial</em> time.</li>
+<li>Not stop until finds the correct answer.</li>
+</ul>
+</li>
+</ul>
+<p>$\overline{T}(n)$: Expected time to terminate for a given input of size $n$.</p>
+<h3 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h3>
+<p>Consider combining D&amp;C and randomize</p>
+<ol>
+<li>Pick an <em>pivot</em> $x$ of the array.</li>
+<li>Divide: Partition the array into subarrays using $x$.</li>
+<li>Conquer: Recursively sort $A$, $B$.</li>
+<li>Combine: $A$, $x$, $B$.</li>
+</ol>
+<p>$\overline{T}(n) = \Theta(n \log n)$ for all inputs.
+$\Rightarrow$ Random selection of $x$ makes no input to be worse.</p>
+<p>Or we can say $\Theta(n \log n)$ is the <strong>average complexity</strong> of quicksort.</p>
+<h3 id="frievalds-algorithm"><a class="header" href="#frievalds-algorithm">Frievald's Algorithm</a></h3>
+<p>Given $n \times n$ matrices $A$, $B$ and $C$, check that $AB = C$ (yes or no).</p>
+<p>It's very slow to use brute force algorithm since matrices multiplication is $O(n^3)$.</p>
+<p>Consider randomization (Frievald's Algorithm):</p>
+<ol>
+<li>Choose a random binary vector $r$.</li>
+<li>If $(A(Br) = Cr) \bmod 2$ then output "yes" else "no".</li>
+</ol>
+<p>Property: If $AB \not= C$, then $\text{Pr}[A(Br) \not= Cr] \geq \frac{1}{2}$.</p>
+<p>That is, Do 10 tests, if all say "yes", the probability of error $&lt; \left( \frac{1}{2} \right)^{10}$.</p>
+<hr />
+<h2 id="l4-lower-bounds-and-heaps"><a class="header" href="#l4-lower-bounds-and-heaps">L4 Lower Bounds and Heaps</a></h2>
+<h3 id="comparison-model"><a class="header" href="#comparison-model">Comparison Model</a></h3>
+<h4 id="comparsion-sort"><a class="header" href="#comparsion-sort">Comparsion Sort</a></h4>
+<p>All the sorting algorithms we've seen so far are <strong>comparison sort</strong> (merge sort, insertion sort, bubble sort, etc.).</p>
+<p>And the best running time that we've seen for comparison sort is $O(n \log n)$. <em>Is it the best we can do?</em></p>
+<h4 id="decision-tree"><a class="header" href="#decision-tree">Decision-Tree</a></h4>
+<p>A given recipe for sorting $n$ numbers $a_1, a_2, \cdots, a_n$.</p>
+<p>Nodes are suggested comparisons: $i, j$ means compare $a_i$ to $a_j$ for $i, j \in \{1, 2, \cdots, n\}$</p>
+<p>The figure below is an example of decision-tree of sorting $a_1 = 9, a_2 = 4, a_3 = 6$.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/12/68eb41bda8252.png" height="150px">
+</p>
+<p>From the tree we can see that:</p>
+<ul>
+<li>A path from the root to the leaves of the tree represents a trace of comparisons that the algorithm may perform.</li>
+<li>The running time of the algorithm = the length of the path taken.</li>
+<li><strong>Worst-case running time = height(depth) of tree</strong></li>
+</ul>
+<p>The tree must contain $\geq n!$ leaves since there are $n!$ possible permutations. And a height-$h$ binary tree has $L_h \leq 2^h$ leaves.</p>
+<p>Hence:
+$$
+n! \leq L_h \leq 2^h \iff h &gt; \log(n!) \iff h = \Omega(n \log n)
+$$</p>
+<p>Since the Stirling's approximation:
+$$
+n! \approx \sqrt{2 \pi n} \left(\frac{n}{e}\right)^n \\
+\log(n!) = n \log n - n + \frac{1}{2} \log (2 \pi n)
+$$</p>
+<p>Theorem: Any decision tree that can sort $n$ elements must have height $\Omega(n \log n)$.</p>
+<h3 id="linear-time-sorting"><a class="header" href="#linear-time-sorting">Linear Time Sorting</a></h3>
+<p>As metioned above, the comparison sorting have a lower-bound complexity of $\Omega(n \log n)$, so do linear time sorting exist?</p>
+<h4 id="counting-sort"><a class="header" href="#counting-sort">Counting Sort</a></h4>
+<p>Given: An array $a_0, a_1, \cdots, a_{n-1}$ of $n$ keys to be sorted.</p>
+<p><strong>Count</strong> the times of number appeared between $a_{min}$ and $a_{max}$, then use the prefix sum array to get the final place of each element. With time complexity of $O(n+k), k = a_{max} - a_{min} + 1$</p>
+<pre><code class="language-cpp">void counting_sort(vector&lt;int&gt;&amp; a) {
+    int n = a.size();
+    int mn = *min_element(a.begin(), a.end());
+    int mx = *max_element(a.begin(), a.end());
+    int k = mx - mn + 1;
+    vector&lt;int&gt; count(k, 0);
+    for (int x : a) count[x - mn]++;
+    for (int i = 1; i &lt; k; i++) count[i] += count[i - 1];
+    vector&lt;int&gt; res(n);
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int x = a[i];
+        res[--count[x - mn]] = x;
+    }
+    a = res;
+}
+</code></pre>
+<h4 id="radix-sort"><a class="header" href="#radix-sort">Radix Sort</a></h4>
+<p>Use a <strong>radix</strong>(base) $k$ for an integer $x$:
+$$
+x = a_{d-1} k^{d-1} + \cdots + a_0 k^0 \to a_{d-1}a_{d-2}\cdots a_0
+$$</p>
+<p>Idea: Sort on least-significant digit first with auxiliary stable sort.</p>
+<p>We are given $n$ integers, each integer $&lt; M$, in base $k$. Then we have time complexity of $O((n+k) \log_k M)d$</p>
+<h3 id="heaps"><a class="header" href="#heaps">Heaps</a></h3>
+<h4 id="storing-objects-in-data-structures"><a class="header" href="#storing-objects-in-data-structures">Storing Objects in Data Structures</a></h4>
+<p>We operate on objects of the form: <strong>object $x = (x.\text{key}, x.\text{data})$</strong>.</p>
+<p>The attribute $x.\text{key}$ characterizes <strong>uniquely</strong> the object $x$. And we store $x.\text{key}$ combined with a pointer to the location of $x.\text{data}$ in memory.</p>
+<p>Inserting and searching for object $x$ is done by inserting and searching for $x.\text{key}$. Or we can say we mostly focus on $x.\text{key}$ instead of $x.\text{data}$.</p>
 
                     </main>
 
