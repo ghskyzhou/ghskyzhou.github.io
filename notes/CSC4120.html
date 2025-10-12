@@ -672,6 +672,20 @@ $$</p>
 <p>We operate on objects of the form: <strong>object $x = (x.\text{key}, x.\text{data})$</strong>.</p>
 <p>The attribute $x.\text{key}$ characterizes <strong>uniquely</strong> the object $x$. And we store $x.\text{key}$ combined with a pointer to the location of $x.\text{data}$ in memory.</p>
 <p>Inserting and searching for object $x$ is done by inserting and searching for $x.\text{key}$. Or we can say we mostly focus on $x.\text{key}$ instead of $x.\text{data}$.</p>
+<h4 id="priority-queue"><a class="header" href="#priority-queue">Priority Queue</a></h4>
+<p>$S$: set of elements $\{ x_1, x_2, \cdots, x_n \}$.</p>
+<p>$x_i = (\text{key}_i, \text{data}_i)$.</p>
+<p>Operations: $\text{Insert}(S,x), \max(S), \text{Extract-max}(S), \text{Incr-key}(S, x, k)$.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/12/68eb67edab8d8.png" height="150px">
+</p>
+<h4 id="heap"><a class="header" href="#heap">Heap</a></h4>
+<p><strong>Heap</strong>: An array visualized as a nearly complete <strong>binary tree</strong>.</p>
+<p><strong>Navigate on the tree</strong> but <strong>move on array</strong> = full info of the tree, without pointers.</p>
+<p>Max(Min) Heap Property: the key of a node is $\geq (\leq)$ than the keys of its children.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/12/68eb69423ded8.png" height="200px">
+</p>
 
                     </main>
 
