@@ -430,6 +430,328 @@ namespace student_std {
     }
 }
 </code></pre>
+<h2 id="assignment-2"><a class="header" href="#assignment-2">Assignment 2</a></h2>
+<h3 id="vector"><a class="header" href="#vector">Vector</a></h3>
+<p>Implement a C++ vector (dynamic array) from scratch without using STL.</p>
+<h4 id="student_vectorh"><a class="header" href="#student_vectorh">student_vector.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_VECTOR_H
+#define STUDENT_VECTOR_H
+
+#include &lt;cstddef&gt;
+#include &lt;cassert&gt;
+#include &lt;stdexcept&gt;
+#include &lt;iterator&gt;
+
+namespace student_std {
+    template &lt;typename T&gt;
+    class vector {
+
+        public:
+            using size_type = std::size_t;
+            using difference_type = std::ptrdiff_t;
+            using value_type = T;
+        
+        private:
+            T* s;
+            size_type sz;
+            size_type cap;
+
+            void reallocate(size_type newcap) {
+                if(newcap &lt; sz) newcap = sz;
+                T* news = new T[newcap];
+                for(size_type i = 0; i &lt; sz; i++) {
+                    news[i] = s[i];
+                }
+                delete[] s;
+                s = news;
+                cap = newcap;
+            }
+
+        public:
+            vector() {
+                s = nullptr;
+                sz = 0;
+                cap = 0;
+            }
+
+            vector(const vector&amp; other) {
+                s = nullptr;
+                sz = other.sz;
+                cap = other.cap;
+                s = new T[cap];
+                for(size_type i = 0; i &lt; sz; i++) {
+                    s[i] = other.s[i];
+                }
+            }
+
+            vector&amp; operator= (const vector&amp; other) {
+                if(this == &amp;other) return *this;
+                delete[] s;
+                sz = other.sz;
+                cap = other.cap;
+                s = new T[cap];
+                for(size_type i = 0; i &lt; sz; i++) {
+                    s[i] = other.s[i];
+                }
+                return *this;
+            }
+
+            ~vector() {
+                delete[] s;
+            }
+
+            size_type size() const {
+                return sz;
+            }
+
+            size_type capacity() const {
+                return cap;
+            }
+
+            bool empty() const {
+                return sz == 0;
+            }
+
+            const T* data() const {
+                return s;
+            }
+
+            const T&amp; at(size_type p) const {
+                if(p &gt;= sz) throw std::out_of_range("vector::at out of range");
+                else return s[p];
+            }
+
+            const T&amp; operator[] (size_type p) const {
+                assert(p &gt;= 0 &amp;&amp; p &lt; sz);
+                return s[p];
+            }
+
+            const T&amp; front() const {
+                assert(sz &gt; 0);
+                return s[0];
+            }
+
+            const T&amp; back() const {
+                assert(sz &gt; 0);
+                return s[sz-1];
+            }
+
+            void reserve(size_type newcap) {
+                if(newcap &gt; cap) {
+                    reallocate(newcap);
+                }
+            }
+
+            void push_back(const T&amp; val) {
+                if(sz == cap) {
+                    size_type newcap = (cap == 0 ? 1 : cap * 2);
+                    reserve(newcap);
+                }
+                s[sz] = val;
+                sz++;
+            }
+
+            void pop_back() {
+                assert(sz &gt; 0);
+                sz--;
+            }
+
+            void resize(size_type newsz, const T&amp; val) {
+                if(newsz &gt; cap) {
+                    reserve(newsz);
+                }
+                if(newsz &gt; sz) {
+                    for(size_type i = sz; i &lt; newsz; i++) {
+                        s[i] = val;
+                    }
+                }
+                sz = newsz;
+            }
+
+            void resize(size_type newsz) {
+                resize(newsz, T());
+            }
+
+            void clear() {
+                sz = 0;
+            }
+
+            void swap(vector&amp; other) {
+                std::swap(s, other.s);
+                std::swap(sz, other.sz);
+                std::swap(cap, other.cap);
+            }
+
+            T* data() {
+                return s;
+            }
+
+            T&amp; at(size_type p) {
+                if(p &gt;= sz) throw std::out_of_range("vector::at out of range");
+                else return s[p];
+            }
+
+            T&amp; operator[] (size_type p) {
+                assert(p &gt;= 0 &amp;&amp; p &lt; sz);
+                return s[p];
+            }
+
+            T&amp; front() {
+                assert(sz &gt; 0);
+                return s[0];
+            }
+
+            T&amp; back() {
+                assert(sz &gt; 0);
+                return s[sz-1];
+            }
+
+        public:
+            class iterator {
+                public:
+                    using difference_type = std::ptrdiff_t;
+                    using value_type = T;
+                    using pointer = T*;
+                    using reference = T&amp;;
+                    using iterator_category = std::random_access_iterator_tag;
+                
+                private:
+                    pointer ptr;
+
+                public:
+                    iterator() {
+                        ptr = nullptr;
+                    }
+
+                    iterator(pointer p) {
+                        ptr = p;
+                    }
+
+                    reference operator*() const {
+                        return *ptr;
+                    }
+
+                    pointer operator-&gt;() const {
+                        return ptr;
+                    }
+
+                    iterator&amp; operator++() {
+                        ptr++;
+                        return *this;
+                    }
+
+                    iterator operator++(int) {
+                        iterator tmp = *this;
+                        ptr++;
+                        return tmp;
+                    }
+
+                    iterator&amp; operator--() {
+                        ptr--;
+                        return *this;
+                    }
+
+                    iterator operator--(int) {
+                        iterator tmp = *this;
+                        ptr--;
+                        return tmp;
+                    }
+
+                    iterator&amp; operator+=(difference_type num) {
+                        ptr += num;
+                        return *this;
+                    }
+
+                    iterator&amp; operator-=(difference_type num) {
+                        ptr -= num;
+                        return *this;
+                    }
+
+                    iterator operator+(difference_type num) const {
+                        return iterator(ptr+num);
+                    }
+
+                    iterator operator-(difference_type num) const {
+                        return iterator(ptr-num);
+                    }
+
+                    difference_type operator-(const iterator&amp; other) const {
+                        return ptr-other.ptr;
+                    }
+
+                    bool operator==(const iterator&amp; other) const{
+                        return ptr == other.ptr;
+                    }
+                    
+                    bool operator!=(const iterator&amp; other) const{
+                        return ptr != other.ptr;
+                    }
+                    
+                    bool operator&lt;=(const iterator&amp; other) const{
+                        return ptr &lt;= other.ptr;
+                    }
+                    
+                    bool operator&gt;=(const iterator&amp; other) const{
+                        return ptr &gt;= other.ptr;
+                    }
+                    
+                    bool operator&lt;(const iterator&amp; other) const{
+                        return ptr &lt; other.ptr;
+                    }
+                    
+                    bool operator&gt;(const iterator&amp; other) const{
+                        return ptr &gt; other.ptr;
+                    }
+            };
+            
+        public:
+            iterator begin() {
+                return iterator(s);
+            }
+
+            iterator end() {
+                return iterator(s+sz);
+            }
+
+            iterator erase(iterator it) {
+                assert(it &gt;= begin() &amp;&amp; it &lt; end());
+                T* p = &amp;(*it);
+                for(T* i = p; i+1 &lt; s+sz; i++) {
+                    *i = *(i+1);
+                }
+                sz--;
+                return iterator(p);
+            }
+
+            iterator erase(iterator it1, iterator it2) {
+                assert(it1 &gt;= begin() &amp;&amp; it1 &lt; it2 &amp;&amp; it2 &lt;= end());
+                T* p1 = &amp;(*it1);
+                T* p2 = &amp;(*it2);
+                size_type erasecnt = p2 - p1;
+                for(T* i = p1; i+erasecnt &lt; s + sz; i++) {
+                    *i = *(i+erasecnt);
+                }
+                sz -= erasecnt;
+                return iterator(p1);
+            }
+
+            iterator insert(iterator it, const T&amp; val) {
+                assert(it &gt;= begin() &amp;&amp; it &lt;= end());
+                size_type p = it - begin();
+                if(sz == cap) reserve(cap == 0 ? 1 : cap * 2);
+                it = iterator(s + p);
+                for(size_type i = sz; i &gt; p; i--) {
+                    s[i] = s[i-1];
+                }
+                s[p] = val;
+                sz++;
+                return it;
+            }
+    };
+}
+
+#endif
+</code></pre>
 
                     </main>
 
