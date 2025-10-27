@@ -686,6 +686,165 @@ $$</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/10/12/68eb69423ded8.png" height="200px">
 </p>
+<p><strong>Binary Tree Structure</strong> in array, as shown above.</p>
+<pre><code class="language-cpp">int s[MAXN], sz;
+
+int parent(int i) {
+    return i &gt;&gt; 1; // i/2
+}
+
+int left(int i) {
+    return i &lt;&lt; 1; // i*2
+}
+
+int right(int i) {
+    return i &lt;&lt; 1 | 1; // i*2+1
+}
+</code></pre>
+<p>And the <strong>height</strong> of the tree is $h = \log n$.</p>
+<p><strong>Max Heapify</strong>: Correct a single violation of the heap property occurring at the root $i$ of a subtree in $O(\log n)$.</p>
+<pre><code class="language-cpp">void max_heapify(int i) {
+    int l = left(i), r = right(i), maxi = i;
+    if(l &lt;= sz &amp;&amp; s[l] &gt; s[maxi]) maxi = l;
+    if(r &lt;= sz &amp;&amp; s[r] &gt; s[maxi]) maxi = r;
+    if(maxi != i) {
+        swap(s[i], s[maxi]);
+        max_heapify(maxi);
+    }
+}
+</code></pre>
+<p><strong>Build Max Heap</strong>: Convert an array $A$ into a max heap. And we find that elements from $A_{\lfloor n/2 \rfloor+1}$ to $A_n$ are leaves of the tree, and they won't violate the rule. So we only need to heapify $A_1$ to $A_{\lfloor n/2 \rfloor}$. The time complexity is $O(n \log n)$.</p>
+<pre><code class="language-cpp">void build_max_heap(int n) {
+    sz = n;
+    for(int i = n/2; i &gt;= 1; i--) max_heapify(i);
+}
+</code></pre>
+<p><strong>Insert Node</strong>: We first put it at the back of the array, then go up in the tree one level by one level until no violation.</p>
+<pre><code class="language-cpp">void insert(int val) {
+    sz++;
+    s[sz] = val;
+    int i = sz;
+    while(i &gt; 1 &amp;&amp; s[parent(i)] &lt; s[i]) {
+        swap(s[i], s[parent(i)]);
+        i = parent(i);
+    }
+}
+</code></pre>
+<p><strong>Extract Max</strong>: The max element must be the first one of the array, we can just swap it with the last element, then heapify.</p>
+<pre><code class="language-cpp">int extract_max() {
+    if(!sz) return -1;
+    int maxn = s[1];
+    s[1] = s[sz];
+    sz--;
+    max_heapify(1);
+    return maxn;
+}
+</code></pre>
+<p><strong>Heap Sort</strong>: Like extracting max element for $n$ times. Time complexity $O(n \log n)$.</p>
+<pre><code class="language-cpp">void heap_sort() {
+    int n = sz;
+    for(int i = n; i &gt;= 2; i--) {
+        swap(s[1], s[i]);
+        sz--;
+        max_heapify(1);
+    }
+}
+</code></pre>
+<h2 id="l5-trees"><a class="header" href="#l5-trees">L5 Trees</a></h2>
+<h3 id="binary-search-tree"><a class="header" href="#binary-search-tree">Binary Search Tree</a></h3>
+<p>A <strong>Binary Search Tree(BST)</strong> is a binary tree structure that every node $x$ of it must satisfies:</p>
+<ol>
+<li>All $\text{key}$ from its left subtree is <strong>less</strong> than $x.\text{key}$</li>
+<li>All $\text{key}$ from its right subtree is <strong>greater</strong> than $x.\text{key}$</li>
+</ol>
+<p>And we can easily know that the left subtree and right subtree of $x$ are both BST.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/27/68ff34c45e21b.png" height="200px">
+</p>
+<p><strong>Define Node</strong>: Using C++ <code>struct</code> and pointers.</p>
+<pre><code class="language-cpp">struct node {
+    int key;
+    node* left;
+    node* right;
+    node(int k): key(k), left(NULL), right(NULL) {}
+};
+</code></pre>
+<p><strong>Insert Node</strong>: Start from the root, if the $\text{key}$ is less, put it to the left, else to the right. Doing the whole progress in recursion, until find an empty place and put it in. With average time complexity $O(\log n)$, but <strong>worst</strong> $O(n)$.</p>
+<pre><code class="language-cpp">node* insert(node* root, int key) {
+    if(!root) return new node(key);
+    if(key &lt; root-&gt;key) {
+        root-&gt;left = insert(root-&gt;left, key);
+    } else if(key &gt; root-&gt;key) {
+        root-&gt;right = insert(root-&gt;right, key);
+    }
+    return root;
+}
+</code></pre>
+<p><strong>Build Tree</strong>: Actually there's no such a thing, you just need to insert the new node into root.</p>
+<pre><code class="language-cpp">node* root = NULL;
+root = insert(root, a);
+</code></pre>
+<p><strong>Inorder Traversal</strong>: The inorder traversal of the BST is a sorted array, due to the property of it.</p>
+<pre><code class="language-cpp">void printTree(node* root) {
+    if(!root) return;
+    printTree(root-&gt;left);
+    cout &lt;&lt; root-&gt;key &lt;&lt; " ";
+    printTree(root-&gt;right);
+}
+</code></pre>
+<p><strong>Search</strong>: Tipical binary search on tree.</p>
+<pre><code class="language-cpp">node* search(node* root, int key) {
+    if(!root || root-&gt;key == key) {
+        return root;
+    }
+    if(key &lt; root-&gt;key) {
+        return search(root-&gt;left, key);
+    } else {
+        return search(root-&gt;right, key);
+    }
+}
+</code></pre>
+<p><strong>Delete</strong>: A bit complicated.</p>
+<ol>
+<li>Leaf (no children): Delete directly.</li>
+<li>On child: Use the child to replace it.</li>
+<li>Two children: Find the <strong>minimum</strong> of <strong>right</strong> subtree, replace it with the element we want to delete, and delete it.</li>
+</ol>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/27/68ff41cedf84c.png" height="200px">
+</p>
+<pre><code class="language-cpp">node* deleteNode(node* root, int key) {
+    if(!root) return NULL;
+
+    if(key &lt; root-&gt;key)
+        root-&gt;left = deleteNode(root-&gt;left, key);
+    else if(key &gt; root-&gt;key)
+        root-&gt;right = deleteNode(root-&gt;right, key);
+    else {
+        if(!root-&gt;left &amp;&amp; !root-&gt;right) {
+            delete root;
+            return NULL;
+        } else if(!root-&gt;left) {
+            node* temp = root-&gt;right;
+            delete root;
+            return temp;
+        } else if(!root-&gt;right) {
+            node* temp = root-&gt;left;
+            delete root;
+            return temp;
+        } else {
+            node* temp = findMin(root-&gt;right);
+            root-&gt;key = temp-&gt;key;
+            root-&gt;right = deleteNode(root-&gt;right, temp-&gt;key);
+        }
+    }
+    return root;
+}
+</code></pre>
+<blockquote>
+<p>Warning: We usually use the different key to insert, but if there exists two same keys, we can do a <strong>count</strong>, or change the right subtree to <strong>greater or equal</strong> subtree.</p>
+</blockquote>
+<h3 id="avl-tree"><a class="header" href="#avl-tree">AVL Tree</a></h3>
 
                     </main>
 
