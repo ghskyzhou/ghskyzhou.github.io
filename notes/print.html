@@ -1590,7 +1590,7 @@ int right(int i) {
     for(int i = n/2; i &gt;= 1; i--) max_heapify(i);
 }
 </code></pre>
-<p><strong>Insert Node</strong>: We first put it at the back of the array, then go up in the tree one level by one level until no violation.</p>
+<p><strong>Insert</strong>: We first put it at the back of the array, then go up in the tree one level by one level until no violation.</p>
 <pre><code class="language-cpp">void insert(int val) {
     sz++;
     s[sz] = val;
@@ -1640,7 +1640,7 @@ int right(int i) {
     node(int k): key(k), left(NULL), right(NULL) {}
 };
 </code></pre>
-<p><strong>Insert Node</strong>: Start from the root, if the $\text{key}$ is less, put it to the left, else to the right. Doing the whole progress in recursion, until find an empty place and put it in. With average time complexity $O(\log n)$, but <strong>worst</strong> $O(n)$.</p>
+<p><strong>Insert</strong>: Start from the root, if the $\text{key}$ is less, put it to the left, else to the right. Doing the whole progress in recursion, until find an empty place and put it in. With average time complexity $O(\log n)$, but <strong>worst</strong> $O(n)$.</p>
 <pre><code class="language-cpp">node* insert(node* root, int key) {
     if(!root) return new node(key);
     if(key &lt; root-&gt;key) {
@@ -1716,6 +1716,192 @@ root = insert(root, a);
 <p>Warning: We usually use the different key to insert, but if there exists two same keys, we can do a <strong>count</strong>, or change the right subtree to <strong>greater or equal</strong> subtree.</p>
 </blockquote>
 <h3 id="avl-tree"><a class="header" href="#avl-tree">AVL Tree</a></h3>
+<p>An <strong>AVL</strong> (<strong>A</strong>delson-<strong>V</strong>elskii and <strong>L</strong>andis) <strong>Tree</strong> is a <strong>self-balancing binary search tree</strong>.</p>
+<p><strong>Property</strong>: For every node, store its <strong>height</strong>:</p>
+<ul>
+<li>Leaves have height $0$</li>
+<li>NIL has height $-1$</li>
+</ul>
+<p><strong>Invariant</strong>: For every node $x$, the heights of its <strong>left child and right child differ by at most $1$</strong>.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2025/10/29/6901b768eab89.png" height="200px">
+</p>
+<p>And we can know that AVL trees always have height $\Theta(\log n)$.</p>
+<p><strong>Define Node</strong>: Like BST, but with height.</p>
+<pre><code class="language-cpp">struct node {
+    int key, height;
+    node* left;
+    node* right;
+    node(int k): key(k), height(1), left(NULL), right(NULL) {}
+};
+</code></pre>
+<p><strong>Get Height</strong>: For convenience, I take leaves height as $1$, NIL height as $0$.</p>
+<pre><code class="language-cpp">int getHeight(node* u) {
+    return u ? u-&gt;height : 0;
+}
+</code></pre>
+<p><strong>Get Balance</strong>: Use the definition of balance, $\text{BL} = \text{height}(\text{left subtree}) - \text{height}(\text{right subtree})$, notice that if $\text{BL} &gt; 1$, left subtree is heavy, else if $\text{BL} &lt; 1$, right subtree is heavy, else it's balanced at this node.</p>
+<pre><code class="language-cpp">int getBalance(node* u) {
+    return u ? getHeight(u-&gt;left) - getHeight(u-&gt;right) : 0;
+}
+</code></pre>
+<p><strong>Right Rotate</strong>:</p>
+<pre><code>      A                 B
+     / \               / \
+    B   T3    -&gt;      T1  A
+   / \                   / \
+  T1  T2                T2  T3
+</code></pre>
+<pre><code class="language-cpp">node* rightRotate(node* u) {
+    node* v = u-&gt;left;
+    node* w = v-&gt;right;
+    v-&gt;right = u;
+    u-&gt;left = w;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + 1;
+    return v;
+}
+</code></pre>
+<p><strong>Left Rotate</strong>:</p>
+<pre><code>    A                      B
+   / \                    / \
+  T1  B        -&gt;        A   T3
+     / \                / \
+    T2  T3             T1  T2
+</code></pre>
+<pre><code class="language-cpp">node* leftRotate(node* u) {
+    node* v = u-&gt;right;
+    node* w = v-&gt;left;
+    v-&gt;left = u;
+    u-&gt;right = w;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + 1;
+    return v;
+}
+</code></pre>
+<p><strong>Insert</strong>: Consider insertion with 4 situations (L and R means insert into left and right subtree):</p>
+<ol>
+<li>LL: Do right rotation once.</li>
+<li>RR: Do left rotation once.</li>
+<li>LR: Do left rotation, then right rotation.</li>
+<li>RL: Do right rotation, then left rotation.</li>
+</ol>
+<pre><code class="language-cpp">node *insert(node* u, int key) {
+    if(!u) return new node(key);
+    if(key &lt; u-&gt;key) u-&gt;left = insert(u-&gt;left, key);
+    else if(key &gt; u-&gt;key) u-&gt;right = insert(u-&gt;right, key);
+    else return u;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    int BL = getBalance(u);
+    if(BL &gt; 1 &amp;&amp; key &lt; u-&gt;left-&gt;key) return rightRotate(u); // LL
+    if(BL &lt; -1 &amp;&amp; key &gt; u-&gt;right-&gt;key) return leftRotate(u); // RR
+    if(BL &gt; 1 &amp;&amp; key &gt; u-&gt;left-&gt;key) { // LR
+        u-&gt;left = leftRotate(u-&gt;left);
+        return rightRotate(u);
+    }
+    if(BL &lt; -1 &amp;&amp; key &lt; u-&gt;right-&gt;key) { // RL
+        u-&gt;right = rightRotate(u-&gt;right);
+        return leftRotate(u);
+    }
+    return u;
+}
+</code></pre>
+<p align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/AVL_Tree_Example.gif" height="200px">
+</p>
+<p><strong>Delete</strong>: As same as deletion in BST, then check whether it's balanced.</p>
+<pre><code class="language-cpp">node* findMin(node* u) {
+    while(u-&gt;left) u = u-&gt;left;
+    return u;
+}
+
+node* deleteNode(node* u, int key) {
+    // BST Deletion first
+    if(!u) return NULL;
+    if(key &lt; u-&gt;key) u-&gt;left = deleteNode(u-&gt;left, key);
+    else if(key &gt; u-&gt;key) u-&gt;right = deleteNode(u-&gt;right, key);
+    else {
+        if(!u-&gt;left || !u-&gt;right) {
+            node* temp = u-&gt;left ? u-&gt;left : u-&gt;right;
+            if(!temp) {
+                temp = u;
+                u = NULL;
+            } else {
+                *u = *temp;
+            }
+            delete temp;
+        } else {
+            node* temp = findMin(u-&gt;right);
+            u-&gt;key = temp-&gt;key;
+            u-&gt;right = deleteNode(u-&gt;right, temp-&gt;key);
+        }
+    }
+    if(!u) return NULL;
+    // Keep balance
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    int BL = getBalance(u);
+    if(BL &gt; 1 &amp;&amp; getBalance(u-&gt;left) &gt;= 0)
+        return rightRotate(u); // LL
+    if(BL &gt; 1 &amp;&amp; getBalance(u-&gt;left) &lt; 0) {
+        u-&gt;left = leftRotate(u-&gt;left);
+        return rightRotate(u); // LR
+    }
+    if(BL &lt; -1 &amp;&amp; getBalance(u-&gt;right) &lt;= 0)
+        return leftRotate(u); // RR
+    if(BL &lt; -1 &amp;&amp; getBalance(u-&gt;right) &gt; 0) {
+        u-&gt;right = rightRotate(u-&gt;right);
+        return leftRotate(u); // RL
+    }
+    return u;
+}
+</code></pre>
+<p><strong>Time Complexity</strong>: In balanced BST, all operations take $O(\log n)$.</p>
+<h3 id="red-black-tree"><a class="header" href="#red-black-tree">Red-Black Tree</a></h3>
+<p>Shit.</p>
+<h3 id="interval-tree"><a class="header" href="#interval-tree">Interval Tree</a></h3>
+<p><strong>Interval Tree</strong> is a balanced BST but nodes are intervals.</p>
+<p><strong>Define Node</strong>: Interval has $l$ and $r$, while $\text{maxn}$ is the <strong>maximum $r$ of all interval of the whole subtree</strong>, and we use $l$ as the $\text{key}$ of BST.</p>
+<pre><code class="language-cpp">struct interval {
+    int l, r;
+};
+
+struct node {
+    interval i;
+    int maxn;
+    node* left;
+    node* right;
+    node(interval in): i(in), maxn(in.r), left(NULL), right(NULL) {}
+};
+</code></pre>
+<p><strong>Insert</strong>: Like regular BST, using $l$ as the $\text{key}$, and record $\text{maxn}$.</p>
+<pre><code class="language-cpp">node* insert(node* u, interval i) {
+    if(!u) return new node(i);
+    if(i.l &lt; u-&gt;i.l) u-&gt;left = insert(u-&gt;left, i);
+    else u-&gt;right = insert(u-&gt;right, i);
+    u-&gt;maxn = max(u-&gt;maxn, i.r);
+    return u;
+}
+</code></pre>
+<p><strong>Search</strong>: To get all the intervals who are overlapping with $i$, there are 3 situations</p>
+<ol>
+<li>If the node has overlap with $i$, record the answer.</li>
+<li>If its left subtree's $\text{maxn}$ is greater than $i.l$, search in the left subtree.</li>
+<li>If the node's $l$ is less than $i.r$, search in the right subtree.</li>
+</ol>
+<pre><code class="language-cpp">bool isOverlap(interval a, interval b) {
+    return a.l &lt;= b.r &amp;&amp; a.r &gt;= b.l;
+}
+
+void searchAll(node* u, interval i, vector&lt;interval&gt;&amp; re) {
+    if(!u) return;
+    if(isOverlap(u-&gt;i, i)) re.push_back(u-&gt;i);
+    if(u-&gt;left &amp;&amp; u-&gt;left-&gt;maxn &gt;= i.l) searchAll(u-&gt;left, i, re);
+    if(u-&gt;right &amp;&amp; u-&gt;i.l &lt;= i.r) searchAll(u-&gt;right, i, re);
+}
+</code></pre>
+<blockquote>
+<p>The regular Interval Tree is like BST with worst time complexity $O(n)$ for each operation, but it can be optimized by AVL tree or other balanced tree, reducing the time complexity to $O(\log n)$.</p>
+</blockquote>
 
                     </main>
 
