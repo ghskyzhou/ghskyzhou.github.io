@@ -1031,6 +1031,57 @@ void searchAll(node* u, interval i, vector&lt;interval&gt;&amp; re) {
 <blockquote>
 <p>The regular Interval Tree is like BST with worst time complexity $O(n)$ for each operation, but it can be optimized by AVL tree or other balanced tree, reducing the time complexity to $O(\log n)$.</p>
 </blockquote>
+<h3 id="veb-tree"><a class="header" href="#veb-tree">vEB Tree</a></h3>
+<p>An vEB (<strong>v</strong>an <strong>E</strong>mde <strong>B</strong>oas) Tree is a data structure that can support below functions in a integer set $S \subseteq \{ 0, 1, \cdots, U-1 \}$, while $U$ is the range of integers (e.g. $U=2^{16}$)</p>
+<hr />
+<h2 id="l6-hashing"><a class="header" href="#l6-hashing">L6 Hashing</a></h2>
+<h3 id="basic-concepts-of-hashing"><a class="header" href="#basic-concepts-of-hashing">Basic Concepts of Hashing</a></h3>
+<p><strong>Hash Function</strong>: A function that maps data of <em>arbitrary size</em> to <em>fixed-sized</em> values. And the goal is to propose a data structure such that for key $k$:</p>
+<ul>
+<li>$\text{add}(k), \text{delete}(k) = O(1)$</li>
+<li>$\text{search}(k) = O(1)$ on the average</li>
+</ul>
+<p>From what I've learnt, the most important thing is not the precise hashing function itself, but the <strong>critical thought of hashing</strong>.</p>
+<p><strong>Hash Table</strong>: A table that stores indice and values of hashing.</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/30/6902faf81c9bf.png" height="200px">
+</p>
+<h3 id="making-choices"><a class="header" href="#making-choices">Making Choices</a></h3>
+<p><strong>Choosing the Keys</strong>:</p>
+<ul>
+<li><strong>By Nature</strong>: Randomly from $U$. (Simple uniform hashing)</li>
+<li><strong>By an Opponent</strong>: That knows the hash function we use when this is fixed, in a way to create the longest possbile chain. (Universal hashing)</li>
+</ul>
+<p><strong>Choosing the Hash Funcions</strong>:</p>
+<ul>
+<li>We use a <strong>fixed</strong> hash function everyone knows.</li>
+<li>We <strong>change</strong> before each experiments the hash function, chosen randomly from a <strong>"universal set"</strong> of functions known to everyone.</li>
+</ul>
+<p><strong>Special Case</strong> (perfect hashing): We know the keys, then choose the hash function.</p>
+<p><strong>Performance</strong>: <strong>Average length of chain</strong> in a <em>typical</em> slot (same hashing value).</p>
+<h3 id="models-for-randomness"><a class="header" href="#models-for-randomness">Models for Randomness</a></h3>
+<h4 id="simple-uniform-hashing-assumption-suha"><a class="header" href="#simple-uniform-hashing-assumption-suha">Simple Uniform Hashing Assumption (SUHA)</a></h4>
+<p><strong>$h$ is fixed</strong>: In every experiment each key $k$'s value is chosen randomly (uniformly) from $U$.</p>
+<ul>
+<li>Then, <strong>$h$ is "good"</strong> if $h(k)$ scatters uniformly over the hash table:
+$$
+P_k[h(k) = i] = \frac{1}{m}, \forall i = 1, 2, \cdots, m
+$$</li>
+<li>We call this the <strong>Simple Uniform Hashing Assumption</strong>.</li>
+</ul>
+<h4 id="universal-hashing"><a class="header" href="#universal-hashing">Universal Hashing</a></h4>
+<p><strong>The set of keys to be stored is assumed fixed</strong>: In every experiment, $h$ is randomly (uniformly) chosen from a set $H$.</p>
+<ul>
+<li>Then, <strong>$H$ is "good"</strong> if
+$$
+P_h[h(k_1) = h(k_2)] \leq \frac{1}{m}, \forall k_1 \not= k_2
+$$</li>
+<li>$H$ is a set of <strong>Universal Hash Funcions</strong></li>
+</ul>
+<blockquote>
+<p>Actually, Universal Hashing is not a hash function, but designing a set of hash functions. It will randomly choose a hash function when using. Or we can san <strong>Universal Hashing is using SUHA by randomization</strong>, in order to decrese the probability of collisions.</p>
+</blockquote>
+<h3 id="universal-hashing-function-examples"><a class="header" href="#universal-hashing-function-examples">Universal Hashing Function Examples</a></h3>
 
                     </main>
 
