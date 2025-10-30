@@ -1082,6 +1082,75 @@ $$</li>
 <p>Actually, Universal Hashing is not a hash function, but designing a set of hash functions. It will randomly choose a hash function when using. Or we can san <strong>Universal Hashing is using SUHA by randomization</strong>, in order to decrese the probability of collisions.</p>
 </blockquote>
 <h3 id="universal-hashing-function-examples"><a class="header" href="#universal-hashing-function-examples">Universal Hashing Function Examples</a></h3>
+<h4 id="the-matrix-method"><a class="header" href="#the-matrix-method">The Matrix Method</a></h4>
+<p><strong>Settings</strong>:</p>
+<ul>
+<li>Keys are $u$-bits long, $|U| = 2^u$</li>
+<li>Hash values are $b$-bits long, hash table size $m = 2^b$</li>
+</ul>
+<p>And we pick $h = $ random $b \times u$ $0/1$ matrix, define:
+$$
+h(x) = h \cdot x \pmod 2
+$$</p>
+<p>Which means matrix multiplication under module $2$.</p>
+<p><strong>Claim</strong>: For $x \not= y, P_h[h(x) = h(y)] \leq \frac{1}{m} = \frac{1}{2^b}$</p>
+<p>e.g.
+$$
+x = 2 =
+\begin{bmatrix}
+1 \\
+0 \\
+1 \\
+0
+\end{bmatrix}, h =
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 0
+\end{bmatrix}
+$$
+And we get
+$$
+h(x) = h \cdot x =
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix} = 6
+$$</p>
+<h4 id="linear-hashing-for-vector-keys"><a class="header" href="#linear-hashing-for-vector-keys">Linear Hashing for Vector Keys</a></h4>
+<p><strong>Settings</strong>:</p>
+<ul>
+<li>Suppose keys are vectors $x = (x_1, x_2, x_3, x_4)$, where $x_i$ is an $8$-bit integer. (i.e. $0 \leq x \leq 255$)</li>
+<li>We use a hash table of size $m = p$, where $p$ is a prime number slightly greater than $255$ (e.g. $257$).</li>
+</ul>
+<p>Choose the vector of coefficients $a = (a_1, a_2, a_3, a_4)$ where $a_i$ is (uniformly) randomly selected in the range $\{0, 1, \cdots, m-1\}$ And we define:
+$$
+h_a(x) = \left( \sum_{i=1}^4 a_i x_i \right) \bmod m
+$$</p>
+<p>So the hash family is
+$$
+H = \{ h_a : a \in [0, m-1]^4 \}
+$$</p>
+<p><strong>Claim</strong>: For $x \not= y, P_a[h_a(x) = h_a(y)] = \frac{1}{m}$</p>
+<h4 id="affine-hashing-for-integer-keys"><a class="header" href="#affine-hashing-for-integer-keys">Affine Hashing for Integer Keys</a></h4>
+<p>Also called the <em>Carter-Wegman</em> construction</p>
+<p><strong>Settings</strong>:</p>
+<ul>
+<li>Keys are integers $k \in U$</li>
+<li>Pick a prime number $p$ s.t. $|U| \leq p \leq 2|U|$</li>
+<li>Table size $m \leq p$</li>
+</ul>
+<p>We radomly choose $a \in \{ 1, 2, \cdots, p-1 \}, b \in \{ 0, 1, \cdots, p-1 \}$, and define:
+$$
+h_{a,b}(k) = ((a \cdot k + b) \bmod p) \bmod m
+$$</p>
+<p><strong>Claim</strong>: For $x \not= y, P_{a,b}[h_{a,b}(x) = h_{a,b}(y)] \leq \frac{1}{m}$</p>
+<p>e.g. $|U| = 2^4 = 16, p = 17, m = 6, k = 8, a = 3, b = 4$, then:
+$$
+h_{3,4}(8) = ((3 \cdot 8 + 4) \bmod 17) \bmod 6 = 5
+$$</p>
+<h3 id="rolling-hash"><a class="header" href="#rolling-hash">Rolling Hash</a></h3>
 
                     </main>
 
