@@ -1151,6 +1151,60 @@ $$
 h_{3,4}(8) = ((3 \cdot 8 + 4) \bmod 17) \bmod 6 = 5
 $$</p>
 <h3 id="rolling-hash"><a class="header" href="#rolling-hash">Rolling Hash</a></h3>
+<p><strong>Sliding window</strong>, but in hashing.</p>
+<h4 id="rabin-karp-algorithm"><a class="header" href="#rabin-karp-algorithm">Rabin-Karp Algorithm</a></h4>
+<p>Consider a string $S = s_0 s_1 s_2 \cdots s_{n-1}$. We define a window of length $k$ s.t. $T = s_i s_{i+1} \cdots s_{i+k-1}$. And we use the polynomial hash function:
+$$
+H_i = H(T) = (s_i \cdot p^{k-1} + s_{i+1} p^{k-2} + \cdots + s_{i+k-1} \cdot p^0) \bmod M
+$$
+Where $p$ is the base, $M$ is a large prime number and $s_i$ is the ASCII number.</p>
+<p>From the function above we can get:
+$$
+H_{i+1} = ((H_i - s_i \cdot p^{k-1}) \cdot p + s_{i+k}) \bmod M
+$$</p>
+<p>And then we can $O(1)$ check whether a string of length $k$ is appeared in $S$.</p>
+<h4 id="table-doubling"><a class="header" href="#table-doubling">Table Doubling</a></h4>
+<p>We define <strong>Load Factor</strong>:
+$$
+\alpha = \frac{n}{m}
+$$
+Where $n$ is the element number in hash table, $m$ is the bucket number of hash table.</p>
+<p>We have known that we need a hash table to store the keys and values, but if the <strong>element number in table is too large</strong>, it will cause more and more collisions, which slowing down the hashing progress.</p>
+<p>So if $\alpha$ is too large (usually $1$), we will double the bucket number $m$, then rehash all the elements into new table.</p>
+<p><strong>Average Cost of Insertions</strong> $=\frac{2^{i+2}c + 2^i c_0}{2^i} = O(1)$</p>
+<p>Or observe that up to any time $t$: by paying $O(1)$ per insert, covers at all times the total actual cost. We say that insert has an <strong>amortized cost</strong> of $O(1)$.</p>
+<h3 id="perfect-hashing"><a class="header" href="#perfect-hashing">Perfect Hashing</a></h3>
+<h3 id="bloom-filters"><a class="header" href="#bloom-filters">Bloom Filters</a></h3>
+<hr />
+<h2 id="l7-amortized-analysis"><a class="header" href="#l7-amortized-analysis">L7 Amortized Analysis</a></h2>
+<h3 id="why-amortized-complexity"><a class="header" href="#why-amortized-complexity">Why Amortized Complexity?</a></h3>
+<p>Think about doubling hash tables, some of the functions are <em>cheap</em>, like $O(1)$ calculate hashing, but some are <em>expensive</em>, like $O(n)$ to doubling hash tables.</p>
+<p><strong>Amortized analysis</strong> is a way to make sure each function is in an <strong>average time</strong>, no need to assume randomized input.</p>
+<h3 id="actual-cost-and-amortized-cost"><a class="header" href="#actual-cost-and-amortized-cost">Actual Cost and Amortized Cost</a></h3>
+<p>$c(t) = $ <strong>actual cost</strong> of the operation at time $t$. It can be a function of the state of the data structure, e.g. depends on $n$ = number of elements stored at time $t$.</p>
+<p>$a(t) = $ <strong>amortized cost</strong> of the operation at time $t$. Assume $a(t) = O(1) \ \forall t$, i.e., $a(t) \leq c_a \ \forall t$</p>
+<p>Suppose that we have shown that on any trajectory $0, 1, \cdots, T$,
+$$
+\sum_{0 \leq t \leq T} c(t) \leq \sum_{0 \leq t \leq T} a(t)
+$$</p>
+<p>Which means at any operation, the total actual cost $\leq$ the total budget cost we assigned. That is, our budget is enough to cover all the cost.</p>
+<p>For any length $T$,
+$$
+\sum_{0 \leq t \leq T} c(t) \leq \sum_{0 \leq t \leq T} a(t) \leq c_a T
+$$</p>
+<h3 id="amortization-methods"><a class="header" href="#amortization-methods">Amortization Methods</a></h3>
+<h4 id="aggregate-method"><a class="header" href="#aggregate-method">Aggregate Method</a></h4>
+<p>The easiest way of amortization.</p>
+<p>$$
+\text{amortized cost per op} = \frac{\text{total cost of } k \text{ ops}}{k}
+$$</p>
+<h4 id="amortized-bound"><a class="header" href="#amortized-bound">Amortized Bound</a></h4>
+<p>Define an amortized cost $a_op(t) = O(1)$ to each operation type s.t. for <strong>any possible sequence of operations</strong>, the total cost is covered. That is,
+$$
+\sum(\text{amortized costs}) \geq \sum(\text{actual costs})
+$$</p>
+<p>Methods: <strong>Accounting</strong> method, <strong>Charging</strong> method, <strong>Potential</strong> method.</p>
+<h2 id="l8-graphs"><a class="header" href="#l8-graphs">L8 Graphs</a></h2>
 
                     </main>
 
