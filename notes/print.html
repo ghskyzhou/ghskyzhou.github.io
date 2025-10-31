@@ -2180,6 +2180,7 @@ void dfs(int u) {
 </p>
 <h3 id="bfs"><a class="header" href="#bfs">BFS</a></h3>
 <p><strong>Breath-First Search (BFS)</strong> is searching neighbors around each node. And we usually use <strong>queue</strong> to implement.</p>
+<p>Used very often in <strong>Shortest Path Algorithms</strong>.</p>
 <pre><code class="language-cpp">int n, m;
 vector &lt;int&gt; g[MAXN];
 bool vis[MAXN];
@@ -2201,9 +2202,72 @@ void bfs(int st) {
 }
 </code></pre>
 <p align="center">
-    <img src="https://img.skyzhou.top/i/2025/10/31/690458e5c63e0.png"  height="250px">
+    <img src="https://img.skyzhou.top/i/2025/10/31/690458e5c63e0.png"  height="400px">
 </p>
 <h3 id="scc"><a class="header" href="#scc">SCC</a></h3>
+<p><strong>Strongly Connected Component (SCC)</strong>: Maximal set of vertices $C \subseteq V$ such that for every pair of vertices $u, v \in C$, we have both $u \leadsto v$ and $v \leadsto u$.</p>
+<p>$u \leadsto v$ means there is a path from $u$ to $v$.</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69045f73a3405.png"  height="300px">
+</p>
+<h4 id="kosarajus-algorithm"><a class="header" href="#kosarajus-algorithm">Kosaraju's Algorithm</a></h4>
+<p>Goal: Find all SCCs.</p>
+<p>Key Observation: If you collapse each SCC into a <strong>single node</strong>, the resulting graph is a <strong>DAG</strong>. This DAG has a topological order.</p>
+<p>If you start a DFS on a node located in a <strong>sink SCC</strong> (an SCC with no outgoing edges in the SCC DAG), the DFS will visit all nodes within that SCC and then stop, without leaking into other SCCs. You could then <strong>remove</strong> this SCC and repeat the process.</p>
+<p><strong>Idea</strong>: <strong>Reverse</strong> the direction of all edges in $G$ to create the <strong>transpose graph</strong> $G^T$.</p>
+<pre><code class="language-cpp">int n, m;
+vector&lt;int&gt; g[MAXN];      // original graph
+vector&lt;int&gt; gr[MAXN];     // reversed graph
+int vis[MAXN];
+int d[MAXN], f[MAXN], cnt;
+vector&lt;int&gt; order;        // store vertices by finish time
+vector&lt;int&gt; component;    // store one SCC
+
+void dfs1(int u) {
+    vis[u] = 1;
+    cnt++;
+    d[u] = cnt;
+    for (int v : g[u]) {
+        if (!vis[v])
+            dfs1(v);
+    }
+    cnt++;
+    f[u] = cnt;
+    order.push_back(u); // store vertex by finish time
+    vis[u] = 2;
+}
+
+void dfs2(int u) {
+    vis[u] = 1;
+    component.push_back(u);
+    for (int v : gr[u]) {
+        if (!vis[v])
+            dfs2(v);
+    }
+}
+
+// Kosaraju main
+void kosaraju() {
+    cnt = 0;
+    memset(vis, 0, sizeof(vis));
+    for (int i = 1; i &lt;= n; i++) {
+        if (!vis[i])
+            dfs1(i);
+    }
+    memset(vis, 0, sizeof(vis));
+    reverse(order.begin(), order.end());
+    cout &lt;&lt; "Strongly Connected Components:\n";
+    for (int u : order) {
+        if (!vis[u]) {
+            component.clear();
+            dfs2(u);
+            for (int x : component) cout &lt;&lt; x &lt;&lt; " ";
+            cout &lt;&lt; "\n";
+        }
+    }
+}
+</code></pre>
+<p>And we can find all the SCCs using 2 DFS, with time complexity $O(n + m)$.</p>
 
                     </main>
 
