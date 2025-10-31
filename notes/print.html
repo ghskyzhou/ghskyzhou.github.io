@@ -2076,6 +2076,134 @@ $$
 $$</p>
 <p>Methods: <strong>Accounting</strong> method, <strong>Charging</strong> method, <strong>Potential</strong> method.</p>
 <h2 id="l8-graphs"><a class="header" href="#l8-graphs">L8 Graphs</a></h2>
+<h3 id="graph-definition"><a class="header" href="#graph-definition">Graph Definition</a></h3>
+<p>$G = (V, E)$</p>
+<p>$V$: A set of <strong>vertices</strong>. $|V|$ usually denoted by $n$.</p>
+<p>$E \subseteq V \times V$: A set of <strong>edges</strong> (pair of vertices). $|E|$ usually denoted by $m$.</p>
+<p>$m \leq n^2 = O(n^2)$</p>
+<p>Two flavors:</p>
+<ul>
+<li><strong>Directed graph</strong>: Edges have order.</li>
+<li><strong>Undirected graph</strong>: Ignore order. Then only $\frac{n(n-1)}{2}$ possible edges.</li>
+</ul>
+<h4 id="problems-relates-to-graphs"><a class="header" href="#problems-relates-to-graphs">Problems Relates to Graphs</a></h4>
+<p><strong>Reachability</strong>: Find all states reachable from a given state.</p>
+<p><strong>Shortest Paths</strong>: Find the shortest path between state $s_0$ and $s_d$.</p>
+<p><strong>Cycle</strong>: Find if a directed graph has a cycle.</p>
+<p><strong>Topological Sort</strong>: Find a <em>causal ordering</em> of the nodes if it exists.</p>
+<p><strong>Minimum Spanning Tree</strong>: Find the <em>minimum</em> subgraph that contains all nodes.</p>
+<p><strong>Strongly Connected Components</strong>: Maximal sets of nodes that from every node can reach any other node in the set (mixing).</p>
+<h4 id="graph-representation"><a class="header" href="#graph-representation">Graph Representation</a></h4>
+<p>Four representations with pros/cons:</p>
+<ul>
+<li><strong>Adjacency Lists</strong> (of <em>neighbors</em> for each vertex)</li>
+<li><strong>Incidence Lists</strong> (of <em>edges</em> from each vertex)</li>
+<li><strong>Adjacency Matrix</strong> (0-1, which pairs are adjacent)</li>
+<li>Implicit representation (as a <em>find neighbor</em> function)</li>
+</ul>
+<h3 id="dfs"><a class="header" href="#dfs">DFS</a></h3>
+<p><strong>Depth-First Search (DFS)</strong> is a versatile linear-time procedure that <strong>reveals a wealth of information</strong> about a graph.</p>
+<pre><code class="language-cpp">int n, m;
+vector &lt;int&gt; g[MAXN];
+int vis[MAXN]; // 0: WHITE, 1: GREY, 2: BLACK
+int d[MAXN], f[MAXN], cnt;
+
+void dfs(int u) {
+    cnt++;
+    d[u] = cnt;
+    vis[u] = 1;
+    for(int x = 0; x &lt; g[u].size(); x++) {
+        int v = g[u][x];
+        if(!vis[v]) dfs(v);
+    }
+    cnt++;
+    f[u] = cnt;
+    vis[u] = 2;
+}
+</code></pre>
+<h4 id="properties-of-dfs"><a class="header" href="#properties-of-dfs">Properties of DFS</a></h4>
+<p>When DFS a graph, we will record two time stamp of each vertex:</p>
+<ul>
+<li>$d[u]$: <strong>Discover Time</strong>, when $u$ is first visited.</li>
+<li>$f[u]$: <strong>Finish Time</strong>, when we finish exploring all neighbors of $u$.</li>
+</ul>
+<p>Of course, it's easy to see that $u.d &lt; u.f$</p>
+<p>Then we can get $4$ different type of edges, for a $u \to v$:</p>
+<ol>
+<li><strong>Tree Edge</strong>: When we <strong>first discover</strong> a new vertex $v$ from $u$.
+<ul>
+<li>$u.d &lt; v.d &lt; v.f &lt; u.f$</li>
+</ul>
+</li>
+<li><strong>Back Edge</strong>: An edge that <em>points back to an ancestor</em> in the DFS tree.
+<ul>
+<li>$v.d &lt; u.d &lt; u.f &lt; v.f$</li>
+</ul>
+</li>
+<li><strong>Forward Edge</strong>: An edge that goes <em>from a node to its descendant</em> in the DFS tree, but <strong>not</strong> a direct tree edge.
+<ul>
+<li>$u.d &lt; v.d &lt; v.f &lt; u.f$</li>
+</ul>
+</li>
+<li><strong>Cross Edge</strong>: An edge that goes <em>between two different DFS branches</em> (<strong>neither</strong> ancestor nor descendant).
+<ul>
+<li>$v.d &lt; v.f &lt; u.d &lt; u.f$</li>
+</ul>
+</li>
+</ol>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69043ba1d4b9e.png" height="250px">
+</p>
+<h4 id="white-path-theorem"><a class="header" href="#white-path-theorem">White Path Theorem</a></h4>
+<p>We colored the vertex in DFS:</p>
+<ul>
+<li><strong>White</strong>: Not yet visited</li>
+<li><strong>Gray</strong>: Currently being explored</li>
+<li><strong>Black</strong>: Finished exploring</li>
+</ul>
+<p>If, during a DFS, there is a path from a vertex $u$ to a vertex $v$ that only goes through <em>white</em> vertices, then <strong>$v$ will become a descendant of $u$</strong> in the DFS tree.</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69043a9b79fc6.png"  height="200px">
+</p>
+<p>We can use it to <strong>detect cycle</strong> in graph: When we see a <strong>back edge</strong>, or <strong>meet non-white node</strong>, means we found a path from a node $u$ back to one of its ancestors $v$, and there is a cycle.</p>
+<h4 id="topological-sort"><a class="header" href="#topological-sort">Topological Sort</a></h4>
+<p><strong>Topological Sort</strong> of a DAG $G=(V,E)$.</p>
+<p><strong>Theorem</strong>: $G$ is a DAG iff there is a <strong>linear ordering</strong> of all its $v \in V$  s.t., if $(u, v) \in E$, then $u &lt; v$ in the above ordering. Or we say $(u,v)$ goes always from left to right.</p>
+<p><strong>Algorithm</strong>: Given DAG $G$.</p>
+<ol>
+<li>Run any DFS($G$), compute finishing time of nodes.</li>
+<li>Linear order: The nodes in decreasing order of finishing times.</li>
+</ol>
+<p>Corollary: In a DAG, $(u, v) \in E \iff u.f &gt; v.f$ for any DFS.</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69043f16a01c3.png"  height="150px">
+</p>
+<h3 id="bfs"><a class="header" href="#bfs">BFS</a></h3>
+<p><strong>Breath-First Search (BFS)</strong> is searching neighbors around each node. And we usually use <strong>queue</strong> to implement.</p>
+<pre><code class="language-cpp">int n, m;
+vector &lt;int&gt; g[MAXN];
+bool vis[MAXN];
+
+void bfs(int st) {
+    queue &lt;int&gt; q;
+    q.push(st);
+    vis[st] = true;
+    while(!q.empty()) {
+        int u = q.front(); q.pop();
+        for(int x = 0; x &lt; g[u].size(); x++) {
+            int v = g[u][x];
+            if(!vis[v]) {
+                vis[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+</code></pre>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/690458e5c63e0.png"  height="250px">
+</p>
+<h3 id="scc"><a class="header" href="#scc">SCC</a></h3>
 
                     </main>
 
