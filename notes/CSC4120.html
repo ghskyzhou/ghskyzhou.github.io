@@ -1,373 +1,183 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>CSC4120.md</title>
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-
-<style>
-/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
-body {
-	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
-	font-size: var(--vscode-markdown-font-size, 14px);
-	padding: 0 26px;
-	line-height: var(--vscode-markdown-line-height, 22px);
-	word-wrap: break-word;
-}
-
-#code-csp-warning {
-	position: fixed;
-	top: 0;
-	right: 0;
-	color: white;
-	margin: 16px;
-	text-align: center;
-	font-size: 12px;
-	font-family: sans-serif;
-	background-color:#444444;
-	cursor: pointer;
-	padding: 6px;
-	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
-}
-
-#code-csp-warning:hover {
-	text-decoration: none;
-	background-color:#007acc;
-	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
-}
-
-body.scrollBeyondLastLine {
-	margin-bottom: calc(100vh - 22px);
-}
-
-body.showEditorSelection .code-line {
-	position: relative;
-}
-
-body.showEditorSelection .code-active-line:before,
-body.showEditorSelection .code-line:hover:before {
-	content: "";
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -12px;
-	height: 100%;
-}
-
-body.showEditorSelection li.code-active-line:before,
-body.showEditorSelection li.code-line:hover:before {
-	left: -30px;
-}
-
-.vscode-light.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.15);
-}
-
-.vscode-light.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(0, 0, 0, 0.40);
-}
-
-.vscode-light.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-dark.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.4);
-}
-
-.vscode-dark.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 255, 255, 0.60);
-}
-
-.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-.vscode-high-contrast.showEditorSelection .code-active-line:before {
-	border-left: 3px solid rgba(255, 160, 0, 0.7);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line:hover:before {
-	border-left: 3px solid rgba(255, 160, 0, 1);
-}
-
-.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
-	border-left: none;
-}
-
-img {
-	max-width: 100%;
-	max-height: 100%;
-}
-
-a {
-	text-decoration: none;
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a:focus,
-input:focus,
-select:focus,
-textarea:focus {
-	outline: 1px solid -webkit-focus-ring-color;
-	outline-offset: -1px;
-}
-
-hr {
-	border: 0;
-	height: 2px;
-	border-bottom: 2px solid;
-}
-
-h1 {
-	padding-bottom: 0.3em;
-	line-height: 1.2;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-}
-
-h1, h2, h3 {
-	font-weight: normal;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-table > thead > tr > th {
-	text-align: left;
-	border-bottom: 1px solid;
-}
-
-table > thead > tr > th,
-table > thead > tr > td,
-table > tbody > tr > th,
-table > tbody > tr > td {
-	padding: 5px 10px;
-}
-
-table > tbody > tr + tr > td {
-	border-top: 1px solid;
-}
-
-blockquote {
-	margin: 0 7px 0 5px;
-	padding: 0 16px 0 10px;
-	border-left-width: 5px;
-	border-left-style: solid;
-}
-
-code {
-	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
-	font-size: 1em;
-	line-height: 1.357em;
-}
-
-body.wordWrap pre {
-	white-space: pre-wrap;
-}
-
-pre:not(.hljs),
-pre.hljs code > div {
-	padding: 16px;
-	border-radius: 3px;
-	overflow: auto;
-}
-
-pre code {
-	color: var(--vscode-editor-foreground);
-	tab-size: 4;
-}
-
-/** Theming */
-
-.vscode-light pre {
-	background-color: rgba(220, 220, 220, 0.4);
-}
-
-.vscode-dark pre {
-	background-color: rgba(10, 10, 10, 0.4);
-}
-
-.vscode-high-contrast pre {
-	background-color: rgb(0, 0, 0);
-}
-
-.vscode-high-contrast h1 {
-	border-color: rgb(0, 0, 0);
-}
-
-.vscode-light table > thead > tr > th {
-	border-color: rgba(0, 0, 0, 0.69);
-}
-
-.vscode-dark table > thead > tr > th {
-	border-color: rgba(255, 255, 255, 0.69);
-}
-
-.vscode-light h1,
-.vscode-light hr,
-.vscode-light table > tbody > tr + tr > td {
-	border-color: rgba(0, 0, 0, 0.18);
-}
-
-.vscode-dark h1,
-.vscode-dark hr,
-.vscode-dark table > tbody > tr + tr > td {
-	border-color: rgba(255, 255, 255, 0.18);
-}
-
-</style>
-
-<style>
-/* Tomorrow Theme */
-/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
-
-/* Tomorrow Comment */
-.hljs-comment,
-.hljs-quote {
-	color: #8e908c;
-}
-
-/* Tomorrow Red */
-.hljs-variable,
-.hljs-template-variable,
-.hljs-tag,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-regexp,
-.hljs-deletion {
-	color: #c82829;
-}
-
-/* Tomorrow Orange */
-.hljs-number,
-.hljs-built_in,
-.hljs-builtin-name,
-.hljs-literal,
-.hljs-type,
-.hljs-params,
-.hljs-meta,
-.hljs-link {
-	color: #f5871f;
-}
-
-/* Tomorrow Yellow */
-.hljs-attribute {
-	color: #eab700;
-}
-
-/* Tomorrow Green */
-.hljs-string,
-.hljs-symbol,
-.hljs-bullet,
-.hljs-addition {
-	color: #718c00;
-}
-
-/* Tomorrow Blue */
-.hljs-title,
-.hljs-section {
-	color: #4271ae;
-}
-
-/* Tomorrow Purple */
-.hljs-keyword,
-.hljs-selector-tag {
-	color: #8959a8;
-}
-
-.hljs {
-	display: block;
-	overflow-x: auto;
-	color: #4d4d4c;
-	padding: 0.5em;
-}
-
-.hljs-emphasis {
-	font-style: italic;
-}
-
-.hljs-strong {
-	font-weight: bold;
-}
-</style>
-
-<style>
-/*
- * Markdown PDF CSS
- */
-
- body {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
-	padding: 0 12px;
-}
-
-pre {
-	background-color: #f8f8f8;
-	border: 1px solid #cccccc;
-	border-radius: 3px;
-	overflow-x: auto;
-	white-space: pre-wrap;
-	overflow-wrap: break-word;
-}
-
-pre:not(.hljs) {
-	padding: 23px;
-	line-height: 19px;
-}
-
-blockquote {
-	background: rgba(127, 127, 127, 0.1);
-	border-color: rgba(0, 122, 204, 0.5);
-}
-
-.emoji {
-	height: 1.4em;
-}
-
-code {
-	font-size: 14px;
-	line-height: 19px;
-}
-
-/* for inline code */
-:not(pre):not(.hljs) > code {
-	color: #C9AE75; /* Change the old color so it seems less like an error */
-	font-size: inherit;
-}
-
-/* Page Break : use <div class="page"/> to insert page break
--------------------------------------------------------- */
-.page {
-	page-break-after: always;
-}
-
-</style>
-
-<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
-</head>
-<body>
-  <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
-          ? 'dark'
-          : 'default'
-    });
-  </script>
-<h1 id="csc4120-design-and-analysis-of-algorithms">CSC4120 Design and Analysis of Algorithms</h1>
-<h2 id="l0-introduction">L0 Introduction</h2>
-<h3 id="main-course-topics">Main Course Topics</h3>
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>CSC4120 - CUHKSZ CSC Notes</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">CUHKSZ CSC Notes</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="csc4120-design-and-analysis-of-algorithms"><a class="header" href="#csc4120-design-and-analysis-of-algorithms">CSC4120 Design and Analysis of Algorithms</a></h1>
+<h2 id="l0-introduction"><a class="header" href="#l0-introduction">L0 Introduction</a></h2>
+<h3 id="main-course-topics"><a class="header" href="#main-course-topics">Main Course Topics</a></h3>
 <ul>
 <li>Key algorithm concepts (asymptotic complexity, divide-and-conquer)</li>
 <li>Basic data structure algorithms
@@ -385,12 +195,12 @@ code {
 <li>Compleity (NP-complete, poly reductions, approximation algorithms)</li>
 </ul>
 <p>Textbook: <strong>Algorithms</strong> by S. Dasgupta, C.H. Papadimitriou, and U.V. Vazirani.</p>
-<hr>
-<h2 id="l1-basic-concepts-of-algorithmic-performance">L1 Basic Concepts of Algorithmic Performance</h2>
-<h3 id="asymptotic-complexity">Asymptotic Complexity</h3>
-<h4 id="what-is-tn">What is $T(n)$?</h4>
+<hr />
+<h2 id="l1-basic-concepts-of-algorithmic-performance"><a class="header" href="#l1-basic-concepts-of-algorithmic-performance">L1 Basic Concepts of Algorithmic Performance</a></h2>
+<h3 id="asymptotic-complexity"><a class="header" href="#asymptotic-complexity">Asymptotic Complexity</a></h3>
+<h4 id="what-is-tn"><a class="header" href="#what-is-tn">What is $T(n)$?</a></h4>
 <p>$T(n)$ is the largest (worst) execution time over all inputs of size $n$.</p>
-<h4 id="asymptotic-complexity">Asymptotic Complexity</h4>
+<h4 id="asymptotic-complexity-1"><a class="header" href="#asymptotic-complexity-1">Asymptotic Complexity</a></h4>
 <p>Goal: Capture the growth of $T(n)$ of an algorithm as the problem instance size $n \rightarrow \infty$</p>
 <p>Key Idea: Keep only the rate of growth, i.e., the <strong>dominant term when $n \rightarrow \infty$</strong>, forgetting multiplicative constants and lower order terms.</p>
 <p><strong>Three Os</strong></p>
@@ -424,21 +234,21 @@ code {
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/09/11/68c25fb9eb1f1.png" height="300px">
 </p>
-<h4 id="in-practice">In Practice</h4>
+<h4 id="in-practice"><a class="header" href="#in-practice">In Practice</a></h4>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/09/11/68c276f760fba.png" height="250px">
 </p>
-<h4 id="conclusions">Conclusions</h4>
+<h4 id="conclusions"><a class="header" href="#conclusions">Conclusions</a></h4>
 <ul>
 <li>To measure the performance of algorithms we measure their asymptotic complexity.</li>
 <li>Big $O$ is used to describe an <strong>upper bound</strong> for the running time of an algorithm.</li>
 <li>Big $\Omega$ is used to describe a <strong>lower bound</strong> for the running time of an algorithm.</li>
 <li>Big $\Theta$ is used to denote <strong>asymptotic equivalence</strong> of the running times of two algorithms. And when $\Omega(g(n)) = O(g(n)) = f(n)$, we can have $\Theta(g(n)) = f(n)$</li>
 </ul>
-<hr>
-<h2 id="l2-divide-and-conquer">L2 Divide and Conquer</h2>
-<h3 id="divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</h3>
-<h4 id="basic-devide-and-conquer">Basic Devide and Conquer</h4>
+<hr />
+<h2 id="l2-divide-and-conquer"><a class="header" href="#l2-divide-and-conquer">L2 Divide and Conquer</a></h2>
+<h3 id="divide-and-conquer-sorting-and-master-theorem"><a class="header" href="#divide-and-conquer-sorting-and-master-theorem">Divide and Conquer (Sorting and Master Theorem)</a></h3>
+<h4 id="basic-devide-and-conquer"><a class="header" href="#basic-devide-and-conquer">Basic Devide and Conquer</a></h4>
 <p>There are 3 steps:</p>
 <ol>
 <li><em>Divide</em> input into multiple <strong>smaller</strong> (usually disjoint) points.</li>
@@ -450,47 +260,47 @@ T(n) = \text{divide time} \\
 +T(n_1) + T(n_2) + \cdots + T(n_k) \\
 +\text{combine time}
 $$</p>
-<h4 id="sorting">Sorting</h4>
+<h4 id="sorting"><a class="header" href="#sorting">Sorting</a></h4>
 <p>A non-D&amp;C solution: <strong>Insertion Sort</strong></p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insertionSort</span><span class="hljs-params">(<span class="hljs-keyword">int</span> arr[], <span class="hljs-keyword">int</span> n)</span> </span>{
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
-        <span class="hljs-keyword">int</span> key = arr[i];
-        <span class="hljs-keyword">int</span> j = i - <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">while</span> (j &gt;= <span class="hljs-number">0</span> &amp;&amp; arr[j] &gt; key) {
-            arr[j + <span class="hljs-number">1</span>] = arr[j];
+<pre><code class="language-cpp">void insertionSort(int arr[], int n) {
+    for (int i = 1; i &lt; n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j &gt;= 0 &amp;&amp; arr[j] &gt; key) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j + <span class="hljs-number">1</span>] = key;
+        arr[j + 1] = key;
     }
 }
-</div></code></pre>
+</code></pre>
 <p>We have the complexity is $O(n^2)$ since it runs two loops with $n$ steps.</p>
 <p>But $O(n^2)$ is too slow for most of the problem, can it be much faster? Of course. We can use divide and conquer here!</p>
 <p>A D&amp;C solution: <strong>Merge Sort</strong></p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; arr, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> r)</span> </span>{
-    <span class="hljs-keyword">int</span> n1 = m - l + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> n2 = r - m;
-    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">L</span><span class="hljs-params">(n1)</span>, <span class="hljs-title">R</span><span class="hljs-params">(n2)</span></span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n1; i++) L[i] = arr[l + i];
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; n2; j++) R[j] = arr[m + <span class="hljs-number">1</span> + j];
-    <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = l;
-    <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) {
-        <span class="hljs-keyword">if</span> (L[i] &lt;= R[j]) arr[k++] = L[i++];
-        <span class="hljs-keyword">else</span> arr[k++] = R[j++];
+<pre><code class="language-cpp">void merge(vector&lt;int&gt;&amp; arr, int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    vector&lt;int&gt; L(n1), R(n2);
+    for (int i = 0; i &lt; n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j &lt; n2; j++) R[j] = arr[m + 1 + j];
+    int i = 0, j = 0, k = l;
+    while (i &lt; n1 &amp;&amp; j &lt; n2) {
+        if (L[i] &lt;= R[j]) arr[k++] = L[i++];
+        else arr[k++] = R[j++];
     }
-    <span class="hljs-keyword">while</span> (i &lt; n1) arr[k++] = L[i++];
-    <span class="hljs-keyword">while</span> (j &lt; n2) arr[k++] = R[j++];
+    while (i &lt; n1) arr[k++] = L[i++];
+    while (j &lt; n2) arr[k++] = R[j++];
 }
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; arr, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span> </span>{
-    <span class="hljs-keyword">if</span> (l &lt; r) {
-        <span class="hljs-keyword">int</span> m = l + (r - l) / <span class="hljs-number">2</span>;
+void mergeSort(vector&lt;int&gt;&amp; arr, int l, int r) {
+    if (l &lt; r) {
+        int m = l + (r - l) / 2;
         mergeSort(arr, l, m);
-        mergeSort(arr, m + <span class="hljs-number">1</span>, r);
+        mergeSort(arr, m + 1, r);
         merge(arr, l, m, r);
     }
 }
-</div></code></pre>
+</code></pre>
 <p>From the function <code>mergeSort</code> we can see that we divide the array into $2$ parts and conquer them seperately and recursively. And the <code>merge</code> function has the time complexity of $\Theta(n)$.</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/09/11/68c289f78a803.png" height="250px">
@@ -504,7 +314,7 @@ T(n) &amp;= 2T(n/2) + cn \\
 \end{align*}
 $$</p>
 <p>Where $cn$ denotes for the time of divide and merge, and $T(1)$ represents for the node of the recursion tree.</p>
-<h4 id="geometric-sums">Geometric Sums</h4>
+<h4 id="geometric-sums"><a class="header" href="#geometric-sums">Geometric Sums</a></h4>
 <p>Consider a geometric series
 $$
 S = 1 + x + x^2 + \cdots + x^h = \frac{x^{x+1}-1}{x-1} \ \ (\text{for } x \not= 1)
@@ -517,7 +327,7 @@ If $x &gt; 1$ , then
 $$
 1 + x + x^2 + \cdots + x^h &lt; \frac{1}{1-x} x^h  \Rightarrow S = \Theta(x^h)
 $$</p>
-<h4 id="master-theorem">Master Theorem</h4>
+<h4 id="master-theorem"><a class="header" href="#master-theorem">Master Theorem</a></h4>
 <p>Consider the recursion:</p>
 <p>$$
 T(n) = aT(n/b) + f(n)
@@ -566,8 +376,8 @@ $$
 e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2f(n/2) = 2(n/2)^2 \leq (1/2) f(n)$, thus $T(n) = \Theta(n^2)$</p>
 </li>
 </ol>
-<h3 id="applications-of-dc">Applications of D&amp;C</h3>
-<h4 id="convex-hull">Convex Hull</h4>
+<h3 id="applications-of-dc"><a class="header" href="#applications-of-dc">Applications of D&amp;C</a></h3>
+<h4 id="convex-hull"><a class="header" href="#convex-hull">Convex Hull</a></h4>
 <p>Given $n$ points $S = { (x_i, y_i) | i = 1, 2, \cdots, n }$ s.t. all have different $x$ and $y$ coordinates, and no three of them in a line.</p>
 <p><strong>Convex Hull (CH)</strong>: The smallest polygon containing all points in $S$. Represented by the sequence of points in the boundary in clockwise order.</p>
 <p>How to use D&amp;C here?</p>
@@ -587,10 +397,10 @@ e.g. $T(n) = 2T(n/2) + n^2$, we have $L=n^{\log_2 2} = n$, and $n^2 &gt; O(L), 2
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/09/21/68cf96e2a2183.png" height="250px">
 </p>
-<h4 id="median-finding--peak-finding">Median Finding / Peak Finding</h4>
+<h4 id="median-finding--peak-finding"><a class="header" href="#median-finding--peak-finding">Median Finding / Peak Finding</a></h4>
 <p>Not interested.</p>
-<h3 id="fast-fourier-transform">Fast Fourier Transform</h3>
-<h4 id="multiplication-of-polynomials-as-list-of-coefficients">Multiplication of polynomials as <em>list of coefficients</em>.</h4>
+<h3 id="fast-fourier-transform"><a class="header" href="#fast-fourier-transform">Fast Fourier Transform</a></h3>
+<h4 id="multiplication-of-polynomials-as-list-of-coefficients"><a class="header" href="#multiplication-of-polynomials-as-list-of-coefficients">Multiplication of polynomials as <em>list of coefficients</em>.</a></h4>
 <p>Consider:
 $$
 \begin{align*}
@@ -607,7 +417,7 @@ C(x) &amp;= A(x) B(x) = c_0 + c_1 x + \cdots + c_{2n}x^{2n} =\sum_{i=0}^{2n}c_i 
 $$</p>
 <p>Complexity: For $c_k \rightarrow O(k)$, for $C(x) \rightarrow O(n^2)$</p>
 <p>Can we do it <strong>faster</strong>? Like $O(n \log n)$?</p>
-<h4 id="multiplication-of-polynomials-as-list-of-values">Multiplication of polynomials as <em>list of values</em>.</h4>
+<h4 id="multiplication-of-polynomials-as-list-of-values"><a class="header" href="#multiplication-of-polynomials-as-list-of-values">Multiplication of polynomials as <em>list of values</em>.</a></h4>
 <p>Consider: A degree-$n$ polynomial is <strong>uniquely characterized</strong> by its values at <strong>any</strong> $n+1$ distinct points $x_0, x_1, \cdots, x_d$.</p>
 <p>That is, if we fix any distinct $n+1$ points, we can specify any degree-$n$ polynomial $A(x) = a_0 + a_1 x + \cdots + a_d x^n$ by the $n+1$ values:
 $$
@@ -623,7 +433,7 @@ C(x_i) &amp;= A(x_i) B(x_i) \\
 $$
 Polynomial multiplication is $O(n)$ using this representation!</p>
 <p>But how can we get the coefficients of $C(x)$ ?</p>
-<h4 id="evaluation-and-interpolation">Evaluation and Interpolation</h4>
+<h4 id="evaluation-and-interpolation"><a class="header" href="#evaluation-and-interpolation">Evaluation and Interpolation</a></h4>
 <p><strong>Evaluation</strong>: $a_0, a_1, \cdots, a_n \rightarrow A(x_0), A(x_1), \cdots, A(x_n)$</p>
 <p>$$
 A(x) = M_n(x) \cdot a \\
@@ -677,7 +487,7 @@ $$</p>
 <p>Here $M_n$ is Vandermonde matrix.</p>
 <p>Consider $C(x_i) = A(x_i) B(x_i)$, from the two matrix multiplication we can know that: If we have every $A(x_i)$ and $B(x_i)$ we can use $O(n)$ to multiply and get $C(x_i)$, then transfer it into every coefficient $c_i$.</p>
 <p>But, using matrix multiplication directly will need time complexity of $O(n^2)$. Can we optimize it to $O(n \log n)$? Yes, and here comes <strong>Fast Fourier Tranform (FFT)</strong>.</p>
-<h4 id="fft">FFT</h4>
+<h4 id="fft"><a class="header" href="#fft">FFT</a></h4>
 <p>Let's calculate evaluation using FFT first.</p>
 <p>Consider a polynomial $P(x)$ with length of even number $n$ s.t.
 $$
@@ -741,7 +551,7 @@ $$
 $$</p>
 <p>Combining $A_k$ and $A_{k+n/2}$ together for $0 \leq k &lt; n/2$, we can do D&amp;C here! Since $P_{\text{even}}(\omega_{n/2}^{k})$ and $P_{\text{odd}}(\omega_{n/2}^{k})$ can calculate from the half DFT.</p>
 <p>The time complexity is $T(n) = 2T(n/2) + O(n) = O(n \log n)$. We get the whole evaluation.</p>
-<h4 id="ifft">IFFT</h4>
+<h4 id="ifft"><a class="header" href="#ifft">IFFT</a></h4>
 <p>To do interpolation, we need <strong>Inverse Fast Fourier Tranfrom (IFFT)</strong>.</p>
 <p>Inverse FFT is easy to explain using Linear Algebra.</p>
 <p>It's easy since:
@@ -750,16 +560,16 @@ a = M_n^{-1}(\omega) \cdot A(\omega) = \frac{1}{n} M_n(\omega^{-1}) \cdot A(\ome
 $$
 And it's over.</p>
 <p>Let $A(\omega) = \text{FFT}(a, \omega)$, then $a = \frac{1}{n} \text{FFT}(A, \omega^{-1})$.</p>
-<h4 id="the-whole-progress">The Whole Progress</h4>
+<h4 id="the-whole-progress"><a class="header" href="#the-whole-progress">The Whole Progress</a></h4>
 <ol>
 <li>Filled $A(x)$ and $B(x)$ to length of $n=2^k$ by $0$ due to easier FFT D&amp;C.</li>
 <li>Calculate $A(\omega^k)$ and $B(\omega^k)$ for each $k=0,1,\cdots,n-1$, where $\omega = e^{\frac{2\pi}{n}i}$ using FFT.</li>
 <li>Calculate $C(\omega^k) = A(\omega^k) \cdot B(\omega^k)$.</li>
 <li>Calculate $c_i$ using IFFT.</li>
 </ol>
-<hr>
-<h2 id="l3-randomized-algorithms">L3 Randomized Algorithms</h2>
-<h3 id="basic-concepts-of-randomized-algoirthms">Basic Concepts of Randomized Algoirthms</h3>
+<hr />
+<h2 id="l3-randomized-algorithms"><a class="header" href="#l3-randomized-algorithms">L3 Randomized Algorithms</a></h2>
+<h3 id="basic-concepts-of-randomized-algoirthms"><a class="header" href="#basic-concepts-of-randomized-algoirthms">Basic Concepts of Randomized Algoirthms</a></h3>
 <p><strong>Randomized Algorithms</strong>:  On the same input, different executions of the same algorithm may result in <em>different running times and different outputs</em>.</p>
 <p>Type of <strong>polynomial</strong> randomized algorithms:</p>
 <ul>
@@ -778,7 +588,7 @@ And it's over.</p>
 </li>
 </ul>
 <p>$\overline{T}(n)$: Expected time to terminate for a given input of size $n$.</p>
-<h3 id="quicksort">Quicksort</h3>
+<h3 id="quicksort"><a class="header" href="#quicksort">Quicksort</a></h3>
 <p>Consider combining D&amp;C and randomize</p>
 <ol>
 <li>Pick an <em>pivot</em> $x$ of the array.</li>
@@ -789,23 +599,23 @@ And it's over.</p>
 <p>$\overline{T}(n) = \Theta(n \log n)$ for all inputs.
 $\Rightarrow$ Random selection of $x$ makes no input to be worse.</p>
 <p>Or we can say $\Theta(n \log n)$ is the <strong>average complexity</strong> of quicksort.</p>
-<h3 id="frievalds-algorithm">Frievald's Algorithm</h3>
+<h3 id="frievalds-algorithm"><a class="header" href="#frievalds-algorithm">Frievald's Algorithm</a></h3>
 <p>Given $n \times n$ matrices $A$, $B$ and $C$, check that $AB = C$ (yes or no).</p>
 <p>It's very slow to use brute force algorithm since matrices multiplication is $O(n^3)$.</p>
 <p>Consider randomization (Frievald's Algorithm):</p>
 <ol>
 <li>Choose a random binary vector $r$.</li>
-<li>If $(A(Br) = Cr) \bmod 2$ then output &quot;yes&quot; else &quot;no&quot;.</li>
+<li>If $(A(Br) = Cr) \bmod 2$ then output "yes" else "no".</li>
 </ol>
 <p>Property: If $AB \not= C$, then $\text{Pr}[A(Br) \not= Cr] \geq \frac{1}{2}$.</p>
-<p>That is, Do 10 tests, if all say &quot;yes&quot;, the probability of error $&lt; \left( \frac{1}{2} \right)^{10}$.</p>
-<hr>
-<h2 id="l4-lower-bounds-and-heaps">L4 Lower Bounds and Heaps</h2>
-<h3 id="comparison-model">Comparison Model</h3>
-<h4 id="comparsion-sort">Comparsion Sort</h4>
+<p>That is, Do 10 tests, if all say "yes", the probability of error $&lt; \left( \frac{1}{2} \right)^{10}$.</p>
+<hr />
+<h2 id="l4-lower-bounds-and-heaps"><a class="header" href="#l4-lower-bounds-and-heaps">L4 Lower Bounds and Heaps</a></h2>
+<h3 id="comparison-model"><a class="header" href="#comparison-model">Comparison Model</a></h3>
+<h4 id="comparsion-sort"><a class="header" href="#comparsion-sort">Comparsion Sort</a></h4>
 <p>All the sorting algorithms we've seen so far are <strong>comparison sort</strong> (merge sort, insertion sort, bubble sort, etc.).</p>
 <p>And the best running time that we've seen for comparison sort is $O(n \log n)$. <em>Is it the best we can do?</em></p>
-<h4 id="decision-tree">Decision-Tree</h4>
+<h4 id="decision-tree"><a class="header" href="#decision-tree">Decision-Tree</a></h4>
 <p>A given recipe for sorting $n$ numbers $a_1, a_2, \cdots, a_n$.</p>
 <p>Nodes are suggested comparisons: $i, j$ means compare $a_i$ to $a_j$ for $i, j \in \{1, 2, \cdots, n\}$</p>
 <p>The figure below is an example of decision-tree of sorting $a_1 = 9, a_2 = 4, a_3 = 6$.</p>
@@ -829,47 +639,47 @@ n! \approx \sqrt{2 \pi n} \left(\frac{n}{e}\right)^n \\
 \log(n!) = n \log n - n + \frac{1}{2} \log (2 \pi n)
 $$</p>
 <p>Theorem: Any decision tree that can sort $n$ elements must have height $\Omega(n \log n)$.</p>
-<h3 id="linear-time-sorting">Linear Time Sorting</h3>
+<h3 id="linear-time-sorting"><a class="header" href="#linear-time-sorting">Linear Time Sorting</a></h3>
 <p>As metioned above, the comparison sorting have a lower-bound complexity of $\Omega(n \log n)$, so do linear time sorting exist?</p>
-<h4 id="counting-sort">Counting Sort</h4>
+<h4 id="counting-sort"><a class="header" href="#counting-sort">Counting Sort</a></h4>
 <p>Given: An array $a_0, a_1, \cdots, a_{n-1}$ of $n$ keys to be sorted.</p>
 <p><strong>Count</strong> the times of number appeared between $a_{min}$ and $a_{max}$, then use the prefix sum array to get the final place of each element. With time complexity of $O(n+k), k = a_{max} - a_{min} + 1$</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">counting_sort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; a)</span> </span>{
-    <span class="hljs-keyword">int</span> n = a.size();
-    <span class="hljs-keyword">int</span> mn = *min_element(a.begin(), a.end());
-    <span class="hljs-keyword">int</span> mx = *max_element(a.begin(), a.end());
-    <span class="hljs-keyword">int</span> k = mx - mn + <span class="hljs-number">1</span>;
-    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">count</span><span class="hljs-params">(k, <span class="hljs-number">0</span>)</span></span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x : a) count[x - mn]++;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; k; i++) count[i] += count[i - <span class="hljs-number">1</span>];
-    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">res</span><span class="hljs-params">(n)</span></span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
-        <span class="hljs-keyword">int</span> x = a[i];
+<pre><code class="language-cpp">void counting_sort(vector&lt;int&gt;&amp; a) {
+    int n = a.size();
+    int mn = *min_element(a.begin(), a.end());
+    int mx = *max_element(a.begin(), a.end());
+    int k = mx - mn + 1;
+    vector&lt;int&gt; count(k, 0);
+    for (int x : a) count[x - mn]++;
+    for (int i = 1; i &lt; k; i++) count[i] += count[i - 1];
+    vector&lt;int&gt; res(n);
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int x = a[i];
         res[--count[x - mn]] = x;
     }
     a = res;
 }
-</div></code></pre>
-<h4 id="radix-sort">Radix Sort</h4>
+</code></pre>
+<h4 id="radix-sort"><a class="header" href="#radix-sort">Radix Sort</a></h4>
 <p>Use a <strong>radix</strong>(base) $k$ for an integer $x$:
 $$
 x = a_{d-1} k^{d-1} + \cdots + a_0 k^0 \to a_{d-1}a_{d-2}\cdots a_0
 $$</p>
 <p>Idea: Sort on least-significant digit first with auxiliary stable sort.</p>
 <p>We are given $n$ integers, each integer $&lt; M$, in base $k$. Then we have time complexity of $O((n+k) \log_k M)d$</p>
-<h3 id="heaps">Heaps</h3>
-<h4 id="storing-objects-in-data-structures">Storing Objects in Data Structures</h4>
+<h3 id="heaps"><a class="header" href="#heaps">Heaps</a></h3>
+<h4 id="storing-objects-in-data-structures"><a class="header" href="#storing-objects-in-data-structures">Storing Objects in Data Structures</a></h4>
 <p>We operate on objects of the form: <strong>object $x = (x.\text{key}, x.\text{data})$</strong>.</p>
 <p>The attribute $x.\text{key}$ characterizes <strong>uniquely</strong> the object $x$. And we store $x.\text{key}$ combined with a pointer to the location of $x.\text{data}$ in memory.</p>
 <p>Inserting and searching for object $x$ is done by inserting and searching for $x.\text{key}$. Or we can say we mostly focus on $x.\text{key}$ instead of $x.\text{data}$.</p>
-<h4 id="priority-queue">Priority Queue</h4>
+<h4 id="priority-queue"><a class="header" href="#priority-queue">Priority Queue</a></h4>
 <p>$S$: set of elements $\{ x_1, x_2, \cdots, x_n \}$.</p>
 <p>$x_i = (\text{key}_i, \text{data}_i)$.</p>
 <p>Operations: $\text{Insert}(S,x), \max(S), \text{Extract-max}(S), \text{Incr-key}(S, x, k)$.</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/10/12/68eb67edab8d8.png" height="150px">
 </p>
-<h4 id="heap">Heap</h4>
+<h4 id="heap"><a class="header" href="#heap">Heap</a></h4>
 <p><strong>Heap</strong>: An array visualized as a nearly complete <strong>binary tree</strong>.</p>
 <p><strong>Navigate on the tree</strong> but <strong>move on array</strong> = full info of the tree, without pointers.</p>
 <p>Max(Min) Heap Property: the key of a node is $\geq (\leq)$ than the keys of its children.</p>
@@ -877,71 +687,71 @@ $$</p>
   <img src="https://img.skyzhou.top/i/2025/10/12/68eb69423ded8.png" height="200px">
 </p>
 <p><strong>Binary Tree Structure</strong> in array, as shown above.</p>
-<pre class="hljs"><code><div><span class="hljs-keyword">int</span> s[MAXN], sz;
+<pre><code class="language-cpp">int s[MAXN], sz;
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">parent</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>{
-    <span class="hljs-keyword">return</span> i &gt;&gt; <span class="hljs-number">1</span>; <span class="hljs-comment">// i/2</span>
+int parent(int i) {
+    return i &gt;&gt; 1; // i/2
 }
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">left</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>{
-    <span class="hljs-keyword">return</span> i &lt;&lt; <span class="hljs-number">1</span>; <span class="hljs-comment">// i*2</span>
+int left(int i) {
+    return i &lt;&lt; 1; // i*2
 }
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">right</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>{
-    <span class="hljs-keyword">return</span> i &lt;&lt; <span class="hljs-number">1</span> | <span class="hljs-number">1</span>; <span class="hljs-comment">// i*2+1</span>
+int right(int i) {
+    return i &lt;&lt; 1 | 1; // i*2+1
 }
-</div></code></pre>
+</code></pre>
 <p>And the <strong>height</strong> of the tree is $h = \log n$.</p>
 <p><strong>Max Heapify</strong>: Correct a single violation of the heap property occurring at the root $i$ of a subtree in $O(\log n)$.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">max_heapify</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i)</span> </span>{
-    <span class="hljs-keyword">int</span> l = left(i), r = right(i), maxi = i;
-    <span class="hljs-keyword">if</span>(l &lt;= sz &amp;&amp; s[l] &gt; s[maxi]) maxi = l;
-    <span class="hljs-keyword">if</span>(r &lt;= sz &amp;&amp; s[r] &gt; s[maxi]) maxi = r;
-    <span class="hljs-keyword">if</span>(maxi != i) {
+<pre><code class="language-cpp">void max_heapify(int i) {
+    int l = left(i), r = right(i), maxi = i;
+    if(l &lt;= sz &amp;&amp; s[l] &gt; s[maxi]) maxi = l;
+    if(r &lt;= sz &amp;&amp; s[r] &gt; s[maxi]) maxi = r;
+    if(maxi != i) {
         swap(s[i], s[maxi]);
         max_heapify(maxi);
     }
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Build Max Heap</strong>: Convert an array $A$ into a max heap. And we find that elements from $A_{\lfloor n/2 \rfloor+1}$ to $A_n$ are leaves of the tree, and they won't violate the rule. So we only need to heapify $A_1$ to $A_{\lfloor n/2 \rfloor}$. The time complexity is $O(n \log n)$.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">build_max_heap</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>{
+<pre><code class="language-cpp">void build_max_heap(int n) {
     sz = n;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = n/<span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">1</span>; i--) max_heapify(i);
+    for(int i = n/2; i &gt;= 1; i--) max_heapify(i);
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Insert</strong>: We first put it at the back of the array, then go up in the tree one level by one level until no violation.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">int</span> val)</span> </span>{
+<pre><code class="language-cpp">void insert(int val) {
     sz++;
     s[sz] = val;
-    <span class="hljs-keyword">int</span> i = sz;
-    <span class="hljs-keyword">while</span>(i &gt; <span class="hljs-number">1</span> &amp;&amp; s[parent(i)] &lt; s[i]) {
+    int i = sz;
+    while(i &gt; 1 &amp;&amp; s[parent(i)] &lt; s[i]) {
         swap(s[i], s[parent(i)]);
         i = parent(i);
     }
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Extract Max</strong>: The max element must be the first one of the array, we can just swap it with the last element, then heapify.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">extract_max</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">if</span>(!sz) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
-    <span class="hljs-keyword">int</span> maxn = s[<span class="hljs-number">1</span>];
-    s[<span class="hljs-number">1</span>] = s[sz];
+<pre><code class="language-cpp">int extract_max() {
+    if(!sz) return -1;
+    int maxn = s[1];
+    s[1] = s[sz];
     sz--;
-    max_heapify(<span class="hljs-number">1</span>);
-    <span class="hljs-keyword">return</span> maxn;
+    max_heapify(1);
+    return maxn;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Heap Sort</strong>: Like extracting max element for $n$ times. Time complexity $O(n \log n)$.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">heap_sort</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-keyword">int</span> n = sz;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = n; i &gt;= <span class="hljs-number">2</span>; i--) {
-        swap(s[<span class="hljs-number">1</span>], s[i]);
+<pre><code class="language-cpp">void heap_sort() {
+    int n = sz;
+    for(int i = n; i &gt;= 2; i--) {
+        swap(s[1], s[i]);
         sz--;
-        max_heapify(<span class="hljs-number">1</span>);
+        max_heapify(1);
     }
 }
-</div></code></pre>
-<h2 id="l5-trees">L5 Trees</h2>
-<h3 id="binary-search-tree">Binary Search Tree</h3>
+</code></pre>
+<h2 id="l5-trees"><a class="header" href="#l5-trees">L5 Trees</a></h2>
+<h3 id="binary-search-tree"><a class="header" href="#binary-search-tree">Binary Search Tree</a></h3>
 <p>A <strong>Binary Search Tree(BST)</strong> is a binary tree structure that every node $x$ of it must satisfies:</p>
 <ol>
 <li>All $\text{key}$ from its left subtree is <strong>less</strong> than $x.\text{key}$</li>
@@ -952,48 +762,48 @@ $$</p>
   <img src="https://img.skyzhou.top/i/2025/10/27/68ff34c45e21b.png" height="200px">
 </p>
 <p><strong>Define Node</strong>: Using C++ <code>struct</code> and pointers.</p>
-<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> {</span>
-    <span class="hljs-keyword">int</span> key;
+<pre><code class="language-cpp">struct node {
+    int key;
     node* left;
     node* right;
-    node(<span class="hljs-keyword">int</span> k): key(k), left(<span class="hljs-literal">NULL</span>), right(<span class="hljs-literal">NULL</span>) {}
+    node(int k): key(k), left(NULL), right(NULL) {}
 };
-</div></code></pre>
+</code></pre>
 <p><strong>Insert</strong>: Start from the root, if the $\text{key}$ is less, put it to the left, else to the right. Doing the whole progress in recursion, until find an empty place and put it in. With average time complexity $O(\log n)$, but <strong>worst</strong> $O(n)$.</p>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">insert</span><span class="hljs-params">(node* root, <span class="hljs-keyword">int</span> key)</span> </span>{
-    <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> node(key);
-    <span class="hljs-keyword">if</span>(key &lt; root-&gt;key) {
+<pre><code class="language-cpp">node* insert(node* root, int key) {
+    if(!root) return new node(key);
+    if(key &lt; root-&gt;key) {
         root-&gt;left = insert(root-&gt;left, key);
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(key &gt; root-&gt;key) {
+    } else if(key &gt; root-&gt;key) {
         root-&gt;right = insert(root-&gt;right, key);
     }
-    <span class="hljs-keyword">return</span> root;
+    return root;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Build Tree</strong>: Actually there's no such a thing, you just need to insert the new node into root.</p>
-<pre class="hljs"><code><div>node* root = <span class="hljs-literal">NULL</span>;
+<pre><code class="language-cpp">node* root = NULL;
 root = insert(root, a);
-</div></code></pre>
+</code></pre>
 <p><strong>Inorder Traversal</strong>: The inorder traversal of the BST is a sorted array, due to the property of it.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">printTree</span><span class="hljs-params">(node* root)</span> </span>{
-    <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span>;
+<pre><code class="language-cpp">void printTree(node* root) {
+    if(!root) return;
     printTree(root-&gt;left);
-    <span class="hljs-built_in">cout</span> &lt;&lt; root-&gt;key &lt;&lt; <span class="hljs-string">" "</span>;
+    cout &lt;&lt; root-&gt;key &lt;&lt; " ";
     printTree(root-&gt;right);
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Search</strong>: Tipical binary search on tree.</p>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">search</span><span class="hljs-params">(node* root, <span class="hljs-keyword">int</span> key)</span> </span>{
-    <span class="hljs-keyword">if</span>(!root || root-&gt;key == key) {
-        <span class="hljs-keyword">return</span> root;
+<pre><code class="language-cpp">node* search(node* root, int key) {
+    if(!root || root-&gt;key == key) {
+        return root;
     }
-    <span class="hljs-keyword">if</span>(key &lt; root-&gt;key) {
-        <span class="hljs-keyword">return</span> search(root-&gt;left, key);
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">return</span> search(root-&gt;right, key);
+    if(key &lt; root-&gt;key) {
+        return search(root-&gt;left, key);
+    } else {
+        return search(root-&gt;right, key);
     }
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Delete</strong>: A bit complicated.</p>
 <ol>
 <li>Leaf (no children): Delete directly.</li>
@@ -1003,38 +813,38 @@ root = insert(root, a);
 <p align="center">
   <img src="https://img.skyzhou.top/i/2025/10/27/68ff41cedf84c.png" height="200px">
 </p>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">deleteNode</span><span class="hljs-params">(node* root, <span class="hljs-keyword">int</span> key)</span> </span>{
-    <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+<pre><code class="language-cpp">node* deleteNode(node* root, int key) {
+    if(!root) return NULL;
 
-    <span class="hljs-keyword">if</span>(key &lt; root-&gt;key)
+    if(key &lt; root-&gt;key)
         root-&gt;left = deleteNode(root-&gt;left, key);
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(key &gt; root-&gt;key)
+    else if(key &gt; root-&gt;key)
         root-&gt;right = deleteNode(root-&gt;right, key);
-    <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">if</span>(!root-&gt;left &amp;&amp; !root-&gt;right) {
-            <span class="hljs-keyword">delete</span> root;
-            <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!root-&gt;left) {
+    else {
+        if(!root-&gt;left &amp;&amp; !root-&gt;right) {
+            delete root;
+            return NULL;
+        } else if(!root-&gt;left) {
             node* temp = root-&gt;right;
-            <span class="hljs-keyword">delete</span> root;
-            <span class="hljs-keyword">return</span> temp;
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!root-&gt;right) {
+            delete root;
+            return temp;
+        } else if(!root-&gt;right) {
             node* temp = root-&gt;left;
-            <span class="hljs-keyword">delete</span> root;
-            <span class="hljs-keyword">return</span> temp;
-        } <span class="hljs-keyword">else</span> {
+            delete root;
+            return temp;
+        } else {
             node* temp = findMin(root-&gt;right);
             root-&gt;key = temp-&gt;key;
             root-&gt;right = deleteNode(root-&gt;right, temp-&gt;key);
         }
     }
-    <span class="hljs-keyword">return</span> root;
+    return root;
 }
-</div></code></pre>
+</code></pre>
 <blockquote>
 <p>Warning: We usually use the different key to insert, but if there exists two same keys, we can do a <strong>count</strong>, or change the right subtree to <strong>greater or equal</strong> subtree.</p>
 </blockquote>
-<h3 id="avl-tree">AVL Tree</h3>
+<h3 id="avl-tree"><a class="header" href="#avl-tree">AVL Tree</a></h3>
 <p>An <strong>AVL</strong> (<strong>A</strong>delson-<strong>V</strong>elskii and <strong>L</strong>andis) <strong>Tree</strong> is a <strong>self-balancing binary search tree</strong>.</p>
 <p><strong>Property</strong>: For every node, store its <strong>height</strong>:</p>
 <ul>
@@ -1047,57 +857,57 @@ root = insert(root, a);
 </p>
 <p>And we can know that AVL trees always have height $\Theta(\log n)$.</p>
 <p><strong>Define Node</strong>: Like BST, but with height.</p>
-<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> {</span>
-    <span class="hljs-keyword">int</span> key, height;
+<pre><code class="language-cpp">struct node {
+    int key, height;
     node* left;
     node* right;
-    node(<span class="hljs-keyword">int</span> k): key(k), height(<span class="hljs-number">1</span>), left(<span class="hljs-literal">NULL</span>), right(<span class="hljs-literal">NULL</span>) {}
+    node(int k): key(k), height(1), left(NULL), right(NULL) {}
 };
-</div></code></pre>
+</code></pre>
 <p><strong>Get Height</strong>: For convenience, I take leaves height as $1$, NIL height as $0$.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getHeight</span><span class="hljs-params">(node* u)</span> </span>{
-    <span class="hljs-keyword">return</span> u ? u-&gt;height : <span class="hljs-number">0</span>;
+<pre><code class="language-cpp">int getHeight(node* u) {
+    return u ? u-&gt;height : 0;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Get Balance</strong>: Use the definition of balance, $\text{BL} = \text{height}(\text{left subtree}) - \text{height}(\text{right subtree})$, notice that if $\text{BL} &gt; 1$, left subtree is heavy, else if $\text{BL} &lt; 1$, right subtree is heavy, else it's balanced at this node.</p>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getBalance</span><span class="hljs-params">(node* u)</span> </span>{
-    <span class="hljs-keyword">return</span> u ? getHeight(u-&gt;left) - getHeight(u-&gt;right) : <span class="hljs-number">0</span>;
+<pre><code class="language-cpp">int getBalance(node* u) {
+    return u ? getHeight(u-&gt;left) - getHeight(u-&gt;right) : 0;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Right Rotate</strong>:</p>
-<pre class="hljs"><code><div>      A                 B
+<pre><code>      A                 B
      / \               / \
     B   T3    -&gt;      T1  A
    / \                   / \
   T1  T2                T2  T3
-</div></code></pre>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">rightRotate</span><span class="hljs-params">(node* u)</span> </span>{
+</code></pre>
+<pre><code class="language-cpp">node* rightRotate(node* u) {
     node* v = u-&gt;left;
     node* w = v-&gt;right;
     v-&gt;right = u;
     u-&gt;left = w;
-    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + <span class="hljs-number">1</span>;
-    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">return</span> v;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + 1;
+    return v;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Left Rotate</strong>:</p>
-<pre class="hljs"><code><div>    A                      B
+<pre><code>    A                      B
    / \                    / \
   T1  B        -&gt;        A   T3
      / \                / \
     T2  T3             T1  T2
-</div></code></pre>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">leftRotate</span><span class="hljs-params">(node* u)</span> </span>{
+</code></pre>
+<pre><code class="language-cpp">node* leftRotate(node* u) {
     node* v = u-&gt;right;
     node* w = v-&gt;left;
     v-&gt;left = u;
     u-&gt;right = w;
-    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + <span class="hljs-number">1</span>;
-    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">return</span> v;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    v-&gt;height = max(getHeight(v-&gt;left), getHeight(v-&gt;right)) + 1;
+    return v;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Insert</strong>: Consider insertion with 4 situations (L and R means insert into left and right subtree):</p>
 <ol>
 <li>LL: Do right rotation once.</li>
@@ -1105,127 +915,127 @@ root = insert(root, a);
 <li>LR: Do left rotation, then right rotation.</li>
 <li>RL: Do right rotation, then left rotation.</li>
 </ol>
-<pre class="hljs"><code><div><span class="hljs-function">node *<span class="hljs-title">insert</span><span class="hljs-params">(node* u, <span class="hljs-keyword">int</span> key)</span> </span>{
-    <span class="hljs-keyword">if</span>(!u) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> node(key);
-    <span class="hljs-keyword">if</span>(key &lt; u-&gt;key) u-&gt;left = insert(u-&gt;left, key);
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(key &gt; u-&gt;key) u-&gt;right = insert(u-&gt;right, key);
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> u;
-    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> BL = getBalance(u);
-    <span class="hljs-keyword">if</span>(BL &gt; <span class="hljs-number">1</span> &amp;&amp; key &lt; u-&gt;left-&gt;key) <span class="hljs-keyword">return</span> rightRotate(u); <span class="hljs-comment">// LL</span>
-    <span class="hljs-keyword">if</span>(BL &lt; <span class="hljs-number">-1</span> &amp;&amp; key &gt; u-&gt;right-&gt;key) <span class="hljs-keyword">return</span> leftRotate(u); <span class="hljs-comment">// RR</span>
-    <span class="hljs-keyword">if</span>(BL &gt; <span class="hljs-number">1</span> &amp;&amp; key &gt; u-&gt;left-&gt;key) { <span class="hljs-comment">// LR</span>
+<pre><code class="language-cpp">node *insert(node* u, int key) {
+    if(!u) return new node(key);
+    if(key &lt; u-&gt;key) u-&gt;left = insert(u-&gt;left, key);
+    else if(key &gt; u-&gt;key) u-&gt;right = insert(u-&gt;right, key);
+    else return u;
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    int BL = getBalance(u);
+    if(BL &gt; 1 &amp;&amp; key &lt; u-&gt;left-&gt;key) return rightRotate(u); // LL
+    if(BL &lt; -1 &amp;&amp; key &gt; u-&gt;right-&gt;key) return leftRotate(u); // RR
+    if(BL &gt; 1 &amp;&amp; key &gt; u-&gt;left-&gt;key) { // LR
         u-&gt;left = leftRotate(u-&gt;left);
-        <span class="hljs-keyword">return</span> rightRotate(u);
+        return rightRotate(u);
     }
-    <span class="hljs-keyword">if</span>(BL &lt; <span class="hljs-number">-1</span> &amp;&amp; key &lt; u-&gt;right-&gt;key) { <span class="hljs-comment">// RL</span>
+    if(BL &lt; -1 &amp;&amp; key &lt; u-&gt;right-&gt;key) { // RL
         u-&gt;right = rightRotate(u-&gt;right);
-        <span class="hljs-keyword">return</span> leftRotate(u);
+        return leftRotate(u);
     }
-    <span class="hljs-keyword">return</span> u;
+    return u;
 }
-</div></code></pre>
+</code></pre>
 <p align="center">
     <img src="https://upload.wikimedia.org/wikipedia/commons/f/fd/AVL_Tree_Example.gif" height="200px">
 </p>
 <p><strong>Delete</strong>: As same as deletion in BST, then check whether it's balanced.</p>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">findMin</span><span class="hljs-params">(node* u)</span> </span>{
-    <span class="hljs-keyword">while</span>(u-&gt;left) u = u-&gt;left;
-    <span class="hljs-keyword">return</span> u;
+<pre><code class="language-cpp">node* findMin(node* u) {
+    while(u-&gt;left) u = u-&gt;left;
+    return u;
 }
 
-<span class="hljs-function">node* <span class="hljs-title">deleteNode</span><span class="hljs-params">(node* u, <span class="hljs-keyword">int</span> key)</span> </span>{
-    <span class="hljs-comment">// BST Deletion first</span>
-    <span class="hljs-keyword">if</span>(!u) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
-    <span class="hljs-keyword">if</span>(key &lt; u-&gt;key) u-&gt;left = deleteNode(u-&gt;left, key);
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(key &gt; u-&gt;key) u-&gt;right = deleteNode(u-&gt;right, key);
-    <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">if</span>(!u-&gt;left || !u-&gt;right) {
+node* deleteNode(node* u, int key) {
+    // BST Deletion first
+    if(!u) return NULL;
+    if(key &lt; u-&gt;key) u-&gt;left = deleteNode(u-&gt;left, key);
+    else if(key &gt; u-&gt;key) u-&gt;right = deleteNode(u-&gt;right, key);
+    else {
+        if(!u-&gt;left || !u-&gt;right) {
             node* temp = u-&gt;left ? u-&gt;left : u-&gt;right;
-            <span class="hljs-keyword">if</span>(!temp) {
+            if(!temp) {
                 temp = u;
-                u = <span class="hljs-literal">NULL</span>;
-            } <span class="hljs-keyword">else</span> {
+                u = NULL;
+            } else {
                 *u = *temp;
             }
-            <span class="hljs-keyword">delete</span> temp;
-        } <span class="hljs-keyword">else</span> {
+            delete temp;
+        } else {
             node* temp = findMin(u-&gt;right);
             u-&gt;key = temp-&gt;key;
             u-&gt;right = deleteNode(u-&gt;right, temp-&gt;key);
         }
     }
-    <span class="hljs-keyword">if</span>(!u) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
-    <span class="hljs-comment">// Keep balance</span>
-    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> BL = getBalance(u);
-    <span class="hljs-keyword">if</span>(BL &gt; <span class="hljs-number">1</span> &amp;&amp; getBalance(u-&gt;left) &gt;= <span class="hljs-number">0</span>)
-        <span class="hljs-keyword">return</span> rightRotate(u); <span class="hljs-comment">// LL</span>
-    <span class="hljs-keyword">if</span>(BL &gt; <span class="hljs-number">1</span> &amp;&amp; getBalance(u-&gt;left) &lt; <span class="hljs-number">0</span>) {
+    if(!u) return NULL;
+    // Keep balance
+    u-&gt;height = max(getHeight(u-&gt;left), getHeight(u-&gt;right)) + 1;
+    int BL = getBalance(u);
+    if(BL &gt; 1 &amp;&amp; getBalance(u-&gt;left) &gt;= 0)
+        return rightRotate(u); // LL
+    if(BL &gt; 1 &amp;&amp; getBalance(u-&gt;left) &lt; 0) {
         u-&gt;left = leftRotate(u-&gt;left);
-        <span class="hljs-keyword">return</span> rightRotate(u); <span class="hljs-comment">// LR</span>
+        return rightRotate(u); // LR
     }
-    <span class="hljs-keyword">if</span>(BL &lt; <span class="hljs-number">-1</span> &amp;&amp; getBalance(u-&gt;right) &lt;= <span class="hljs-number">0</span>)
-        <span class="hljs-keyword">return</span> leftRotate(u); <span class="hljs-comment">// RR</span>
-    <span class="hljs-keyword">if</span>(BL &lt; <span class="hljs-number">-1</span> &amp;&amp; getBalance(u-&gt;right) &gt; <span class="hljs-number">0</span>) {
+    if(BL &lt; -1 &amp;&amp; getBalance(u-&gt;right) &lt;= 0)
+        return leftRotate(u); // RR
+    if(BL &lt; -1 &amp;&amp; getBalance(u-&gt;right) &gt; 0) {
         u-&gt;right = rightRotate(u-&gt;right);
-        <span class="hljs-keyword">return</span> leftRotate(u); <span class="hljs-comment">// RL</span>
+        return leftRotate(u); // RL
     }
-    <span class="hljs-keyword">return</span> u;
+    return u;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Time Complexity</strong>: In balanced BST, all operations take $O(\log n)$.</p>
-<h3 id="red-black-tree">Red-Black Tree</h3>
+<h3 id="red-black-tree"><a class="header" href="#red-black-tree">Red-Black Tree</a></h3>
 <p>Shit.</p>
-<h3 id="interval-tree">Interval Tree</h3>
+<h3 id="interval-tree"><a class="header" href="#interval-tree">Interval Tree</a></h3>
 <p><strong>Interval Tree</strong> is a balanced BST but nodes are intervals.</p>
 <p><strong>Define Node</strong>: Interval has $l$ and $r$, while $\text{maxn}$ is the <strong>maximum $r$ of all interval of the whole subtree</strong>, and we use $l$ as the $\text{key}$ of BST.</p>
-<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">interval</span> {</span>
-    <span class="hljs-keyword">int</span> l, r;
+<pre><code class="language-cpp">struct interval {
+    int l, r;
 };
 
-<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">node</span> {</span>
+struct node {
     interval i;
-    <span class="hljs-keyword">int</span> maxn;
+    int maxn;
     node* left;
     node* right;
-    node(interval in): i(in), maxn(in.r), left(<span class="hljs-literal">NULL</span>), right(<span class="hljs-literal">NULL</span>) {}
+    node(interval in): i(in), maxn(in.r), left(NULL), right(NULL) {}
 };
-</div></code></pre>
+</code></pre>
 <p><strong>Insert</strong>: Like regular BST, using $l$ as the $\text{key}$, and record $\text{maxn}$.</p>
-<pre class="hljs"><code><div><span class="hljs-function">node* <span class="hljs-title">insert</span><span class="hljs-params">(node* u, interval i)</span> </span>{
-    <span class="hljs-keyword">if</span>(!u) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> node(i);
-    <span class="hljs-keyword">if</span>(i.l &lt; u-&gt;i.l) u-&gt;left = insert(u-&gt;left, i);
-    <span class="hljs-keyword">else</span> u-&gt;right = insert(u-&gt;right, i);
+<pre><code class="language-cpp">node* insert(node* u, interval i) {
+    if(!u) return new node(i);
+    if(i.l &lt; u-&gt;i.l) u-&gt;left = insert(u-&gt;left, i);
+    else u-&gt;right = insert(u-&gt;right, i);
     u-&gt;maxn = max(u-&gt;maxn, i.r);
-    <span class="hljs-keyword">return</span> u;
+    return u;
 }
-</div></code></pre>
+</code></pre>
 <p><strong>Search</strong>: To get all the intervals who are overlapping with $i$, there are 3 situations</p>
 <ol>
 <li>If the node has overlap with $i$, record the answer.</li>
 <li>If its left subtree's $\text{maxn}$ is greater than $i.l$, search in the left subtree.</li>
 <li>If the node's $l$ is less than $i.r$, search in the right subtree.</li>
 </ol>
-<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isOverlap</span><span class="hljs-params">(interval a, interval b)</span> </span>{
-    <span class="hljs-keyword">return</span> a.l &lt;= b.r &amp;&amp; a.r &gt;= b.l;
+<pre><code class="language-cpp">bool isOverlap(interval a, interval b) {
+    return a.l &lt;= b.r &amp;&amp; a.r &gt;= b.l;
 }
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">searchAll</span><span class="hljs-params">(node* u, interval i, <span class="hljs-built_in">vector</span>&lt;interval&gt;&amp; re)</span> </span>{
-    <span class="hljs-keyword">if</span>(!u) <span class="hljs-keyword">return</span>;
-    <span class="hljs-keyword">if</span>(isOverlap(u-&gt;i, i)) re.push_back(u-&gt;i);
-    <span class="hljs-keyword">if</span>(u-&gt;left &amp;&amp; u-&gt;left-&gt;maxn &gt;= i.l) searchAll(u-&gt;left, i, re);
-    <span class="hljs-keyword">if</span>(u-&gt;right &amp;&amp; u-&gt;i.l &lt;= i.r) searchAll(u-&gt;right, i, re);
+void searchAll(node* u, interval i, vector&lt;interval&gt;&amp; re) {
+    if(!u) return;
+    if(isOverlap(u-&gt;i, i)) re.push_back(u-&gt;i);
+    if(u-&gt;left &amp;&amp; u-&gt;left-&gt;maxn &gt;= i.l) searchAll(u-&gt;left, i, re);
+    if(u-&gt;right &amp;&amp; u-&gt;i.l &lt;= i.r) searchAll(u-&gt;right, i, re);
 }
-</div></code></pre>
+</code></pre>
 <blockquote>
 <p>The regular Interval Tree is like BST with worst time complexity $O(n)$ for each operation, but it can be optimized by AVL tree or other balanced tree, reducing the time complexity to $O(\log n)$.</p>
 </blockquote>
-<h3 id="veb-tree">vEB Tree</h3>
+<h3 id="veb-tree"><a class="header" href="#veb-tree">vEB Tree</a></h3>
 <p>An vEB (<strong>v</strong>an <strong>E</strong>mde <strong>B</strong>oas) Tree is a data structure that can support below functions in a integer set $S \subseteq \{ 0, 1, \cdots, U-1 \}$, while $U$ is the range of integers (e.g. $U=2^{16}$)</p>
-<hr>
-<h2 id="l6-hashing">L6 Hashing</h2>
-<h3 id="basic-concepts-of-hashing">Basic Concepts of Hashing</h3>
+<hr />
+<h2 id="l6-hashing"><a class="header" href="#l6-hashing">L6 Hashing</a></h2>
+<h3 id="basic-concepts-of-hashing"><a class="header" href="#basic-concepts-of-hashing">Basic Concepts of Hashing</a></h3>
 <p><strong>Hash Function</strong>: A function that maps data of <em>arbitrary size</em> to <em>fixed-sized</em> values. And the goal is to propose a data structure such that for key $k$:</p>
 <ul>
 <li>$\text{add}(k), \text{delete}(k) = O(1)$</li>
@@ -1236,7 +1046,7 @@ root = insert(root, a);
 <p align="center">
     <img src="https://img.skyzhou.top/i/2025/10/30/6902faf81c9bf.png" height="200px">
 </p>
-<h3 id="making-choices">Making Choices</h3>
+<h3 id="making-choices"><a class="header" href="#making-choices">Making Choices</a></h3>
 <p><strong>Choosing the Keys</strong>:</p>
 <ul>
 <li><strong>By Nature</strong>: Randomly from $U$. (Simple uniform hashing)</li>
@@ -1245,24 +1055,24 @@ root = insert(root, a);
 <p><strong>Choosing the Hash Funcions</strong>:</p>
 <ul>
 <li>We use a <strong>fixed</strong> hash function everyone knows.</li>
-<li>We <strong>change</strong> before each experiments the hash function, chosen randomly from a <strong>&quot;universal set&quot;</strong> of functions known to everyone.</li>
+<li>We <strong>change</strong> before each experiments the hash function, chosen randomly from a <strong>"universal set"</strong> of functions known to everyone.</li>
 </ul>
 <p><strong>Special Case</strong> (perfect hashing): We know the keys, then choose the hash function.</p>
 <p><strong>Performance</strong>: <strong>Average length of chain</strong> in a <em>typical</em> slot (same hashing value).</p>
-<h3 id="models-for-randomness">Models for Randomness</h3>
-<h4 id="simple-uniform-hashing-assumption-suha">Simple Uniform Hashing Assumption (SUHA)</h4>
+<h3 id="models-for-randomness"><a class="header" href="#models-for-randomness">Models for Randomness</a></h3>
+<h4 id="simple-uniform-hashing-assumption-suha"><a class="header" href="#simple-uniform-hashing-assumption-suha">Simple Uniform Hashing Assumption (SUHA)</a></h4>
 <p><strong>$h$ is fixed</strong>: In every experiment each key $k$'s value is chosen randomly (uniformly) from $U$.</p>
 <ul>
-<li>Then, <strong>$h$ is &quot;good&quot;</strong> if $h(k)$ scatters uniformly over the hash table:
+<li>Then, <strong>$h$ is "good"</strong> if $h(k)$ scatters uniformly over the hash table:
 $$
 P_k[h(k) = i] = \frac{1}{m}, \forall i = 1, 2, \cdots, m
 $$</li>
 <li>We call this the <strong>Simple Uniform Hashing Assumption</strong>.</li>
 </ul>
-<h4 id="universal-hashing">Universal Hashing</h4>
+<h4 id="universal-hashing"><a class="header" href="#universal-hashing">Universal Hashing</a></h4>
 <p><strong>The set of keys to be stored is assumed fixed</strong>: In every experiment, $h$ is randomly (uniformly) chosen from a set $H$.</p>
 <ul>
-<li>Then, <strong>$H$ is &quot;good&quot;</strong> if
+<li>Then, <strong>$H$ is "good"</strong> if
 $$
 P_h[h(k_1) = h(k_2)] \leq \frac{1}{m}, \forall k_1 \not= k_2
 $$</li>
@@ -1271,8 +1081,8 @@ $$</li>
 <blockquote>
 <p>Actually, Universal Hashing is not a hash function, but designing a set of hash functions. It will randomly choose a hash function when using. Or we can san <strong>Universal Hashing is using SUHA by randomization</strong>, in order to decrese the probability of collisions.</p>
 </blockquote>
-<h3 id="universal-hashing-function-examples">Universal Hashing Function Examples</h3>
-<h4 id="the-matrix-method">The Matrix Method</h4>
+<h3 id="universal-hashing-function-examples"><a class="header" href="#universal-hashing-function-examples">Universal Hashing Function Examples</a></h3>
+<h4 id="the-matrix-method"><a class="header" href="#the-matrix-method">The Matrix Method</a></h4>
 <p><strong>Settings</strong>:</p>
 <ul>
 <li>Keys are $u$-bits long, $|U| = 2^u$</li>
@@ -1308,7 +1118,7 @@ h(x) = h \cdot x =
 0
 \end{bmatrix} = 6
 $$</p>
-<h4 id="linear-hashing-for-vector-keys">Linear Hashing for Vector Keys</h4>
+<h4 id="linear-hashing-for-vector-keys"><a class="header" href="#linear-hashing-for-vector-keys">Linear Hashing for Vector Keys</a></h4>
 <p><strong>Settings</strong>:</p>
 <ul>
 <li>Suppose keys are vectors $x = (x_1, x_2, x_3, x_4)$, where $x_i$ is an $8$-bit integer. (i.e. $0 \leq x \leq 255$)</li>
@@ -1323,7 +1133,7 @@ $$
 H = \{ h_a : a \in [0, m-1]^4 \}
 $$</p>
 <p><strong>Claim</strong>: For $x \not= y, P_a[h_a(x) = h_a(y)] = \frac{1}{m}$</p>
-<h4 id="affine-hashing-for-integer-keys">Affine Hashing for Integer Keys</h4>
+<h4 id="affine-hashing-for-integer-keys"><a class="header" href="#affine-hashing-for-integer-keys">Affine Hashing for Integer Keys</a></h4>
 <p>Also called the <em>Carter-Wegman</em> construction</p>
 <p><strong>Settings</strong>:</p>
 <ul>
@@ -1340,9 +1150,9 @@ $$</p>
 $$
 h_{3,4}(8) = ((3 \cdot 8 + 4) \bmod 17) \bmod 6 = 5
 $$</p>
-<h3 id="rolling-hash">Rolling Hash</h3>
+<h3 id="rolling-hash"><a class="header" href="#rolling-hash">Rolling Hash</a></h3>
 <p><strong>Sliding window</strong>, but in hashing.</p>
-<h4 id="rabin-karp-algorithm">Rabin-Karp Algorithm</h4>
+<h4 id="rabin-karp-algorithm"><a class="header" href="#rabin-karp-algorithm">Rabin-Karp Algorithm</a></h4>
 <p>Consider a string $S = s_0 s_1 s_2 \cdots s_{n-1}$. We define a window of length $k$ s.t. $T = s_i s_{i+1} \cdots s_{i+k-1}$. And we use the polynomial hash function:
 $$
 H_i = H(T) = (s_i \cdot p^{k-1} + s_{i+1} p^{k-2} + \cdots + s_{i+k-1} \cdot p^0) \bmod M
@@ -1353,7 +1163,7 @@ $$
 H_{i+1} = ((H_i - s_i \cdot p^{k-1}) \cdot p + s_{i+k}) \bmod M
 $$</p>
 <p>And then we can $O(1)$ check whether a string of length $k$ is appeared in $S$.</p>
-<h4 id="table-doubling">Table Doubling</h4>
+<h4 id="table-doubling"><a class="header" href="#table-doubling">Table Doubling</a></h4>
 <p>We define <strong>Load Factor</strong>:
 $$
 \alpha = \frac{n}{m}
@@ -1363,14 +1173,14 @@ Where $n$ is the element number in hash table, $m$ is the bucket number of hash 
 <p>So if $\alpha$ is too large (usually $1$), we will double the bucket number $m$, then rehash all the elements into new table.</p>
 <p><strong>Average Cost of Insertions</strong> $=\frac{2^{i+2}c + 2^i c_0}{2^i} = O(1)$</p>
 <p>Or observe that up to any time $t$: by paying $O(1)$ per insert, covers at all times the total actual cost. We say that insert has an <strong>amortized cost</strong> of $O(1)$.</p>
-<h3 id="perfect-hashing">Perfect Hashing</h3>
-<h3 id="bloom-filters">Bloom Filters</h3>
-<hr>
-<h2 id="l7-amortized-analysis">L7 Amortized Analysis</h2>
-<h3 id="why-amortized-complexity">Why Amortized Complexity?</h3>
+<h3 id="perfect-hashing"><a class="header" href="#perfect-hashing">Perfect Hashing</a></h3>
+<h3 id="bloom-filters"><a class="header" href="#bloom-filters">Bloom Filters</a></h3>
+<hr />
+<h2 id="l7-amortized-analysis"><a class="header" href="#l7-amortized-analysis">L7 Amortized Analysis</a></h2>
+<h3 id="why-amortized-complexity"><a class="header" href="#why-amortized-complexity">Why Amortized Complexity?</a></h3>
 <p>Think about doubling hash tables, some of the functions are <em>cheap</em>, like $O(1)$ calculate hashing, but some are <em>expensive</em>, like $O(n)$ to doubling hash tables.</p>
 <p><strong>Amortized analysis</strong> is a way to make sure each function is in an <strong>average time</strong>, no need to assume randomized input.</p>
-<h3 id="actual-cost-and-amortized-cost">Actual Cost and Amortized Cost</h3>
+<h3 id="actual-cost-and-amortized-cost"><a class="header" href="#actual-cost-and-amortized-cost">Actual Cost and Amortized Cost</a></h3>
 <p>$c(t) = $ <strong>actual cost</strong> of the operation at time $t$. It can be a function of the state of the data structure, e.g. depends on $n$ = number of elements stored at time $t$.</p>
 <p>$a(t) = $ <strong>amortized cost</strong> of the operation at time $t$. Assume $a(t) = O(1) \ \forall t$, i.e., $a(t) \leq c_a \ \forall t$</p>
 <p>Suppose that we have shown that on any trajectory $0, 1, \cdots, T$,
@@ -1382,20 +1192,20 @@ $$</p>
 $$
 \sum_{0 \leq t \leq T} c(t) \leq \sum_{0 \leq t \leq T} a(t) \leq c_a T
 $$</p>
-<h3 id="amortization-methods">Amortization Methods</h3>
-<h4 id="aggregate-method">Aggregate Method</h4>
+<h3 id="amortization-methods"><a class="header" href="#amortization-methods">Amortization Methods</a></h3>
+<h4 id="aggregate-method"><a class="header" href="#aggregate-method">Aggregate Method</a></h4>
 <p>The easiest way of amortization.</p>
 <p>$$
 \text{amortized cost per op} = \frac{\text{total cost of } k \text{ ops}}{k}
 $$</p>
-<h4 id="amortized-bound">Amortized Bound</h4>
+<h4 id="amortized-bound"><a class="header" href="#amortized-bound">Amortized Bound</a></h4>
 <p>Define an amortized cost $a_op(t) = O(1)$ to each operation type s.t. for <strong>any possible sequence of operations</strong>, the total cost is covered. That is,
 $$
 \sum(\text{amortized costs}) \geq \sum(\text{actual costs})
 $$</p>
 <p>Methods: <strong>Accounting</strong> method, <strong>Charging</strong> method, <strong>Potential</strong> method.</p>
-<h2 id="l8-graphs">L8 Graphs</h2>
-<h3 id="graph-definition">Graph Definition</h3>
+<h2 id="l8-graphs"><a class="header" href="#l8-graphs">L8 Graphs</a></h2>
+<h3 id="graph-definition"><a class="header" href="#graph-definition">Graph Definition</a></h3>
 <p>$G = (V, E)$</p>
 <p>$V$: A set of <strong>vertices</strong>. $|V|$ usually denoted by $n$.</p>
 <p>$E \subseteq V \times V$: A set of <strong>edges</strong> (pair of vertices). $|E|$ usually denoted by $m$.</p>
@@ -1405,14 +1215,14 @@ $$</p>
 <li><strong>Directed graph</strong>: Edges have order.</li>
 <li><strong>Undirected graph</strong>: Ignore order. Then only $\frac{n(n-1)}{2}$ possible edges.</li>
 </ul>
-<h4 id="problems-relates-to-graphs">Problems Relates to Graphs</h4>
+<h4 id="problems-relates-to-graphs"><a class="header" href="#problems-relates-to-graphs">Problems Relates to Graphs</a></h4>
 <p><strong>Reachability</strong>: Find all states reachable from a given state.</p>
 <p><strong>Shortest Paths</strong>: Find the shortest path between state $s_0$ and $s_d$.</p>
 <p><strong>Cycle</strong>: Find if a directed graph has a cycle.</p>
 <p><strong>Topological Sort</strong>: Find a <em>causal ordering</em> of the nodes if it exists.</p>
 <p><strong>Minimum Spanning Tree</strong>: Find the <em>minimum</em> subgraph that contains all nodes.</p>
 <p><strong>Strongly Connected Components</strong>: Maximal sets of nodes that from every node can reach any other node in the set (mixing).</p>
-<h4 id="graph-representation">Graph Representation</h4>
+<h4 id="graph-representation"><a class="header" href="#graph-representation">Graph Representation</a></h4>
 <p>Four representations with pros/cons:</p>
 <ul>
 <li><strong>Adjacency Lists</strong> (of <em>neighbors</em> for each vertex)</li>
@@ -1420,27 +1230,27 @@ $$</p>
 <li><strong>Adjacency Matrix</strong> (0-1, which pairs are adjacent)</li>
 <li>Implicit representation (as a <em>find neighbor</em> function)</li>
 </ul>
-<h3 id="dfs">DFS</h3>
+<h3 id="dfs"><a class="header" href="#dfs">DFS</a></h3>
 <p><strong>Depth-First Search (DFS)</strong> is a versatile linear-time procedure that <strong>reveals a wealth of information</strong> about a graph.</p>
-<pre class="hljs"><code><div><span class="hljs-keyword">int</span> n, m;
-<span class="hljs-built_in">vector</span> &lt;<span class="hljs-keyword">int</span>&gt; g[MAXN];
-<span class="hljs-keyword">int</span> vis[MAXN]; <span class="hljs-comment">// 0: WHITE, 1: GREY, 2: BLACK</span>
-<span class="hljs-keyword">int</span> d[MAXN], f[MAXN], cnt;
+<pre><code class="language-cpp">int n, m;
+vector &lt;int&gt; g[MAXN];
+int vis[MAXN]; // 0: WHITE, 1: GREY, 2: BLACK
+int d[MAXN], f[MAXN], cnt;
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u)</span> </span>{
+void dfs(int u) {
     cnt++;
     d[u] = cnt;
-    vis[u] = <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>; x &lt; g[u].size(); x++) {
-        <span class="hljs-keyword">int</span> v = g[u][x];
-        <span class="hljs-keyword">if</span>(!vis[v]) dfs(v);
+    vis[u] = 1;
+    for(int x = 0; x &lt; g[u].size(); x++) {
+        int v = g[u][x];
+        if(!vis[v]) dfs(v);
     }
     cnt++;
     f[u] = cnt;
-    vis[u] = <span class="hljs-number">2</span>;
+    vis[u] = 2;
 }
-</div></code></pre>
-<h4 id="properties-of-dfs">Properties of DFS</h4>
+</code></pre>
+<h4 id="properties-of-dfs"><a class="header" href="#properties-of-dfs">Properties of DFS</a></h4>
 <p>When DFS a graph, we will record two time stamp of each vertex:</p>
 <ul>
 <li>$d[u]$: <strong>Discover Time</strong>, when $u$ is first visited.</li>
@@ -1473,7 +1283,7 @@ $$</p>
 <p align="center">
     <img src="https://img.skyzhou.top/i/2025/10/31/69043ba1d4b9e.png" height="250px">
 </p>
-<h4 id="white-path-theorem">White Path Theorem</h4>
+<h4 id="white-path-theorem"><a class="header" href="#white-path-theorem">White Path Theorem</a></h4>
 <p>We colored the vertex in DFS:</p>
 <ul>
 <li><strong>White</strong>: Not yet visited</li>
@@ -1482,10 +1292,10 @@ $$</p>
 </ul>
 <p>If, during a DFS, there is a path from a vertex $u$ to a vertex $v$ that only goes through <em>white</em> vertices, then <strong>$v$ will become a descendant of $u$</strong> in the DFS tree.</p>
 <p align="center">
-    <img src="https://img.skyzhou.top/i/2025/10/31/69043a9b79fc6.png" height="200px">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69043a9b79fc6.png"  height="200px">
 </p>
 <p>We can use it to <strong>detect cycle</strong> in graph: When we see a <strong>back edge</strong>, or <strong>meet non-white node</strong>, means we found a path from a node $u$ back to one of its ancestors $v$, and there is a cycle.</p>
-<h4 id="topological-sort">Topological Sort</h4>
+<h4 id="topological-sort"><a class="header" href="#topological-sort">Topological Sort</a></h4>
 <p><strong>Topological Sort</strong> of a DAG $G=(V,E)$.</p>
 <p><strong>Theorem</strong>: $G$ is a DAG iff there is a <strong>linear ordering</strong> of all its $v \in V$  s.t., if $(u, v) \in E$, then $u &lt; v$ in the above ordering. Or we say $(u,v)$ goes always from left to right.</p>
 <p><strong>Algorithm</strong>: Given DAG $G$.</p>
@@ -1495,10 +1305,79 @@ $$</p>
 </ol>
 <p>Corollary: In a DAG, $(u, v) \in E \iff u.f &gt; v.f$ for any DFS.</p>
 <p align="center">
-    <img src="https://img.skyzhou.top/i/2025/10/31/69043f16a01c3.png" height="150px">
+    <img src="https://img.skyzhou.top/i/2025/10/31/69043f16a01c3.png"  height="150px">
 </p>
-<h3 id="bfs">BFS</h3>
-<h3 id="scc">SCC</h3>
+<h3 id="bfs"><a class="header" href="#bfs">BFS</a></h3>
+<p><strong>Breath-First Search (BFS)</strong> is searching neighbors around each node. And we usually use <strong>queue</strong> to implement.</p>
+<pre><code class="language-cpp">int n, m;
+vector &lt;int&gt; g[MAXN];
+bool vis[MAXN];
 
-</body>
+void bfs(int st) {
+    queue &lt;int&gt; q;
+    q.push(st);
+    vis[st] = true;
+    while(!q.empty()) {
+        int u = q.front(); q.pop();
+        for(int x = 0; x &lt; g[u].size(); x++) {
+            int v = g[u][x];
+            if(!vis[v]) {
+                vis[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+</code></pre>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/10/31/690458e5c63e0.png"  height="250px">
+</p>
+<h3 id="scc"><a class="header" href="#scc">SCC</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="CSC3200.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="CSC3200.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="src/mathjax-init.js"></script>
+
+
+
+    </div>
+    </body>
 </html>
