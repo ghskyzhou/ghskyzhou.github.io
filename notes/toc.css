@@ -1,0 +1,38 @@
+.sidebar-toc-title {
+  font-weight: 700;
+  margin: 10px 0 6px 12px;
+  color: var(--fg);
+}
+
+.sidebar-toc-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 12px;
+}
+
+.sidebar-toc-item {
+  margin: 4px 0;
+}
+
+.sidebar-toc-item.h2 {
+  margin-left: 12px;
+  font-size: 14px;
+}
+.sidebar-toc-item.h3 {
+  margin-left: 24px;
+  font-size: 13px;
+}
+
+.sidebar-toc-item a {
+  text-decoration: none;
+  color: var(--fg);
+  opacity: 0.85;
+}
+.sidebar-toc-item a:hover {
+  opacity: 1;
+}
+
+.sidebar-toc-item a.active {
+  font-weight: bold;
+  color: var(--links);
+}
