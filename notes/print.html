@@ -177,7 +177,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="csc3001-discrete-mathematics"><a class="header" href="#csc3001-discrete-mathematics">CSC3001 Discrete Mathematics</a></h1>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="csc3001-discrete-mathematics"><a class="header" href="#csc3001-discrete-mathematics">CSC3001 Discrete Mathematics</a></h1>
 <h2 id="l0-introduction"><a class="header" href="#l0-introduction">L0 Introduction</a></h2>
 <h3 id="main-course-topics"><a class="header" href="#main-course-topics">Main Course Topics</a></h3>
 <ul>
@@ -471,7 +472,7 @@ $$
 \text{(valid rule, provided $c$ is independent of $A$)}
 $$</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="csc3200-data-structures-and-advanced-programming"><a class="header" href="#csc3200-data-structures-and-advanced-programming">CSC3200 Data Structures and Advanced Programming</a></h1>
-<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<h2 id="introduction-1"><a class="header" href="#introduction-1">Introduction</a></h2>
 <p>Teaching C++ first.</p>
 <p>Then data sturctures.</p>
 <h2 id="assignment-1"><a class="header" href="#assignment-1">Assignment 1</a></h2>
@@ -1047,6 +1048,261 @@ namespace student_std {
 
 #endif
 </code></pre>
+<h2 id="assignment-3"><a class="header" href="#assignment-3">Assignment 3</a></h2>
+<h3 id="maze"><a class="header" href="#maze">Maze</a></h3>
+<p>Too simple.</p>
+<h3 id="priority-queue"><a class="header" href="#priority-queue">Priority Queue</a></h3>
+<p>Priority queue with <code>list</code> and $O(n)$ operation ??? What the fk are you doing CUHKSZ</p>
+<h4 id="student_priority_queueh"><a class="header" href="#student_priority_queueh">student_priority_queue.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_PRIORITY_QUEUE_H
+#define STUDENT_PRIORITY_QUEUE_H
+
+#include &lt;list&gt;
+
+namespace student_std {
+    template &lt;typename T, typename Container = std::list&lt;T&gt;&gt;
+    class priority_queue {
+        public:
+            using container_type = Container;
+            using value_type = typename Container::value_type;
+            using size_type = typename Container::size_type;
+            // ...
+        private:
+            Container c;
+            static bool cmp(T a, T b) {
+                return b &lt; a;
+            }
+        public:
+            priority_queue() = default;
+            priority_queue(const priority_queue &amp;other) {
+                c = other.c;
+            }
+            priority_queue &amp;operator = (const priority_queue &amp;other) {
+                if(this != &amp;other) c = other.c;
+                return this;
+            }
+            value_type const&amp; top() const {
+                return *c.begin();
+            }
+            void pop() {
+                c.erase(c.begin());
+            }
+            size_type size() const {
+                return c.size();
+            }
+            bool empty() const {
+                return c.empty();
+            }
+            void push(const value_type &amp;val) {
+                auto it = c.begin();
+                while(it != c.end() &amp;&amp; val &lt; *it) it++;
+                c.insert(it, val);
+            }
+            void swap(priority_queue &amp;other) {
+                c.swap(other.c);
+            }
+    };
+}
+
+#endif
+</code></pre>
+<h2 id="assignment-4"><a class="header" href="#assignment-4">Assignment 4</a></h2>
+<h3 id="unordered-map"><a class="header" href="#unordered-map">Unordered Map</a></h3>
+<p>Implement an unordered map using bucket hashing.</p>
+<p>Bucket type: <code>vector</code> and <code>list</code></p>
+<h4 id="student_unordered_maph"><a class="header" href="#student_unordered_maph">student_unordered_map.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_UNORDERED_MAP_H
+#define STUDENT_UNORDERED_MAP_H
+
+#include &lt;vector&gt;
+#include &lt;list&gt;
+#include &lt;functional&gt;
+#include &lt;utility&gt;
+#include &lt;cassert&gt;
+
+namespace student_std {
+    template &lt;typename Key, typename T, typename Hash = std::hash&lt;Key&gt;&gt;
+    class unordered_map {
+        public:
+            using key_type = Key;
+            using mapped_type = T;
+            using size_type = std::size_t;
+            using difference_type = std::ptrdiff_t;
+            using value_type = std::pair&lt;Key, T&gt;;
+            using hasher = Hash;
+            using reference = value_type&amp;;
+            using const_reference = const value_type&amp;;
+        
+        private:
+            std::vector &lt;std::list &lt;value_type&gt;&gt; buckets;
+            size_type sz = 0;
+            hasher hsh;
+
+            size_type index_for(Key const&amp; k) const {
+                return hsh(k) % buckets.size();
+            }
+
+            double load_factor() const {
+                return double(sz) / double(buckets.size());
+            }
+            
+            void rehash(size_type newsz) {
+                auto tmp = std::move(buckets);
+                buckets = std::vector &lt;std::list &lt;value_type&gt;&gt; (newsz);
+                for(auto&amp; lst : tmp) {
+                    for(auto&amp; x : lst) {
+                        size_type idx = index_for(x.first);
+                        buckets[idx].push_back(std::move(x));
+                    }
+                }
+            }
+
+        public:
+            unordered_map(size_type init_sz = 8) : buckets(init_sz) {}
+
+            size_type size() const {
+                return sz;
+            }
+
+            bool empty() const {
+                return sz == 0;
+            }
+
+            size_type bucket_count() const {
+                return buckets.size();
+            }
+
+            bool contains(key_type const&amp; k) const {
+                size_type idx = index_for(k);
+                for(auto const&amp; x : buckets[idx]) {
+                    if(x.first == k) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            void clear() {
+                for(auto&amp; x : buckets) {
+                    x.clear();
+                }
+                sz = 0;
+            }
+
+            size_type erase(key_type const&amp; k) {
+                size_type idx = index_for(k);
+                auto&amp; lst = buckets[idx];
+                for(auto it = lst.begin(); it != lst.end(); it++) {
+                    if(it-&gt;first == k) {
+                        lst.erase(it);
+                        sz--;
+                        return 1;
+                    }
+                }
+                return 0;
+            }
+
+            T&amp; operator [](key_type const&amp; k) {
+                size_type idx = index_for(k);
+                auto&amp; lst = buckets[idx];
+                for(auto&amp; x : lst) {
+                    if(x.first == k) {
+                        return x.second;
+                    }
+                }
+                
+                lst.emplace_back(k, T());
+                sz++;
+                if(load_factor() &gt;= 2.0) {
+                    rehash(buckets.size()*2);
+                }
+                idx = index_for(k);
+                auto&amp; nlst = buckets[idx];
+                for(auto&amp; x : nlst) {
+                    if(x.first == k) {
+                        return x.second;
+                    }
+                }
+                assert(false);
+                static T re{};
+                return re;
+            }
+    };
+}
+
+#endif
+</code></pre>
+<h3 id="bsts-inorder-iterator"><a class="header" href="#bsts-inorder-iterator">BST's Inorder Iterator</a></h3>
+<p>Implement the binary tree traversal inorder forward iterator from scratch.</p>
+<h4 id="student_inorder_iteratorh"><a class="header" href="#student_inorder_iteratorh">student_inorder_iterator.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_INORDER_ITERATOR_H
+#define STUDENT_INORDER_ITERATOR_H
+
+namespace student_std {
+    template &lt;typename BinaryTree&gt;
+    class inorder_iterator {
+        public:
+            using value_type = typename BinaryTree::value_type;
+            using difference_type = std::ptrdiff_t;
+            using iterator_category = std::forward_iterator_tag;
+            using reference = value_type const&amp;;
+            using pointer = value_type const*;
+        
+        private:
+            BinaryTree const* cur;
+        
+        public:
+            inorder_iterator() : cur(nullptr) {}
+
+            inorder_iterator(BinaryTree const* node) {
+                cur = node;
+                if(cur) {
+                    while(cur-&gt;left()) cur = cur-&gt;left();
+                }
+            }
+
+            reference operator*() const {
+                return cur-&gt;value();
+            }
+
+            pointer operator-&gt;() const {
+                return &amp;(cur-&gt;value());
+            }
+
+            inorder_iterator&amp; operator++() {
+                if(!cur) return *this;
+                if(cur-&gt;right()) {
+                    cur = cur-&gt;right();
+                    while(cur-&gt;left()) cur = cur-&gt;left();
+                    return *this;
+                }
+                auto p = cur-&gt;parent();
+                while(p &amp;&amp; p-&gt;right() == cur) {
+                    cur = p;
+                    p = p-&gt;parent();
+                }
+                cur = p;
+                return *this;
+            }
+            
+            inorder_iterator operator++(int) {
+                inorder_iterator tmp = *this;
+                ++(*this);
+                return tmp;
+            }
+
+            bool operator==(inorder_iterator const&amp; other) const {
+                return cur == other.cur;
+            }
+            
+            bool operator!=(inorder_iterator const&amp; other) const {
+                return !(*this == other);
+            }
+    };
+}
+
+#endif
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="csc4120-design-and-analysis-of-algorithms"><a class="header" href="#csc4120-design-and-analysis-of-algorithms">CSC4120 Design and Analysis of Algorithms</a></h1>
 <h2 id="l0-introduction-1"><a class="header" href="#l0-introduction-1">L0 Introduction</a></h2>
 <h3 id="main-course-topics-1"><a class="header" href="#main-course-topics-1">Main Course Topics</a></h3>
@@ -1544,7 +1800,7 @@ $$</p>
 <p>We operate on objects of the form: <strong>object $x = (x.\text{key}, x.\text{data})$</strong>.</p>
 <p>The attribute $x.\text{key}$ characterizes <strong>uniquely</strong> the object $x$. And we store $x.\text{key}$ combined with a pointer to the location of $x.\text{data}$ in memory.</p>
 <p>Inserting and searching for object $x$ is done by inserting and searching for $x.\text{key}$. Or we can say we mostly focus on $x.\text{key}$ instead of $x.\text{data}$.</p>
-<h4 id="priority-queue"><a class="header" href="#priority-queue">Priority Queue</a></h4>
+<h4 id="priority-queue-1"><a class="header" href="#priority-queue-1">Priority Queue</a></h4>
 <p>$S$: set of elements $\{ x_1, x_2, \cdots, x_n \}$.</p>
 <p>$x_i = (\text{key}_i, \text{data}_i)$.</p>
 <p>Operations: $\text{Insert}(S,x), \max(S), \text{Extract-max}(S), \text{Incr-key}(S, x, k)$.</p>
