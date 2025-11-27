@@ -1316,6 +1316,381 @@ namespace student_std {
 
 #endif
 </code></pre>
+<h2 id="assignment-5"><a class="header" href="#assignment-5">Assignment 5</a></h2>
+<h3 id="avl-tree"><a class="header" href="#avl-tree">AVL Tree</a></h3>
+<p>Implement an AVL Tree from scratch.</p>
+<h4 id="student_avl_treeh"><a class="header" href="#student_avl_treeh">student_avl_tree.h</a></h4>
+<pre><code class="language-cpp">#ifndef STUDENT_AVL_TREE_H
+#define STUDENT_AVL_TREE_H
+
+#include &lt;algorithm&gt;
+#include &lt;functional&gt;
+#include &lt;utility&gt;
+#include &lt;cstddef&gt;
+#include &lt;iterator&gt;
+
+namespace student_std {
+    template &lt;typename Key, typename Comp = std::less&lt;Key&gt;&gt;
+    class avl_tree {
+        class avl_node {
+            public:
+                using size_type = std::size_t;
+                using difference_type = std::ptrdiff_t;
+
+                avl_node(const Key&amp; k, avl_node* p = nullptr) : 
+                    m_key(k), m_parent(p), m_left(nullptr), m_right(nullptr), m_size(1), m_height(0) {}
+                Key const&amp; value() const { return m_key; }; 
+                avl_node const* parent() const { return m_parent; }; 
+                avl_node const* left() const { return m_left; }; 
+                avl_node const* right() const{ return m_right; }; 
+                
+                size_type size() const { return m_size; } 
+                std::ptrdiff_t height() const { return m_height; } 
+            
+            private:
+                size_type m_size; 
+                std::ptrdiff_t m_height; 
+                Key m_key;
+                avl_node* m_parent;
+                avl_node* m_left;
+                avl_node* m_right;
+                friend class avl_tree;
+        };
+
+        class iterator {
+            public:
+                using value_type = avl_node;
+                using reference = value_type const&amp;;
+                using pointer = value_type const*;
+                using difference_type = std::ptrdiff_t;
+                using iterator_category = std::bidirectional_iterator_tag;
+                
+                iterator(avl_node* node = nullptr) : m_node{node} {}
+                iterator(pointer node) : m_node{const_cast&lt;avl_node*&gt;(node)} {}
+
+                iterator&amp; operator++() { // O(log n)
+                    if (m_node == nullptr) return *this;
+                    
+                    if (m_node-&gt;m_right) {
+                        m_node = m_node-&gt;m_right;
+                        while (m_node-&gt;m_left) {
+                            m_node = m_node-&gt;m_left;
+                        }
+                    } else {
+                        avl_node* p = m_node-&gt;m_parent;
+                        while (p &amp;&amp; m_node == p-&gt;m_right) {
+                            m_node = p;
+                            p = p-&gt;m_parent;
+                        }
+                        m_node = p;
+                    }
+                    return *this;
+                }
+
+                iterator operator++(int) { // O(log n)
+                    iterator tmp = *this;
+                    ++(*this);
+                    return tmp;
+                }
+
+                iterator&amp; operator--() { // O(log n)
+                    if (m_node == nullptr) return *this; 
+
+                    if (m_node-&gt;m_left) {
+                        m_node = m_node-&gt;m_left;
+                        while (m_node-&gt;m_right) {
+                            m_node = m_node-&gt;m_right;
+                        }
+                    } else {
+                        avl_node* p = m_node-&gt;m_parent;
+                        while (p &amp;&amp; m_node == p-&gt;m_left) {
+                            m_node = p;
+                            p = p-&gt;m_parent;
+                        }
+                        m_node = p;
+                    }
+                    return *this;
+                }
+
+                iterator operator--(int) { // O(log n)
+                    iterator tmp = *this;
+                    --(*this);
+                    return tmp;
+                }
+
+                reference operator*() const { // O(1)
+                    return *m_node;
+                }
+
+                pointer operator-&gt;() const { // O(1)
+                    return m_node;
+                }
+
+                bool operator==(iterator const&amp; other) const {
+                    return m_node == other.m_node;
+                }
+                bool operator!=(iterator const&amp; other) const {
+                    return m_node != other.m_node;
+                }
+            private:
+                avl_node* m_node;
+                friend class avl_tree;
+        };
+
+        public:
+            using key_type = Key;
+            using node_type = avl_node;
+            using size_type = std::size_t;
+            using comparison = Comp;
+            using const_iterator = iterator;
+
+            avl_tree() : m_root(nullptr), m_comp(comparison()) {}
+            ~avl_tree() { clear(m_root); }
+
+            iterator insert(Key const&amp; key) { // O(log n)
+                if (!m_root) {
+                    m_root = new avl_node(key);
+                    return iterator(m_root);
+                }
+
+                avl_node* current = m_root;
+                avl_node* parent = nullptr;
+
+                while (current) {
+                    parent = current;
+                    if (m_comp(key, current-&gt;m_key)) {
+                        current = current-&gt;m_left;
+                    } else if (m_comp(current-&gt;m_key, key)) {
+                        current = current-&gt;m_right;
+                    } else {
+                        return iterator(current);
+                    }
+                }
+
+                avl_node* new_node = new avl_node(key, parent);
+                if (m_comp(key, parent-&gt;m_key)) {
+                    parent-&gt;m_left = new_node;
+                } else {
+                    parent-&gt;m_right = new_node;
+                }
+
+                rebalance_path(new_node);
+                return iterator(new_node);
+            }
+
+            iterator erase(Key const&amp; key) { // O(log n)
+                avl_node* node = find_node(key);
+                if (!node) return end();
+
+                avl_node* node_to_delete = node;
+                avl_node* successor_to_return = nullptr;
+
+                if (node-&gt;m_right) {
+                    successor_to_return = node-&gt;m_right;
+                    while (successor_to_return-&gt;m_left) {
+                        successor_to_return = successor_to_return-&gt;m_left;
+                    }
+                } else {
+                    avl_node* p = node-&gt;m_parent;
+                    while (p &amp;&amp; node == p-&gt;m_right) {
+                        node = p;
+                        p = p-&gt;m_parent;
+                    }
+                    successor_to_return = p;
+                }
+
+                if (node_to_delete-&gt;m_left &amp;&amp; node_to_delete-&gt;m_right) {
+                    avl_node* successor_swap = node_to_delete-&gt;m_right;
+                    while (successor_swap-&gt;m_left) {
+                        successor_swap = successor_swap-&gt;m_left;
+                    }
+                    
+                    node_to_delete-&gt;m_key = successor_swap-&gt;m_key; 
+                    
+                    node_to_delete = successor_swap;
+                }
+
+                avl_node* child = (node_to_delete-&gt;m_left) ? node_to_delete-&gt;m_left : node_to_delete-&gt;m_right;
+                avl_node* parent_of_deleted = node_to_delete-&gt;m_parent;
+                
+                avl_node* rebalance_start_node = parent_of_deleted; 
+
+                if (child) {
+                    child-&gt;m_parent = parent_of_deleted;
+                }
+
+                if (!parent_of_deleted) {
+                    m_root = child;
+                } else {
+                    if (parent_of_deleted-&gt;m_left == node_to_delete) {
+                        parent_of_deleted-&gt;m_left = child;
+                    } else {
+                        parent_of_deleted-&gt;m_right = child;
+                    }
+                }
+
+                delete node_to_delete;
+                if (rebalance_start_node) {
+                    rebalance_path(rebalance_start_node);
+                }
+                return iterator(successor_to_return); 
+            }
+
+            iterator find(Key const&amp; key) const { // O(log n)
+                avl_node* res = find_node(key);
+                return iterator(res);
+            }
+
+            bool contains(Key const&amp; key) const { // O(log n)
+                return find_node(key) != nullptr;
+            }
+
+            size_type size() const { // O(1)
+                return m_root ? m_root-&gt;m_size : 0;
+            }
+
+            std::ptrdiff_t height() const { // O(1)
+                return m_root ? m_root-&gt;m_height : -1;
+            }
+
+            std::ptrdiff_t getBL() const {
+                return get_balance_factor(m_root);
+            }
+
+            iterator begin() const { // O(log n)
+                if (!m_root) return iterator(static_cast&lt;avl_node*&gt;(nullptr));
+                avl_node* curr = m_root;
+                while (curr-&gt;m_left) {
+                    curr = curr-&gt;m_left;
+                }
+                return iterator(curr);
+            }
+
+            iterator end() const { 
+                return iterator(static_cast&lt;avl_node*&gt;(nullptr));
+            }
+
+            iterator root() const { // O(1)
+                return iterator(m_root);
+            }
+
+        private:
+            avl_node* m_root;
+            comparison m_comp;
+
+            avl_node* find_node(Key const&amp; key) const { // O(log n)
+                avl_node* curr = m_root;
+                while (curr) {
+                    if (m_comp(key, curr-&gt;m_key)) {
+                        curr = curr-&gt;m_left;
+                    } else if (m_comp(curr-&gt;m_key, key)) {
+                        curr = curr-&gt;m_right;
+                    } else {
+                        return curr;
+                    }
+                }
+                return nullptr;
+            }
+
+            void clear(avl_node* node) {
+                if (node) {
+                    clear(node-&gt;m_left);
+                    clear(node-&gt;m_right);
+                    delete node;
+                }
+            }
+
+            std::ptrdiff_t get_height(avl_node* n) const {
+                return n ? n-&gt;m_height : -1;
+            }
+
+            size_type get_size(avl_node* n) const {
+                return n ? n-&gt;m_size : 0;
+            }
+
+            std::ptrdiff_t get_balance_factor(avl_node* n) const {
+                if (!n) return 0;
+                return get_height(n-&gt;m_left) - get_height(n-&gt;m_right);
+            }
+
+            void update_stats(avl_node* n) {
+                if (n) {
+                    n-&gt;m_height = 1 + std::max(get_height(n-&gt;m_left), get_height(n-&gt;m_right));
+                    n-&gt;m_size = 1 + get_size(n-&gt;m_left) + get_size(n-&gt;m_right);
+                }
+            }
+
+            void rotate_right(avl_node* y) {
+                avl_node* x = y-&gt;m_left;
+                avl_node* T2 = x-&gt;m_right;
+
+                x-&gt;m_right = y;
+                y-&gt;m_left = T2;
+
+                x-&gt;m_parent = y-&gt;m_parent;
+                y-&gt;m_parent = x;
+                if (T2) T2-&gt;m_parent = y;
+
+                if (x-&gt;m_parent) {
+                    if (x-&gt;m_parent-&gt;m_left == y) x-&gt;m_parent-&gt;m_left = x;
+                    else x-&gt;m_parent-&gt;m_right = x;
+                } else {
+                    m_root = x;
+                }
+
+                update_stats(y);
+                update_stats(x);
+            }
+
+            void rotate_left(avl_node* x) {
+                avl_node* y = x-&gt;m_right;
+                avl_node* T2 = y-&gt;m_left;
+
+                y-&gt;m_left = x;
+                x-&gt;m_right = T2;
+
+                y-&gt;m_parent = x-&gt;m_parent;
+                x-&gt;m_parent = y;
+                if (T2) T2-&gt;m_parent = x;
+
+                if (y-&gt;m_parent) {
+                    if (y-&gt;m_parent-&gt;m_left == x) y-&gt;m_parent-&gt;m_left = y;
+                    else y-&gt;m_parent-&gt;m_right = y;
+                } else {
+                    m_root = y;
+                }
+
+                update_stats(x);
+                update_stats(y);
+            }
+
+            void rebalance_path(avl_node* node) {
+                while (node) {
+                    update_stats(node);
+                    std::ptrdiff_t balance = get_balance_factor(node);
+
+                    // Left Heavy
+                    if (balance &gt; 1) {
+                        if (get_balance_factor(node-&gt;m_left) &lt; 0) {
+                            rotate_left(node-&gt;m_left); // LR
+                        }
+                        rotate_right(node); // LL or LR
+                    }
+                    // Right Heavy
+                    else if (balance &lt; -1) {
+                        if (get_balance_factor(node-&gt;m_right) &gt; 0) {
+                            rotate_right(node-&gt;m_right); // RL
+                        }
+                        rotate_left(node); // RR or RL
+                    }
+                    node = node-&gt;m_parent; 
+                }
+            }
+    };
+}
+
+#endif
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="csc4120-design-and-analysis-of-algorithms"><a class="header" href="#csc4120-design-and-analysis-of-algorithms">CSC4120 Design and Analysis of Algorithms</a></h1>
 <h2 id="l0-introduction-1"><a class="header" href="#l0-introduction-1">L0 Introduction</a></h2>
 <h3 id="main-course-topics-1"><a class="header" href="#main-course-topics-1">Main Course Topics</a></h3>
@@ -1985,7 +2360,7 @@ root = insert(root, a);
 <blockquote>
 <p>Warning: We usually use the different key to insert, but if there exists two same keys, we can do a <strong>count</strong>, or change the right subtree to <strong>greater or equal</strong> subtree.</p>
 </blockquote>
-<h3 id="avl-tree"><a class="header" href="#avl-tree">AVL Tree</a></h3>
+<h3 id="avl-tree-1"><a class="header" href="#avl-tree-1">AVL Tree</a></h3>
 <p>An <strong>AVL</strong> (<strong>A</strong>delson-<strong>V</strong>elskii and <strong>L</strong>andis) <strong>Tree</strong> is a <strong>self-balancing binary search tree</strong>.</p>
 <p><strong>Property</strong>: For every node, store its <strong>height</strong>:</p>
 <ul>
