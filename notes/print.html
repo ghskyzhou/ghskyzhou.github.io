@@ -2914,6 +2914,382 @@ void kosaraju() {
 }
 </code></pre>
 <p>And we can find all the SCCs using 2 DFS, with time complexity $O(n + m)$.</p>
+<h2 id="after-midterm-1-day-before-final"><a class="header" href="#after-midterm-1-day-before-final">After Midterm (1 DAY BEFORE FINAL)</a></h2>
+<p>妈的，没时间了，得赶紧速通了</p>
+<h3 id="最短路单源"><a class="header" href="#最短路单源">最短路（单源）</a></h3>
+<p>对于一个图 $G(V,E)$，其中两点 $u, v \in V$ 的最短路长度定义为 $\delta(u, v)$，且容易得到：
+$$
+\delta(s, t) \leq \delta(s, u) + \delta(u, t)
+$$</p>
+<h4 id="bellman-ford"><a class="header" href="#bellman-ford">Bellman-Ford</a></h4>
+<p>核心思想：对所有边执行 $n-1$ 轮松弛，复杂度 $O(nm)$</p>
+<pre><code class="language-cpp">struct Edge {
+    int u, v;
+    LL w;
+};
+
+vector&lt;Edge&gt; edges;
+vector&lt;LL&gt; dist;
+int n, m, s;
+
+bool bellman_ford() {
+    dist.assign(n + 1, LLONG_MAX);
+    dist[s] = 0;
+
+    // n-1 次松弛
+    for (int i = 1; i &lt;= n - 1; i++) {
+        bool updated = false;
+        for (auto &amp;e : edges) {
+            if (dist[e.u] != LLONG_MAX &amp;&amp;
+                dist[e.u] + e.w &lt; dist[e.v]) {
+                dist[e.v] = dist[e.u] + e.w;
+                updated = true;
+            }
+        }
+        if (!updated) break; // 提前结束
+    }
+
+    // 第 n 次检查负环
+    for (auto &amp;e : edges) {
+        if (dist[e.u] != LLONG_MAX &amp;&amp;
+            dist[e.u] + e.w &lt; dist[e.v]) {
+            return false; // 有负环
+        }
+    }
+    return true; // 无负环
+}
+
+</code></pre>
+<h4 id="dijkstra"><a class="header" href="#dijkstra">Dijkstra</a></h4>
+<p>核心思想：每一步都“贪心”地确定一个当前距离最小的点，并且一旦确定，就不会被更改。</p>
+<p>算法维护两个集合：一个 $S$ 表示最短路已经被确定的点，还有一个 $V-S$ 表示还没被确定的点。每一步做三件事：</p>
+<ol>
+<li>在 $V-S$ 中找到 $d$ 最小的点 $u$</li>
+<li>把 $u$ 加入 $S$</li>
+<li>用 $u$ 去松弛所有出边</li>
+</ol>
+<p>那么，这个 $u$ 总是当前离 $s$ 最近的未确定点，不可能被绕路更短。</p>
+<blockquote>
+<p>注意：没有负权的情况下</p>
+</blockquote>
+<pre><code class="language-cpp">struct node {
+	int v, dis;
+};
+
+struct pri {
+	int ans, id;
+	bool operator &lt; (const pri &amp;x) const{return x.ans &lt; ans;}
+};
+
+priority_queue &lt;pri&gt; q;
+vector &lt;node&gt; g[MAXN];
+int n, m, d[MAXN], pre[MAXN];
+bool vis[MAXN];
+
+void Dijkstra(int st) {
+	for(int x = 1; x &lt;= n; x++) {
+        d[x] = INF;
+        pre[x] = -1;
+        vis[x] = false;
+    }
+	d[st] = 0;
+	q.push((pri){0, st});
+	while(!q.empty()) {
+		pri tmp = q.top();
+		q.pop();
+		int u = tmp.id;
+		if(!vis[u]) {
+			vis[u] = true;
+			for(int y = 0; y &lt; g[u].size(); y++) {
+				int v = g[u][y].v;
+				if(!vis[v] &amp;&amp; d[u] + g[u][y].dis &lt; d[v]) {
+					d[v] = d[u] + g[u][y].dis;
+                    pre[v] = u;
+                    q.push((pri){d[v], v});
+				}
+			}
+		}
+	}
+}
+
+// 从ed回溯
+void printPath(int ed) {
+    vector &lt;int&gt; ans;
+    for(int u = ed; u != -1; u = pre[u]) ans.push_back(u);
+    reverse(ans.begin(), ans.end());
+    for(int u : ans) cout &lt;&lt; u &lt;&lt; " ";
+    cout &lt;&lt; endl;
+}
+
+</code></pre>
+<h4 id="a"><a class="header" href="#a">A*</a></h4>
+<p>可以立即为 Dijkstra 的升级版，对比：</p>
+<ul>
+<li>Dijkstra: priority = $g(v)$: <strong>past cost = cost to reach $v$</strong></li>
+<li>A*: priority = $f(v)$ = $g(v) + h(v)$</li>
+</ul>
+<p>其中，$h(v)$ 是一个启发式函数，在二维平面 A* 算法中，一般是用 $v$ 到终点的欧几里得距离。</p>
+<pre><code class="language-cpp">
+struct node {
+    int x, y;
+    double val;
+    bool operator &lt; (const node &amp;a) const {
+        return val &gt; a.val;
+    }
+} pre[MAXN][MAXN];
+
+int dx[8] = {0, 1, 0, -1, 1, 1, -1, -1}, dy[8] = {1, 0, -1, 0, 1, -1, 1, -1};
+string s[MAXN];
+int g[MAXN][MAXN];
+double f[MAXN][MAXN];
+bool vis[MAXN][MAXN];
+int n, m, ex, ey;
+vector &lt;node&gt; ansPath;
+
+double hfun(int ux, int uy) {
+    return sqrt((double)((ux-ex)*(ux-ex)+(uy-ey)*(uy-ey)));
+}
+
+void buildPath() {
+    int ux = ex, uy = ey;
+    while(!(ux == -1 &amp;&amp; uy == -1)) {
+        ansPath.push_back((node){ux, uy, 0});
+        int vx = pre[ux][uy].x, vy = pre[ux][uy].y;
+        ux = vx, uy = vy;
+    }
+}
+
+void AStar(int sx, int sy) {
+    cout &lt;&lt; "A*: " &lt;&lt; sx &lt;&lt; " " &lt;&lt; sy &lt;&lt; "-&gt; " &lt;&lt; ex &lt;&lt; " " &lt;&lt; ey &lt;&lt; endl;
+    for(int x = 0; x &lt; n; x++) {
+        for(int y = 0; y &lt; m; y++) g[x][y] = INF;
+    }
+    g[sx][sy] = 0;
+    f[sx][sy] = hfun(sx, sy);
+    pre[sx][sy] = (node){-1, -1};
+
+    priority_queue &lt;node&gt; q;
+    q.push((node){sx, sy, f[sx][sy]});
+    while(!q.empty()) {
+        node tmp = q.top(); q.pop();
+        int ux = tmp.x, uy = tmp.y, val = tmp.val;
+        if(vis[ux][uy]) continue;
+        vis[ux][uy] = true;
+        if(ux == ex &amp;&amp; uy == ey) {
+            buildPath();
+            return;
+        }
+        for(int o = 0; o &lt; 8; o++) {
+            int vx = ux + dx[o], vy = uy + dy[o];
+            if(vx &lt; 0 || vx &gt;= n || vy &lt; 0 || vy &gt;= m) continue;
+            if(s[vx][vy] == '*') continue;
+            int tmpg = g[ux][uy] + 1;
+            if(tmpg &lt; g[vx][vy]) {
+                pre[vx][vy] = (node){ux, uy, 0};
+                g[vx][vy] = tmpg;
+                f[vx][vy] = g[vx][vy] + hfun(vx, vy);
+                q.push((node){vx, vy, f[vx][vy]});
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="贪心"><a class="header" href="#贪心">贪心</a></h3>
+<h4 id="最小生成树"><a class="header" href="#最小生成树">最小生成树</a></h4>
+<p>Kruskal算法：不停地添加下一个最短且不会生成环的边，用并查集维护。</p>
+<pre><code class="language-cpp">struct edge {
+	int u, v, w;
+} e[MAXN];
+
+int n, m;
+int fa[MAXN];
+vector &lt;edge&gt; MST;
+
+bool cmp(edge x, edge y) {
+	return x.w &lt; y.w;
+}
+
+int find(int x) {
+	return fa[x] == x ? x : fa[x] = find(fa[x]);
+}
+
+int Kruskal() {
+	for(int x = 1; x &lt;= n; x++) fa[x] = x;
+	int ans = 0;
+	sort(e+1, e+m+1, cmp);
+	for(int x = 1; x &lt;= m; x++) {
+		int u = find(e[x].u), v = find(e[x].v);
+		if(u == v) continue;
+		fa[v] = u;
+		ans += e[x].w;
+		MST.push_back(e[x]);
+	}
+	return ans;
+}
+
+</code></pre>
+<p>Prim 最小生成树：从任意一个点出发，每一步选择一条“连接已选点集和未选点集的最小边权”。</p>
+<p>需要理解<strong>割定理（Cut Property）</strong>：</p>
+<p>对于一个图 $G(V,E)$来说，其割就是将图中所有顶点分成两个不重叠的集合 $S$ 和 $V-S$，割边就是连接这两个集合的边。</p>
+<p>那么，在一个连通加权无向图中，对于任意一个割 $(S,V-S)$，如果某条割边 $e$ 的权重是所有割边里面最小的，那么这条边 $e$ 一定属于该图的某棵最小生成树。</p>
+<p>证明可以用反证法，很简单。</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/12/15/693fa7339c6d7.png"  height="200px">
+</p>
+<p>Prim最小生成树的实现细节和 Dijkstra 非常像，都是维护一个小根堆，每次贪心地加边。</p>
+<h4 id="huffman-编码"><a class="header" href="#huffman-编码">Huffman 编码</a></h4>
+<p>用于无损压缩储存字符串，让一个字符串里面出现频率高的字符编码短，频率低的字符编码长一些，传统方法是所有字符编码长度一样。</p>
+<p>Huffman树：一棵 $01$ 前缀二叉树，左 $0$ 右 $1$。</p>
+<p>给定一组符号 $c_1, c_2, \cdots, c_n$ 和每个符号出现的频率（权值）$w_i$，目标是构建一棵二叉树，每个符号对应一个叶子节点，使得带权路径长度（$W$）最小</p>
+<p>$$
+\text{minimize } W = \sum_{i=1}^n w_i \cdot \text{depth}(c_i)
+$$</p>
+<p><strong>核心思想（贪心）：每次合并当前权值最小的两个节点。</strong></p>
+<p>还是用小根堆来维护。</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/12/15/693faa7bc25b3.gif"  height="200px">
+</p>
+<p>而且 Huffman 编码通过构建前缀二叉树，保证了没有任何一个字符的编码是另一个字符编码的前缀，这样在解码的时候也不会有歧义。</p>
+<p>解码就很简单了，直接对应 Huffman 树从根往下走，走到叶子节点就将其输出，然后再回到根。</p>
+<h3 id="动态规划"><a class="header" href="#动态规划">动态规划</a></h3>
+<p>之前写过两篇 blog 关于 DP 的，可以简单参考一下</p>
+<ul>
+<li><a href="https://skyzhou.top/2025/02/10/Dynamic_Programming/">Dynamic Programming</a></li>
+<li><a href="https://skyzhou.top/2025/02/23/Dynamic_Programming_Deepseek/">DP by Deepseek</a></li>
+</ul>
+<p>动态规划就是把一个复杂的大问题，拆解成一个个重复的小问题，并把小问题的答案记录下来，最后得到大问题的答案。</p>
+<p>最重要的是<strong>无后效性</strong>，即“未来与过去无关，只与现在有关”。一旦某个状态被确定，它是怎么到达这个状态的，无关紧要！后续的决策只依赖于当前状态。</p>
+<p>如何设计一个 DP 方程：</p>
+<ol>
+<li>定义<strong>状态</strong>（State）：为了描述当前的局面，我需要知道哪些变量？状态必须包含所有“会限制未来决策”的信息。</li>
+<li>定义<strong>选择</strong>（Choice）：在当前状态下，我能进行什么操作？</li>
+<li>明确 DP 数组的<strong>含义</strong>（Definition）：用语言将 $dp[\dots]$ 的定义写下来，一定要具体。</li>
+<li>写出<strong>状态转移方程</strong>（Transition）：把选择变成数学公式，通常是 <code>min</code>, <code>max</code> 或者 <code>sum</code>。</li>
+</ol>
+<p>$$
+现在的状态=择优 (之前的状态+本次选择的代价/收益)
+$$</p>
+<h4 id="floyd-算法多源最短路"><a class="header" href="#floyd-算法多源最短路">Floyd 算法（多源最短路）</a></h4>
+<p>定义
+$$
+dp^{(k)}[i][j]=只允许使用 {1,2,\cdots,k} 作为中间点时，i \to j 的最短路
+$$</p>
+<p>状态转移方程
+$$
+dp^{(k)}[i][j] = \min\left(dp^{(k-1)}[i][j], dp^{(k-1)}[i][k] + dp^{(k-1)}[k][j] \right)
+$$</p>
+<pre><code class="language-cpp">int n, m;
+int d[MAXN][MAXN];
+bool findN;
+
+void Floyd() {
+	findN = false;
+	for(int k = 1; k &lt;= n; k++)
+		for(int i = 1; i &lt;= n; i++)
+			for(int j = 1; j &lt;= n; j++)
+				if(d[i][k] &lt; INF &amp;&amp; d[k][j] &lt; INF)
+					d[i][y] = min(d[i][j], d[i][k] + d[k][j]);
+	for(int x = 1; x &lt;= n; x++)
+		if(d[x][x] &lt; 0) findN = true; // 找到负环
+}
+</code></pre>
+<h4 id="区间-dp"><a class="header" href="#区间-dp">区间 DP</a></h4>
+<p>核心思想：大区间的解=小区间的解+合并代价</p>
+<p>标准套路：定义 $dp[i][j]$ 表示区间 $[i, j]$ 经过一系列操作之后得到的最优解。</p>
+<p>状态转移方程：为了求 $dp[i][j]$，我们把区间 $[i, j]$ 从中间切一刀，分成 $[i, k]$ 和 $[k+1, j]$，枚举这个分割点 $k$，找到最优解。</p>
+<p>$$
+dp[i][j] = \min_{i \leq k &lt; j}{ dp[i][k] + dp[k+1][j] } + \text{Cost}(i, j)
+$$</p>
+<p>其中，$\text{Cost}(i, j)$ 是将两部分合并产生的代价。</p>
+<p><strong>遍历顺序</strong>：按照区间长度从小到大枚举。先算长度 $1$ 的区间，再算长度 $2$ 的区间，以此类推，最后能得到整个大区间的最优解。</p>
+<h4 id="最长公共子序列-lcs"><a class="header" href="#最长公共子序列-lcs">最长公共子序列 LCS</a></h4>
+<p>给定两个字符串，找到它们的最长公共子序列（不要求连续）。</p>
+<p>状态转移方程：
+$$
+dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 &amp; \text{if } s1[i] = s2[j] \\max(dp[i-1][j], dp[i][j-1]) &amp; \text{otherwise}\end{cases}
+$$
+其中 $dp[i][j]$ 表示 $s1$ 的前 $i$ 个字符和 $s2$ 的前 $j$ 个字符的 LCS 长度。</p>
+<h4 id="旅行商问题-tsp"><a class="header" href="#旅行商问题-tsp">旅行商问题 TSP</a></h4>
+<p>定义状态 $dp[mask][i]$： $mask$ 是一个二进制转化成十进制的数，其 $n$ 位二进制表示已经访问过的城市集合；$i$ 表示当前停留在哪个城市（一定要在 $mask$ 里）。其值表示从起点出发，访问了 $mask$ 里所有城市，最后停在 $i$ 的<strong>最小总距离</strong>。</p>
+<p>状态转移：假设我们在状态 $dp[mask][i]$，那么上一步我们在一个没访问 $i$ 之前的状态，停在某个 $j$。</p>
+<p>之前的集合 $prev_ mask$ 可以表示为 $mask \text{ xor } (1 &lt;&lt; i)$，也就是把 $mask$ 里第 $i$ 位的 $1$ 去掉。</p>
+<p>那么状态转移方程：
+$$
+dp[mask][i] = \min_{j \in prev_ mask} {dp[prev_ mask][j] + d[j][i] }
+$$</p>
+<pre><code class="language-cpp">void TSP() {
+    cin &gt;&gt; n;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; n; j++)
+            cin &gt;&gt; w[i][j];
+    int full = (1 &lt;&lt; n);
+    for (int mask = 0; mask &lt; full; mask++)
+        for (int i = 0; i &lt; n; i++)
+            dp[mask][i] = INF;
+    dp[1 &lt;&lt; 0][0] = 0;
+
+    for (int mask = 0; mask &lt; full; mask++) {
+        if (!(mask &amp; 1)) continue;
+        for (int i = 0; i &lt; n; i++) {
+            if (!(mask &amp; (1 &lt;&lt; i))) continue;
+            int prev = mask ^ (1 &lt;&lt; i);
+            if (prev == 0 &amp;&amp; i != 0) continue;
+            for (int j = 0; j &lt; n; j++) {
+                if (!(prev &amp; (1 &lt;&lt; j))) continue;
+                dp[mask][i] = min( dp[mask][i], dp[prev][j] + w[j][i]);
+            }
+        }
+    }
+
+    int ans = INF, all = full - 1;
+    for (int i = 1; i &lt; n; i++) {
+        ans = min(ans, dp[all][i] + w[i][0]);
+    }
+    cout &lt;&lt; ans &lt;&lt; "\n";
+}
+</code></pre>
+<h4 id="背包问题"><a class="header" href="#背包问题">背包问题</a></h4>
+<p>01 背包：</p>
+<p>有 $n$ 个物品，物品重量 $w_i$，价值 $v_i$，每个物品最多只能拿一个，背包大小 $S$。
+$$
+dp[i][j] = \max{dp[i-1][j], dp[i-1][j-w[i]]+v[i] }
+$$
+其中 $dp[i][j]$ 表示前 $i$ 个物品在容量 $j$ 下的最大价值。</p>
+<pre><code class="language-cpp">void Knapsack01() {
+    int S, n;
+    cin &gt;&gt; S &gt;&gt; n;
+    for(int x = 1; x &lt;= n; x++) cin &gt;&gt; w[x] &gt;&gt; v[x];
+    for(int j = 0; j &lt;= S; j++) {
+        for(int i = 1; i &lt;= n; i++) {
+            if(j-w[i] &lt; 0) dp[i][j] = dp[i-1][j];
+            else dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]] + v[i]);
+        }
+    }
+    cout &lt;&lt; dp[n][S] &lt;&lt; endl;
+}
+</code></pre>
+<p>时间复杂度 $O(nS)$</p>
+<p>完全背包：</p>
+<p>同上，但可以重复拿
+$$
+dp[j] = \max {dp[j-1], \max_i{dp[j-w[i]]+v[i] } }
+$$
+其中 $dp[j]$ 表示容量 $j$ 下的最大价值。</p>
+<pre><code class="language-cpp">void KnapsackComplete() {
+    int S, n;
+    cin &gt;&gt; S &gt;&gt; n;
+    for(int x = 1; x &lt;= n; x++) cin &gt;&gt; w[x] &gt;&gt; v[x];
+    for(int j = 0; j &lt;= S; j++) {
+        for(int i = 1; i &lt;= n; i++) {
+            if(j-w[i] &gt;= 0) 
+                dp[j] = max(dp[j], dp[j-w[i]] + v[i]);
+        }
+    }
+    cout &lt;&lt; dp[S] &lt;&lt; endl;
+}
+</code></pre>
+<p>时间复杂度 $O(nS)$</p>
+<h3 id="网络流"><a class="header" href="#网络流">网络流</a></h3>
 
                     </main>
 
