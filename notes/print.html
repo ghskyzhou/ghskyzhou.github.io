@@ -2916,12 +2916,12 @@ void kosaraju() {
 <p>And we can find all the SCCs using 2 DFS, with time complexity $O(n + m)$.</p>
 <h2 id="after-midterm-1-day-before-final"><a class="header" href="#after-midterm-1-day-before-final">After Midterm (1 DAY BEFORE FINAL)</a></h2>
 <p>妈的，没时间了，得赶紧速通了</p>
-<h3 id="最短路单源"><a class="header" href="#最短路单源">最短路（单源）</a></h3>
+<h2 id="最短路单源"><a class="header" href="#最短路单源">最短路（单源）</a></h2>
 <p>对于一个图 $G(V,E)$，其中两点 $u, v \in V$ 的最短路长度定义为 $\delta(u, v)$，且容易得到：
 $$
 \delta(s, t) \leq \delta(s, u) + \delta(u, t)
 $$</p>
-<h4 id="bellman-ford"><a class="header" href="#bellman-ford">Bellman-Ford</a></h4>
+<h3 id="bellman-ford"><a class="header" href="#bellman-ford">Bellman-Ford</a></h3>
 <p>核心思想：对所有边执行 $n-1$ 轮松弛，复杂度 $O(nm)$</p>
 <pre><code class="language-cpp">struct Edge {
     int u, v;
@@ -2960,7 +2960,7 @@ bool bellman_ford() {
 }
 
 </code></pre>
-<h4 id="dijkstra"><a class="header" href="#dijkstra">Dijkstra</a></h4>
+<h3 id="dijkstra"><a class="header" href="#dijkstra">Dijkstra</a></h3>
 <p>核心思想：每一步都“贪心”地确定一个当前距离最小的点，并且一旦确定，就不会被更改。</p>
 <p>算法维护两个集合：一个 $S$ 表示最短路已经被确定的点，还有一个 $V-S$ 表示还没被确定的点。每一步做三件事：</p>
 <ol>
@@ -3022,7 +3022,7 @@ void printPath(int ed) {
 }
 
 </code></pre>
-<h4 id="a"><a class="header" href="#a">A*</a></h4>
+<h3 id="a"><a class="header" href="#a">A*</a></h3>
 <p>可以立即为 Dijkstra 的升级版，对比：</p>
 <ul>
 <li>Dijkstra: priority = $g(v)$: <strong>past cost = cost to reach $v$</strong></li>
@@ -3094,8 +3094,8 @@ void AStar(int sx, int sy) {
     }
 }
 </code></pre>
-<h3 id="贪心"><a class="header" href="#贪心">贪心</a></h3>
-<h4 id="最小生成树"><a class="header" href="#最小生成树">最小生成树</a></h4>
+<h2 id="贪心"><a class="header" href="#贪心">贪心</a></h2>
+<h3 id="最小生成树"><a class="header" href="#最小生成树">最小生成树</a></h3>
 <p>Kruskal算法：不停地添加下一个最短且不会生成环的边，用并查集维护。</p>
 <pre><code class="language-cpp">struct edge {
 	int u, v, w;
@@ -3137,7 +3137,7 @@ int Kruskal() {
     <img src="https://img.skyzhou.top/i/2025/12/15/693fa7339c6d7.png"  height="200px">
 </p>
 <p>Prim最小生成树的实现细节和 Dijkstra 非常像，都是维护一个小根堆，每次贪心地加边。</p>
-<h4 id="huffman-编码"><a class="header" href="#huffman-编码">Huffman 编码</a></h4>
+<h3 id="huffman-编码"><a class="header" href="#huffman-编码">Huffman 编码</a></h3>
 <p>用于无损压缩储存字符串，让一个字符串里面出现频率高的字符编码短，频率低的字符编码长一些，传统方法是所有字符编码长度一样。</p>
 <p>Huffman树：一棵 $01$ 前缀二叉树，左 $0$ 右 $1$。</p>
 <p>给定一组符号 $c_1, c_2, \cdots, c_n$ 和每个符号出现的频率（权值）$w_i$，目标是构建一棵二叉树，每个符号对应一个叶子节点，使得带权路径长度（$W$）最小</p>
@@ -3151,7 +3151,7 @@ $$</p>
 </p>
 <p>而且 Huffman 编码通过构建前缀二叉树，保证了没有任何一个字符的编码是另一个字符编码的前缀，这样在解码的时候也不会有歧义。</p>
 <p>解码就很简单了，直接对应 Huffman 树从根往下走，走到叶子节点就将其输出，然后再回到根。</p>
-<h3 id="动态规划"><a class="header" href="#动态规划">动态规划</a></h3>
+<h2 id="动态规划"><a class="header" href="#动态规划">动态规划</a></h2>
 <p>之前写过两篇 blog 关于 DP 的，可以简单参考一下</p>
 <ul>
 <li><a href="https://skyzhou.top/2025/02/10/Dynamic_Programming/">Dynamic Programming</a></li>
@@ -3169,14 +3169,14 @@ $$</p>
 <p>$$
 现在的状态=择优 (之前的状态+本次选择的代价/收益)
 $$</p>
-<h4 id="floyd-算法多源最短路"><a class="header" href="#floyd-算法多源最短路">Floyd 算法（多源最短路）</a></h4>
+<h3 id="floyd-算法多源最短路"><a class="header" href="#floyd-算法多源最短路">Floyd 算法（多源最短路）</a></h3>
 <p>定义
 $$
 dp^{(k)}[i][j]=只允许使用 {1,2,\cdots,k} 作为中间点时，i \to j 的最短路
 $$</p>
 <p>状态转移方程
 $$
-dp^{(k)}[i][j] = \min\left(dp^{(k-1)}[i][j], dp^{(k-1)}[i][k] + dp^{(k-1)}[k][j] \right)
+dp^{(k)}[i][j] = \min\{dp^{(k-1)}[i][j], dp^{(k-1)}[i][k] + dp^{(k-1)}[k][j] \}
 $$</p>
 <pre><code class="language-cpp">int n, m;
 int d[MAXN][MAXN];
@@ -3193,7 +3193,7 @@ void Floyd() {
 		if(d[x][x] &lt; 0) findN = true; // 找到负环
 }
 </code></pre>
-<h4 id="区间-dp"><a class="header" href="#区间-dp">区间 DP</a></h4>
+<h3 id="区间-dp"><a class="header" href="#区间-dp">区间 DP</a></h3>
 <p>核心思想：大区间的解=小区间的解+合并代价</p>
 <p>标准套路：定义 $dp[i][j]$ 表示区间 $[i, j]$ 经过一系列操作之后得到的最优解。</p>
 <p>状态转移方程：为了求 $dp[i][j]$，我们把区间 $[i, j]$ 从中间切一刀，分成 $[i, k]$ 和 $[k+1, j]$，枚举这个分割点 $k$，找到最优解。</p>
@@ -3202,20 +3202,20 @@ dp[i][j] = \min_{i \leq k &lt; j}{ dp[i][k] + dp[k+1][j] } + \text{Cost}(i, j)
 $$</p>
 <p>其中，$\text{Cost}(i, j)$ 是将两部分合并产生的代价。</p>
 <p><strong>遍历顺序</strong>：按照区间长度从小到大枚举。先算长度 $1$ 的区间，再算长度 $2$ 的区间，以此类推，最后能得到整个大区间的最优解。</p>
-<h4 id="最长公共子序列-lcs"><a class="header" href="#最长公共子序列-lcs">最长公共子序列 LCS</a></h4>
+<h3 id="最长公共子序列-lcs"><a class="header" href="#最长公共子序列-lcs">最长公共子序列 LCS</a></h3>
 <p>给定两个字符串，找到它们的最长公共子序列（不要求连续）。</p>
 <p>状态转移方程：
 $$
-dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 &amp; \text{if } s1[i] = s2[j] \\max(dp[i-1][j], dp[i][j-1]) &amp; \text{otherwise}\end{cases}
+dp[i][j] = \begin{cases} dp[i-1][j-1] + 1 &amp; \text{if } s1[i] = s2[j] \\ \max \{dp[i-1][j], dp[i][j-1] \} &amp; \text{otherwise}\end{cases}
 $$
 其中 $dp[i][j]$ 表示 $s1$ 的前 $i$ 个字符和 $s2$ 的前 $j$ 个字符的 LCS 长度。</p>
-<h4 id="旅行商问题-tsp"><a class="header" href="#旅行商问题-tsp">旅行商问题 TSP</a></h4>
+<h3 id="旅行商问题-tsp"><a class="header" href="#旅行商问题-tsp">旅行商问题 TSP</a></h3>
 <p>定义状态 $dp[mask][i]$： $mask$ 是一个二进制转化成十进制的数，其 $n$ 位二进制表示已经访问过的城市集合；$i$ 表示当前停留在哪个城市（一定要在 $mask$ 里）。其值表示从起点出发，访问了 $mask$ 里所有城市，最后停在 $i$ 的<strong>最小总距离</strong>。</p>
 <p>状态转移：假设我们在状态 $dp[mask][i]$，那么上一步我们在一个没访问 $i$ 之前的状态，停在某个 $j$。</p>
-<p>之前的集合 $prev_ mask$ 可以表示为 $mask \text{ xor } (1 &lt;&lt; i)$，也就是把 $mask$ 里第 $i$ 位的 $1$ 去掉。</p>
+<p>之前的集合 $prev\_ mask$ 可以表示为 $mask \text{ xor } (1 &lt;&lt; i)$，也就是把 $mask$ 里第 $i$ 位的 $1$ 去掉。</p>
 <p>那么状态转移方程：
 $$
-dp[mask][i] = \min_{j \in prev_ mask} {dp[prev_ mask][j] + d[j][i] }
+dp[mask][i] = \min_{j \in prev\_ mask} \{dp[prev\_ mask][j] + d[j][i] \}
 $$</p>
 <pre><code class="language-cpp">void TSP() {
     cin &gt;&gt; n;
@@ -3248,11 +3248,11 @@ $$</p>
     cout &lt;&lt; ans &lt;&lt; "\n";
 }
 </code></pre>
-<h4 id="背包问题"><a class="header" href="#背包问题">背包问题</a></h4>
+<h3 id="背包问题"><a class="header" href="#背包问题">背包问题</a></h3>
 <p>01 背包：</p>
 <p>有 $n$ 个物品，物品重量 $w_i$，价值 $v_i$，每个物品最多只能拿一个，背包大小 $S$。
 $$
-dp[i][j] = \max{dp[i-1][j], dp[i-1][j-w[i]]+v[i] }
+dp[i][j] = \max\{dp[i-1][j], dp[i-1][j-w[i]]+v[i] \}
 $$
 其中 $dp[i][j]$ 表示前 $i$ 个物品在容量 $j$ 下的最大价值。</p>
 <pre><code class="language-cpp">void Knapsack01() {
@@ -3272,7 +3272,7 @@ $$
 <p>完全背包：</p>
 <p>同上，但可以重复拿
 $$
-dp[j] = \max {dp[j-1], \max_i{dp[j-w[i]]+v[i] } }
+dp[j] = \max \{dp[j-1], \max_i{dp[j-w[i]]+v[i] } \}
 $$
 其中 $dp[j]$ 表示容量 $j$ 下的最大价值。</p>
 <pre><code class="language-cpp">void KnapsackComplete() {
@@ -3289,7 +3289,101 @@ $$
 }
 </code></pre>
 <p>时间复杂度 $O(nS)$</p>
-<h3 id="网络流"><a class="header" href="#网络流">网络流</a></h3>
+<h3 id="平衡划分问题"><a class="header" href="#平衡划分问题">平衡划分问题</a></h3>
+<p>给定一个包含 $n$ 个正整数的集合，如何将其划分为两个子集，使得这两个子集的元素和相差最小。</p>
+<p>$$
+\min_{S_1, S_2} d = \left| \sum_{i \in S_1} k_i - \sum_{j \in S_2} k_j \right|
+$$</p>
+<p>核心解法：将其转化为 01 背包问题。先算出总和 $\text{Sum}$，找到一个子集使其和尽可能接近 $\frac{\text{Sum}}{2}$，然后就是一个容量为 $\frac{\text{Sum}}{2}$ 的 01 背包问题了，每个物品的价值和重量都是它本身，EZ。</p>
+<h2 id="网络流"><a class="header" href="#网络流">网络流</a></h2>
+<p>想象一个由管道组成的网络：</p>
+<ul>
+<li>源点（Source, $S$）：自来水厂，有无限的水流出</li>
+<li>汇点（Sink, $T$）：大海，可以接收无限的水</li>
+<li>容量（Capacity, $c$）：每根管道 $(u,v)$ 单位时间最多能流过的水量</li>
+<li>流量（Flow, $f$）：实际流过的水量</li>
+</ul>
+<p>还有以下规则：</p>
+<ul>
+<li>流量限制：$f(u,v) \leq c(u,v)$（水管不能撑爆）</li>
+<li>流量守恒：对于除了 $S$ 和 $T$ 以外的任意节点，<strong>流入量=流出量</strong></li>
+</ul>
+<p>那么问题：在不撑爆任何管道的前提下，从源点 $S$ 最多能推多少水到汇点 $T$？</p>
+<h3 id="ford-fulkerson-方法"><a class="header" href="#ford-fulkerson-方法">Ford-Fulkerson 方法</a></h3>
+<p>核心思想：只要还能找到一条路去推流，就往死里推；推不动了，现在的流量就是最大流。</p>
+<p>这条“能推流的路”叫做<strong>增广路</strong>（Augmenting Path）</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/12/15/693fed0e5e9cd.png"  height="200px">
+</p>
+<p><strong>反向边</strong>：如果随便找了一条路推流，可能会堵死另一条更优的路线，那么可以加一个反向边，每当我们在边 $(u,v)$ 上推了 $k$ 的流量：</p>
+<ol>
+<li>正向边的 $c(u,v)$ 减少 $k$</li>
+<li>反向边的 $c(v,u)$ 增加 $k$</li>
+</ol>
+<p>在残量网络（Residual Graph）中走反向边，相当于“撤销”之前的操作！</p>
+<h3 id="edmonds-karp-算法"><a class="header" href="#edmonds-karp-算法">Edmonds-Karp 算法</a></h3>
+<p>用 BFS 在参量网络图里寻找增广路，确保每次找的都是边数最少的路。</p>
+<p>这里的增广路是包括<strong>反向边</strong>的，但要满足硬性条件：剩余容量（Capacity）$&gt;0$</p>
+<p>BFS 总能找到经过边数最少的那条增广路（最短路性质），可以保证效率是 $O(nm)$，然后再乘上更新一次推流的复杂度 $O(m)$，使得算法总复杂度 $O(nm^2)$</p>
+<pre><code class="language-cpp">LL BFS()
+{
+	memset(last, -1, sizeof(last));
+	queue &lt;LL&gt; q;
+	q.push(s);
+	flow[s] = INF;
+	while(!q.empty())
+	{
+		int u = q.front(); q.pop();
+		if(u == t) break;
+		for(LL x = head[u]; x &gt; 0; x = edge[x].next)
+		{
+			LL v = edge[x].to, w = edge[x].w;
+			if(w &gt; 0 &amp;&amp; last[v] == -1)
+			{
+				last[v] = x;
+				flow[v] = min(flow[u], w);
+				q.push(v);
+			}
+		}
+	}
+	return last[t] != -1;
+}
+
+LL EK()
+{
+	LL ans = 0;
+	while(BFS())
+	{
+		ans += flow[t];
+		for(LL x = t; x != s; x = edge[last[x] ^ 1].to)
+		{
+			edge[last[x]].w -= flow[t];
+			edge[last[x]^1].w += flow[t];
+		}
+	}
+	return ans;
+}
+</code></pre>
+<p>代码是古早时期用链式前向星随便写的，凑合着看吧（</p>
+<h3 id="最大流最小割定理"><a class="header" href="#最大流最小割定理">最大流最小割定理</a></h3>
+<p>Max-Flow Min-Cut Theorem</p>
+<p>割的定义是<strong>顶点的集合</strong>，在网络流中特指 $s-t$ 割，即我们将顶点集合 $V$ 划分成 $S$ 和 $TY$，使得：</p>
+<ol>
+<li>源点 $s \in S$</li>
+<li>汇点 $t \in T$</li>
+<li>$S \cup T = V$ 且 $S \cap T \empty$</li>
+</ol>
+<p>割的容量，记为 $C(S,T)$，是指所有从 $S$ 指向 $T$ 的边的容量之和。
+$$
+C(S,T) = \sum_{u \in S, v \in T} c(u,v)
+$$</p>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/12/15/693ffcdbef51d.png"  height="250px">
+</p>
+<h2 id="复杂度"><a class="header" href="#复杂度">复杂度</a></h2>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2025/12/15/694004b85a820.png"  height="400px">
+</p>
 
                     </main>
 
