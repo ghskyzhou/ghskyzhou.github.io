@@ -177,6 +177,53 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="csc4001-software-engineering"><a class="header" href="#csc4001-software-engineering">CSC4001 Software Engineering</a></h1>
+<h2 id="l0-前言"><a class="header" href="#l0-前言">L0 前言</a></h2>
+<p>教学计划：</p>
+<ol>
+<li>介绍</li>
+<li>测试基础</li>
+<li>变形测试、差分测试、内变形测试</li>
+<li>模糊测试</li>
+<li>测试用例约简</li>
+<li>数据流分析</li>
+<li>符号执行</li>
+<li>软件维护</li>
+<li>软件开发生命周期、需求分析</li>
+<li>软件建模</li>
+</ol>
+<p>软件工程是什么？</p>
+<blockquote>
+<p>软件工程关注软件开发的各个阶段，包括需求、<strong>建模</strong>、原型设计、设计、实现、生成、<strong>分析</strong>、验证、<strong>测试</strong>、<strong>评估</strong>、<strong>维护</strong>以及软件系统的复用。</p>
+</blockquote>
+<h2 id="l1-软件测试"><a class="header" href="#l1-软件测试">L1 软件测试</a></h2>
+<p>软件测试就是，评估和验证一个软件产品应用有没有做到它该做的，的过程。</p>
+<p>尽可能找到更多的 bug。</p>
+<h3 id="测试阶段"><a class="header" href="#测试阶段">测试阶段</a></h3>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2026/01/07/695dcaa8917b1.png" height="250px">
+</p>
+<p>从图中可以看到，从产品需求开始到最实现，都是可以返回来测试的。</p>
+<p>推荐读物：<a href="https://andrewbegel.com/info461/readings/index.html">Cooperative Software Design</a></p>
+<h3 id="单元测试-unit-test"><a class="header" href="#单元测试-unit-test">单元测试 Unit Test</a></h3>
+<p>测试独立的单元。</p>
+<p>目标：确认每个单元都是对的，而且能完成它们的功能。</p>
+<h3 id="集成测试-integration-test"><a class="header" href="#集成测试-integration-test">集成测试 Integration Test</a></h3>
+<p>测试一群子系统，最终测试整个系统。</p>
+<p>目标：测试多个子系统之间的交互，确保合并起来的整个系统满足需求。</p>
+<h3 id="系统测试-system-test"><a class="header" href="#系统测试-system-test">系统测试 System Test</a></h3>
+<p align="center">
+    <img src="https://img.skyzhou.top/i/2026/01/07/695dcc668cff0.png" height="250px">
+</p>
+<h4 id="功能测试-functional-test"><a class="header" href="#功能测试-functional-test">功能测试 Functional Test</a></h4>
+<p>目标：测试系统的功能。</p>
+<h4 id="验收测试-acceptance-test"><a class="header" href="#验收测试-acceptance-test">验收测试 Acceptance Test</a></h4>
+<p>目标：证明系统迎合用户的需求。</p>
+<ul>
+<li>Alpha 测试（内测）</li>
+<li>Beta 测试（公测）</li>
+</ul>
+<h4 id="独立测试-independent-test"><a class="header" href="#独立测试-independent-test">独立测试 Independent Test</a></h4>
+<p>由独立测试者来做的测试，尽量破坏软件，找到最深的 bug。</p>
 
                     </main>
 
