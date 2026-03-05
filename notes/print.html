@@ -3532,8 +3532,8 @@ int main() {
 <li>I/O 读写：将一个 I/O 设备中复制一个字节（字）到寄存器，或者反过来</li>
 <li>转移：从指令本身中抽取一个字，并将其复制到 PC 中，覆盖原来的值</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="csc3170-database-system-数据库系统"><a class="header" href="#csc3170-database-system-数据库系统">CSC3170 Database System 数据库系统</a></h1>
-<h2 id="part-1-简介"><a class="header" href="#part-1-简介">Part 1: 简介</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="csc3170-数据库系统-database-system"><a class="header" href="#csc3170-数据库系统-database-system">CSC3170 数据库系统 Database System</a></h1>
+<h2 id="part-1-简介-introduction"><a class="header" href="#part-1-简介-introduction">Part 1: 简介 Introduction</a></h2>
 <h3 id="结构化和非结构化的文本信息-structured-and-unstructured-textual-information"><a class="header" href="#结构化和非结构化的文本信息-structured-and-unstructured-textual-information">结构化和非结构化的文本信息 Structured and Unstructured Textual Information</a></h3>
 <p>一个<strong>数据库管理系统</strong>（Database Management System, DBMS）是一个复杂的软件系统，其任务是帮助管理大量复杂的结构化信息。</p>
 <p>结构化信息通常由离散的单元（<strong>实体</strong> Entities）组成。</p>
@@ -3580,6 +3580,131 @@ int main() {
   <img src="https://img.skyzhou.top/i/2026/03/04/69a7adbb7cd69.png" height="200px">
 </p>
 <h4 id="实例和模式-instances-and-schemas"><a class="header" href="#实例和模式-instances-and-schemas">实例和模式 Instances and Schemas</a></h4>
+<p>随着时间的推移，信息会被插入或删除，数据库也就发生了改变。特定时刻存储在数据库中的信息的集合称作数据库的一个<strong>实例 Instance</strong>，而数据库的总体设计称作数据库<strong>模式 Schema</strong>。</p>
+<p>数据库有几种模式：</p>
+<ul>
+<li>物理模式（Physical Schema），在物理层描述数据库的设计。</li>
+<li>逻辑模式（Logical Schema），在逻辑层描述数据库的设计。</li>
+<li>子模式（Subschema），描述数据库的不同视图。</li>
+</ul>
+<p><strong>物理数据隔离 Physical Data Independence</strong>：在不改变逻辑模式的情况下改变物理模式的能力。</p>
+<h3 id="数据库语言-database-language"><a class="header" href="#数据库语言-database-language">数据库语言 Database Language</a></h3>
+<h4 id="数据定义语言-data-definition-language-ddl"><a class="header" href="#数据定义语言-data-definition-language-ddl">数据定义语言 Data Definition Language (DDL)</a></h4>
+<p>定义数据库模式的专用标记，例如：</p>
+  <img src="https://img.skyzhou.top/i/2026/03/05/69a93a0182e39.png" height="80px">
+<p>DDL 编译器会生成一系列表格模板，存在数字典 Data Dictionary 里。</p>
+<p>数据字典包含元数据 Metadata：</p>
+<ul>
+<li>数据库模式</li>
+<li>完整性约束 Integrity Constraints
+<ul>
+<li>Primary Key</li>
+</ul>
+</li>
+<li>授权
+<ul>
+<li>验证谁可以访问</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据操纵语言-data-manipulation-language-dml"><a class="header" href="#数据操纵语言-data-manipulation-language-dml">数据操纵语言 Data Manipulation Language (DML)</a></h4>
+<p>可以使得用户访问或操纵，那些按照某种适当的数据模型组织起来的数据，通常也叫做查询语言。基本上有两种类型：</p>
+<ul>
+<li>过程化的 DML（Procedural DML），要求用户指定需要什么数据以及如何获得这些数据</li>
+<li>声明式的 DML（Declarative DML），只要求用户指定需要什么数据，不必指明如何获得</li>
+</ul>
+<p>声明式的 DML 通常也被称为非过程化的 DML。</p>
+<h4 id="结构化的查询语言-structured-query-language-sql"><a class="header" href="#结构化的查询语言-structured-query-language-sql">结构化的查询语言 Structured Query Language (SQL)</a></h4>
+<p>SQL 是非过程化的，一个查询包含输入一个或多个表格，返回一个表格。例子：</p>
+  <img src="https://img.skyzhou.top/i/2026/03/05/69a93bd66ae68.png" height="50px">
+<h3 id="数据库设计-database-design"><a class="header" href="#数据库设计-database-design">数据库设计 Database Design</a></h3>
+<p>设计数据库通常结构的流程：</p>
+<ul>
+<li>逻辑设计 Logical Design：决定数据库模式。数据库设计要求我们能找到一个“好的”关系模式。</li>
+<li>物理设计 Physical Design：决定数据库的物理层。</li>
+</ul>
+<h3 id="数据库组成-database-components"><a class="header" href="#数据库组成-database-components">数据库组成 Database Components</a></h3>
+<p>一个数据库系统可以被划分成以下几个功能性模块：</p>
+<ul>
+<li>储存管理器 Storage Manager</li>
+<li>查询处理器 Query Processor</li>
+</ul>
+<h4 id="储存管理器-storage-manager"><a class="header" href="#储存管理器-storage-manager">储存管理器 Storage Manager</a></h4>
+<p>储存管理器是数据库系统中负责在数据库中储存的低层数据与应用程序以及向系统提交的查询之间提供接口的部件。</p>
+<p>储存管理器负责以下任务：</p>
+<ul>
+<li>与操作系统文件管理器交互</li>
+<li>高效地储存、检索和更新数据</li>
+</ul>
+<p>储存管理器实现了以下几种数据结构：</p>
+<ul>
+<li>数据文件（Data File）：储存数据库它本身</li>
+<li>数据字典（Data Dictionary）：储存数据库结构的元数据</li>
+<li>索引（Index）：能提供对数据项的快速访问</li>
+</ul>
+<h4 id="查询处理器-query-processor"><a class="header" href="#查询处理器-query-processor">查询处理器 Query Processor</a></h4>
+<p>查询处理器组件包括：</p>
+<ul>
+<li>DDL 解释器（DDL Interpreter）：解释 DDL 语句并将这些定义记录在数据字典中</li>
+<li>DML 编译器（DML Compiler）：将查询语言中的 DML 语句翻译为包括一系列查询执行引擎能理解的低级指令的执行方案
+<ul>
+<li>一个查询通常可以被翻译成给出相同结果的多个候选执行计划中的任何一个。DML 编译器还进行查询优化（Query Optimization），就是从几个候选执行计划中选择代价最小的那个执行计划。</li>
+</ul>
+</li>
+<li>查询执行引擎（Query Evaluation Engine）：它执行由 DML 编译器产生的低级指令。</li>
+</ul>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/05/69a9403887699.png" height="250px">
+</p>
+<h4 id="事务管理-transaction-management"><a class="header" href="#事务管理-transaction-management">事务管理 Transaction Management</a></h4>
+<p><strong>事务 Transaction</strong>是数据库应用中完成单一逻辑功能的操作集合。</p>
+<h3 id="数据库架构-database-architecture"><a class="header" href="#数据库架构-database-architecture">数据库架构 Database Architecture</a></h3>
+<ul>
+<li>中心化的数据库
+<ul>
+<li>一些核心，共享内存</li>
+</ul>
+</li>
+<li>客户端-服务器
+<ul>
+<li>一个服务器机器执行基于多个客户端的工作</li>
+</ul>
+</li>
+<li>平行数据库
+<ul>
+<li>多核，共享内存</li>
+<li>共享硬盘</li>
+<li>什么都不共享</li>
+</ul>
+</li>
+<li>分布式数据库
+<ul>
+<li>地理上的分布</li>
+<li>模式 / 数据异质性</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据库用户和管理员-database-users-and-administrator"><a class="header" href="#数据库用户和管理员-database-users-and-administrator">数据库用户和管理员 Database Users and Administrator</a></h3>
+<p>数据库用户：</p>
+<ul>
+<li>普通（初学者=）用户</li>
+<li>应用程序员</li>
+<li>复杂（老练）用户</li>
+</ul>
+<p>数据库管理员：</p>
+<ul>
+<li>模式定义</li>
+<li>存储结构及存取方法定义</li>
+<li>模式及物理组织的修改</li>
+<li>数据访问授权</li>
+<li>日常维护</li>
+</ul>
+<h2 id="part-2-关系模型介绍-introduction-to-relational-model"><a class="header" href="#part-2-关系模型介绍-introduction-to-relational-model">Part 2 关系模型介绍 Introduction to Relational Model</a></h2>
+<p>关系数据库由<strong>表 Table</strong>的集合构成，每张表被赋予一个唯一的名称。</p>
+<p>一个关系表的例子：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/05/69a943fe96a91.png" height="200px">
+</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="csc4001-software-engineering"><a class="header" href="#csc4001-software-engineering">CSC4001 Software Engineering</a></h1>
 <h2 id="l0-前言-1"><a class="header" href="#l0-前言-1">L0 前言</a></h2>
 <p>教学计划：</p>
