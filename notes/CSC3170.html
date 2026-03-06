@@ -177,7 +177,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="csc3170-数据库系统-database-system"><a class="header" href="#csc3170-数据库系统-database-system">CSC3170 数据库系统 Database System</a></h1>
-<h2 id="part-1-简介-introduction"><a class="header" href="#part-1-简介-introduction">Part 1: 简介 Introduction</a></h2>
+<h2 id="part-1-简介-introduction"><a class="header" href="#part-1-简介-introduction">Part 1 简介 Introduction</a></h2>
 <h3 id="结构化和非结构化的文本信息-structured-and-unstructured-textual-information"><a class="header" href="#结构化和非结构化的文本信息-structured-and-unstructured-textual-information">结构化和非结构化的文本信息 Structured and Unstructured Textual Information</a></h3>
 <p>一个<strong>数据库管理系统</strong>（Database Management System, DBMS）是一个复杂的软件系统，其任务是帮助管理大量复杂的结构化信息。</p>
 <p>结构化信息通常由离散的单元（<strong>实体</strong> Entities）组成。</p>
@@ -349,6 +349,123 @@
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/03/05/69a943fe96a91.png" height="200px">
 </p>
+<h3 id="关系的数学定义-mathematical-definition-of-relation"><a class="header" href="#关系的数学定义-mathematical-definition-of-relation">关系的数学定义 Mathematical Definition of Relation</a></h3>
+<h4 id="笛卡尔积-cartesian-product"><a class="header" href="#笛卡尔积-cartesian-product">笛卡尔积 Cartesian Product</a></h4>
+<p>考虑两个任意集合 $A$ 和 $B$，包括所有有序对 $(a,b), a \in A, b \in B$ 的集合叫做 $A$ 和 $B$ 的<strong>笛卡尔积</strong>。
+$$
+A \times B = {(a,b):a \in A, b \in B}
+$$
+如果 $A=B$，我们通常将 $A \times A$ 写成 $A^2$。</p>
+<ul>
+<li>e.g. 如果$A = \mathbb{R}$，那么 $\mathbb{R}^2$ 就是二维笛卡尔平面。</li>
+</ul>
+<p>记集合 $A$ 的<strong>基数 Cartesian</strong> 为 $|A|$，则有
+$$
+|A \times B| = |A| \times |B|
+$$</p>
+<p>从 $A$ 到 $B$ 的一个<strong>二元关系 Binary Relation</strong> $R$，就是 $A \times B$ 的一个子集，即 $R \subseteq A \times B$</p>
+<p>一般来说，定义在集合 $D_1,D_2,\cdots,D_n$ 上的 $n$ 元关系 n-ary Relaion $R$ 是笛卡尔积
+$$
+D_1 \times D_2 \times \cdots D_n
+$$
+的一个子集，即
+$$
+R \subseteq \prod_{k=1}^n D_k
+$$
+其中，$D_1,D_2,\cdots,D_n$ 通常被称为<strong>域 Domain</strong>。</p>
+<p>并且该笛卡尔积的基数为
+$$
+\left| \prod_{k=1}^n D_k \right| = \prod_{k=1}^n \left| D_k \right|
+$$
+也就是说，笛卡尔积的元素个数等于各个集合基数的乘积。</p>
+<p>如果某个特定<strong>元组 tuple</strong> 出现在关系 $R$ 中，就表示该元组所表达的信息在当前是<em>真实且有效的信息</em>。</p>
+<p>举个例子，假设</p>
+<ul>
+<li>$D_1=$ 学号</li>
+<li>$D_2=$ 学院</li>
+<li>$D_3=$ 生源城市
+如果
+$$
+(114514, \text{CS}, \text{Shenzhen}) \in R
+$$
+表示学号为 $114514$ 的学生属于 CS 学院，并且来自深圳。但是
+$$
+(114515, \text{CE}, \text{Guangzhou}) \notin R
+$$
+表示“学号为 $114515$ 的学生属于 CE 且来自广州”这一说法不成立。</li>
+</ul>
+<h3 id="关系模式和实例-relation-schema-and-instance"><a class="header" href="#关系模式和实例-relation-schema-and-instance">关系模式和实例 Relation Schema and Instance</a></h3>
+<p>$A_1, A_2, \cdots, A_n$ 被称为<strong>属性 attributes</strong>。</p>
+<p>$R(A_1, A_2, \cdots, A_n)$ 被称为<strong>关系模式 relation schema</strong>，有时也被称为关系方案 relation scheme，它由关系名和属性列表组成，这些属性对应表中的<strong>列 columns</strong>。</p>
+<ul>
+<li>e.g. instructor(ID, name, dept_name, salary)</li>
+</ul>
+<p>定义在关系模式 $R$ 上的<strong>关系实例 relation instance</strong>（也被称为<strong>关系状态 relation state</strong>）记为
+$$
+r(R)
+$$
+它由实际的数据值组成</p>
+<ul>
+<li>一个关系当前的取值通常通过一张<strong>表 table</strong> 来表示</li>
+</ul>
+<p>关系 $r$ 中的一个元素 $t$ 被称为<strong>元组 tuple</strong>，在表中用一<strong>行 row</strong> 来表示。</p>
+<p>模式描述的是<em>逻辑结构</em>，而实例时某一时刻数据的<em>快照</em>。</p>
+<p>例如下图</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/06/69aa8df649168.png" height="250px">
+</p>
+<h4 id="属性-attributes"><a class="header" href="#属性-attributes">属性 Attributes</a></h4>
+<p>每个属性允许取值的集合称为该属性的<strong>域 domain</strong>。</p>
+<p>属性值通常要求是<strong>原子性的 atomic</strong>，即<em>不可再分的</em>。</p>
+<p>特殊值 <strong>null</strong> 被认为时每个域中搞的一个成员，表示该值<strong>未知</strong>。</p>
+<p>null 值会使许多数据库操作的定义变得更加复杂。</p>
+<h3 id="键-keys"><a class="header" href="#键-keys">键 Keys</a></h3>
+<p>设 $K \subseteq R$，如果属性集合 $K$ 的取值足以认证唯一标识关系 $R$ 的一个元组 tuple，则称 $K$ 为 $R$ 的一个<strong>超键 superkey</strong>。</p>
+<ul>
+<li>e.g. ${\text{ID}}$ 和 ${\text{ID}, \text{name}}$ 都是关系 instructor 的超键。</li>
+</ul>
+<p>如果一个超键 $K$ 是最小的 minimal，则称之为<strong>候选键 candidate key</strong>。</p>
+<ul>
+<li>e.g. ${\text{ID}}$ 是 instructor 的一个候选键。</li>
+</ul>
+<p>在所有候选键中，会选择一个作为<strong>主键 primary key</strong>。</p>
+<p><strong>外键 foreign key</strong> 约束：一个关系中的某个值必须出现在另一个关系中。</p>
+<ul>
+<li>引用关系 referencing relation</li>
+<li>被引用关系 referenced relation</li>
+</ul>
+<h3 id="关系代数-relational-algebra"><a class="header" href="#关系代数-relational-algebra">关系代数 Relational Algebra</a></h3>
+<p><strong>关系代数</strong>由一组运算组成，这些运算接受一个或两个关系作为输入，并生成一个新的关系作为它们的结果。</p>
+<p>六个基础运算符：</p>
+<ul>
+<li>选择 select：$\sigma$</li>
+<li>投影 project：$\Pi$</li>
+<li>集合并 union / 交 intersection：$\cup$</li>
+<li>集合差 set difference：$-$</li>
+<li>笛卡尔积 Cartesian product：$\times$</li>
+<li>更名 rename：$\rho$</li>
+</ul>
+<h4 id="选择运算-select-operation"><a class="header" href="#选择运算-select-operation">选择运算 Select Operation</a></h4>
+<p>选择运算选出给定满足给定谓语的元组。</p>
+<p>记号：$\sigma_p(r)$</p>
+<p>其中，$p$ 被称作<strong>选择谓词 selection predicate</strong>。</p>
+<ul>
+<li>e.g. 选择满足在 Physics 部门的 instructor：</li>
+</ul>
+<p>$$
+\sigma_{\text{dept\_name="Physics"}}(\text{instructor})
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/06/69aa9b0994a6d.png" height="50px">
+</p>
+<p>在选择运算中我们允许使用 $=,\not=,&gt;,\geq,&lt;,\leq$，也可以利用连接符号 $\land,\lor,\lnot$ 结合谓语。</p>
+<ul>
+<li>e.g. 选择满足在 Physics 部门且薪水高于 $90,000 的 instructor：</li>
+</ul>
+<p>$$
+\sigma_{\text{dept\_name="Physics" } \land \text{ salary &gt; 90,000}}(\text{instructor})
+$$</p>
+<h4 id="投影运算-project-operation"><a class="header" href="#投影运算-project-operation">投影运算 Project Operation</a></h4>
 
                     </main>
 
