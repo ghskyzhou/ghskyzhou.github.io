@@ -446,14 +446,14 @@ $$
 <li>更名 rename：$\rho$</li>
 </ul>
 <h4 id="选择运算-select-operation"><a class="header" href="#选择运算-select-operation">选择运算 Select Operation</a></h4>
-<p>选择运算选出给定满足给定谓语的元组。</p>
+<p><strong>选择运算</strong>选出给定满足给定谓语的元组。</p>
 <p>记号：$\sigma_p(r)$</p>
 <p>其中，$p$ 被称作<strong>选择谓词 selection predicate</strong>。</p>
 <ul>
 <li>e.g. 选择满足在 Physics 部门的 instructor：</li>
 </ul>
 <p>$$
-\sigma_{\text{dept\_name="Physics"}}(\text{instructor})
+\sigma_{\text{dept name="Physics"}}(\text{instructor})
 $$</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/03/06/69aa9b0994a6d.png" height="50px">
@@ -463,9 +463,86 @@ $$</p>
 <li>e.g. 选择满足在 Physics 部门且薪水高于 $90,000 的 instructor：</li>
 </ul>
 <p>$$
-\sigma_{\text{dept\_name="Physics" } \land \text{ salary &gt; 90,000}}(\text{instructor})
+\sigma_{\text{dept name="Physics" } \land \text{ salary &gt; 90,000}}(\text{instructor})
 $$</p>
 <h4 id="投影运算-project-operation"><a class="header" href="#投影运算-project-operation">投影运算 Project Operation</a></h4>
+<p><strong>投影运算</strong>是一种一元运算，返回它的参数关系，但滤掉了特定的属性。</p>
+<p>记号：$\Pi_{A_1, A_2, A_3, \cdots, A_k} (r)$</p>
+<p>其中 $A_1, A_2, A_3, \cdots, A_k$ 是属性名，$r$ 是关系名。</p>
+<ul>
+<li>e.g. 查询以下属性的 instructor</li>
+</ul>
+<p>$$
+\Pi_{\text{ID, name, salary}}(\text{instructor})
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/10/69afea74447d0.png" height="200px">
+</p>
+<p>其实就是去掉了 <code>dept_name</code>。</p>
+<h4 id="关系运算的组合-composition-of-relational-operations"><a class="header" href="#关系运算的组合-composition-of-relational-operations">关系运算的组合 Composition of Relational Operations</a></h4>
+<p>因为一个关系代数运算的结果也是关系，所以可以直接连接起来（就像函数括号），例如：</p>
+<p>$$
+\Pi_{\text{name}}(\sigma_{\text{dept name="Physics"}}(\text{instructor}))
+$$</p>
+<h4 id="笛卡尔积运算-cartesian-product-operation"><a class="header" href="#笛卡尔积运算-cartesian-product-operation">笛卡尔积运算 Cartesian Product Operation</a></h4>
+<p><strong>笛卡尔积运算</strong>用叉号 $\times$ 表示，允许我们结合来自任意两个关系的信息。其作用就是，假设现在有 $n$ 行的关系 $A$ 和 $m$ 行的关系 $B$，那么 $A \times B$ 就会得到一个 $n*m$ 的关系，$A$ 中的每一个关系都对应 $B$ 中的所有关系。</p>
+<ul>
+<li>e.g. instructor $\times$ teaches</li>
+</ul>
+ <p align="center">
+   <img src="https://img.skyzhou.top/i/2026/03/10/69afeff65fb57.png" height="400px">
+ </p>
+<blockquote>
+<p>这里找不到原来两张表的电子版了，但大概就是能看出来是原来的一条左边的关系对应右边的所有关系，这样形成一个 $n*m$ 行的关系</p>
+</blockquote>
+<h4 id="连接运算-join-operation"><a class="header" href="#连接运算-join-operation">连接运算 Join Operation</a></h4>
+<p><strong>连接运算</strong>是我们能够选择与笛卡尔积合并到单个运算中。</p>
+<p>考虑关系 $r(R)$ 和 $r(S)$，并令 $\theta$ 为 $R \cup S$ 模式的属性上的一个谓词。连接运算的定义是：
+$$
+r \bowtie s = \sigma_\theta (r \times s)
+$$</p>
+<ul>
+<li>e.g. $\text{instructor} \bowtie_{\text{instructor.id = teaches.id}} \text{teaches} \\  = \sigma_{\text{instructor.id = teaches.id}}(\text{instructor} \times \text{teaches})$</li>
+</ul>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/10/69aff2413e32c.png" height="200px">
+</p>
+<p>其实就是先做了笛卡尔积运算，再做一次选择运算。</p>
+<h4 id="集合运算-set-operation"><a class="header" href="#集合运算-set-operation">集合运算 Set Operation</a></h4>
+<h5 id="并运算-union-operation"><a class="header" href="#并运算-union-operation">并运算 Union Operation</a></h5>
+<p><strong>并运算</strong>使我们能够合并两个关系。</p>
+<p>为了使并集运算有意义，必须要保证：</p>
+<ol>
+<li>输入并运算的两个关系具有相同数量的属性，一个关系的属性数量被称为它的<strong>元数 Arity</strong>。</li>
+<li>当属性有关联的类型时，对于每个 $i$，两个输入关系的第 $i$ 个属性的类型必须相同。</li>
+</ol>
+<p>这样的关系被称为<strong>相容 Compatible</strong> 关系。</p>
+<p>记号：$r \cup s$</p>
+<h5 id="交运算-intersection-operation"><a class="header" href="#交运算-intersection-operation">交运算 Intersection Operation</a></h5>
+<p><strong>交运算</strong>允许我们找到同时出现在两个输入关系中的元组。</p>
+<p>与并集运算一样，我们要保证交是在相容关系之间进行运算的。</p>
+<p>记号：$r \cap s$</p>
+<h5 id="集差运算-set-difference-operation"><a class="header" href="#集差运算-set-difference-operation">集差运算 Set-Difference Operation</a></h5>
+<p><strong>集差运算</strong>能使我们找到在一个关系中但不在另一个关系中的元组。</p>
+<p>与并集运算一样，我们要保证集差是在相容关系之间进行运算的。</p>
+<p>记号：$r - s$</p>
+<blockquote>
+<p>因为教授的 PPT 上并没有很好的例子图示，在这里就不给出了，而且这三个集合运算也很好理解。</p>
+</blockquote>
+<h4 id="赋值运算-assignment-operation"><a class="header" href="#赋值运算-assignment-operation">赋值运算 Assignment Operation</a></h4>
+<p>有时候通过将一个关系代数表达式中的一部分赋值给临时的关系变量，可以方便地编写该表达式，<strong>赋值运算</strong>用 $\leftarrow$ 表示，其工作方式类似于程序语言中的赋值。</p>
+<ul>
+<li>e.g. 找到所有在 Physics 和 Music 部门的 instructor
+$$
+\begin{align*}
+&amp;\text{Physics} \leftarrow \sigma_{dept name="Physics"}(instructor) \\
+&amp;\text{Music} \leftarrow \sigma_{dept name="Music"}(instructor) \
+&amp;\text{Physics} \cup \text{Music}
+\end{align*}
+$$</li>
+</ul>
+<h4 id="更名运算-rename-operation"><a class="header" href="#更名运算-rename-operation">更名运算 Rename Operation</a></h4>
+<h4 id=""><a class="header" href="#"></a></h4>
 
                     </main>
 
