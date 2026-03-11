@@ -542,7 +542,101 @@ $$
 $$</li>
 </ul>
 <h4 id="更名运算-rename-operation"><a class="header" href="#更名运算-rename-operation">更名运算 Rename Operation</a></h4>
-<h4 id=""><a class="header" href="#"></a></h4>
+<p>关系表达式的结果并没有可以用来指代它们的名称，<strong>更名运算</strong>使我们能够做到这一点。</p>
+<p>记号：$\rho_x(E)$</p>
+<p>能返回以 $x$ 命名的表达式 $E$ 的结果。</p>
+<h2 id="part-3-实体-联系模型-the-entity-relationship-model"><a class="header" href="#part-3-实体-联系模型-the-entity-relationship-model">Part 3 实体-联系模型 The Entity-Relationship Model</a></h2>
+<p>实体-联系数据模型（E-R 数据模型）被开发来方便数据库的设计，它是通过允许定义代表数据库全局逻辑结构的企业模式 Enterprise Schema 来做到的。</p>
+<p>E-R 数据模型包含下面三个基本概念：</p>
+<ul>
+<li>实体集 Entity Sets</li>
+<li>联系集 Relationship Sets</li>
+<li>属性 Attributes</li>
+</ul>
+<h3 id="实体集-entity-sets"><a class="header" href="#实体集-entity-sets">实体集 Entity Sets</a></h3>
+<p><strong>实体 Entity</strong> 是现实世界中可以区分于所有其它对象的一个“事物”或“对象”。</p>
+<ul>
+<li>e.g. 特定的人，公司，活动</li>
+</ul>
+<p><strong>实体集 Entity Set</strong> 是共享相同性质或属性的、具有相同类型的实体的集合。</p>
+<ul>
+<li>e.g. 所有人的集合，公司集合，产品</li>
+</ul>
+<p>实体通过一组<strong>属性 Attributes</strong> 来表示，属性是实体集中每个成员所拥有的描述性性质。</p>
+<ul>
+<li>e.g. $\text{instructor}=(\text{ID, name, salary})$</li>
+</ul>
+<p>属性的子集构成了一个实体集的<strong>主键 Primary Key</strong>，即它可以唯一认定集合的元素。</p>
+<p>实体集在 ER 图里的表示：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0d976c13fe.png" height="100px">
+</p>
+<h3 id="联系集-relationship-sets"><a class="header" href="#联系集-relationship-sets">联系集 Relationship Sets</a></h3>
+<p><strong>联系 Relationship</strong> 是多个实体间的相互关联，<strong>联系集 Relationship Set</strong> 是相同类型联系的集合。</p>
+<p>联系集的数学定义：
+$$
+{(e_1, e_2, \cdots, e_n):e_1 \in E_1, e_2 \in E2, \cdots, e_n \in E_n }
+$$
+其中，$(e_1, e_2, \cdots, e_n)$ 是个联系。</p>
+<p>例如，我们定义一个联系集 advisor 表示 student 和 instructor 之间的关联，然后我们就可以在实体之间连线。</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0dba0efa31.png" height="150px">
+</p>
+<p>联系集在 ER 图里的表示：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0dbe6c3f14.png" height="100px">
+</p>
+<p>联系也可以具有被称作<strong>描述性属性 Descriptive Attribute</strong> 的属性。</p>
+<p>例如下图，每个联系具有一个 date，表示 student 和 instructor 建立 advisor 联系的时间。</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0dc5ec7bbd.png" height="150px">
+</p>
+<p>带有属性的联系集在 ER 图里的表示：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0dc8802438.png" height="100px">
+</p>
+<p>实体集的关系不需要是独特的，实体在联系中扮演的功能被称为实体的<strong>角色 Role</strong>。</p>
+<p>下图中，course_id 和 prereq_id 被称作角色。</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0dffb51319.png" height="100px">
+</p>
+<h3 id="复杂属性-complex-attributes"><a class="header" href="#复杂属性-complex-attributes">复杂属性 Complex Attributes</a></h3>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0e091c848b.png" height="250px">
+</p>
+<h3 id="映射基数-mapping-cardinality"><a class="header" href="#映射基数-mapping-cardinality">映射基数 Mapping Cardinality</a></h3>
+<p><strong>映射基数 Mapping Cardinality</strong> 或基数比率表示一个实体能通过一个联系集关联的另一些实体的数量，多用于描述而二元联系集。</p>
+<p>对于一个二元联系集来说，映射基数必然是以下情况之一：</p>
+<ul>
+<li>一对一 One-to-one</li>
+<li>一对多 One-to-Many</li>
+<li>多对一 Many-to-one</li>
+<li>多对多 Many-to-many</li>
+</ul>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0e1b3c8968.png" height="200px">
+</p>
+<p>在 ER 图中，我们用单箭头直线（$\rightarrow$）来表示“一”，用无箭头之间（$-$）来表示“多”。下图从左上到右下分别是一对一、一对多、多对一、多对多。</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0e552e2e13.png" height="200px">
+</p>
+<blockquote>
+<p>其中，一对一在这里的意思就是，一位导师最多可以指导一名学生，一名学生最多只能有一位导师；一对多在这里的意思就是，一位导师可以知道多名学生，但一名学生最多只能有一位导师；其余同理。</p>
+</blockquote>
+<h4 id="全部和部分参与-total-and-partial-participation"><a class="header" href="#全部和部分参与-total-and-partial-participation">全部和部分参与 Total and Partial Participation</a></h4>
+<p>如果实体集 $E$ 中的<em>每个实体</em>都必须参与到联系集 $R$ 的至少一个联系中，那么实体集 $E$ 在联系集 $R$ 中的参与就被称为是<strong>全部的 Total</strong>，否则就被称为是<strong>部分的 Partial</strong>。</p>
+<p>全部参与用双直线表示。</p>
+<p>例如下图：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0e954207af.png" height="100px">
+</p>
+<p>student 在 advisor 联系集中的参与是全部的，即每个学生都至少有一位导师。instructor 在 advisor 联系集中的参与是部分的，即一位导师不是必须要指导学生。</p>
+<h4 id="更复杂的约束-more-complex-constraints"><a class="header" href="#更复杂的约束-more-complex-constraints">更复杂的约束 More Complex Constraints</a></h4>
+<p>线段上可以有一个关联的<em>最小</em>和<em>最大</em>基数，用 $l..h$ 的形式表示，其中 * 表没有限制。示例如下图：</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/03/11/69b0ea2c097ed.png" height="100px">
+</p>
+<p>导师可以指导 $0$ 个或多个学生；一个学生至少有一个导师，无上限。</p>
 
                     </main>
 
