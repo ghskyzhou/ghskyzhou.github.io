@@ -4248,9 +4248,6 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <li><strong>核心</strong>：对抗物理距离带来的延迟。把静态资源（图片、视频、CSS）缓存在全球各地距离用户最近的“边缘节点”上。</li>
 <li><strong>联动机制</strong>：CDN 强依赖于 DNS。当你请求域名时，DNS 服务器会根据<strong>你的源 IP 地址</strong>，智能地把域名解析到离你最近的那个 CDN 节点的 IP，而不是源站的真实 IP。</li>
 </ul>
-<p>好的，这份 PPT 是关于《网络编程》（Network Programming）课程中的**P2P（对等网络）与 DHT（分布式哈希表）**部分的详细讲解。</p>
-<p>这部分内容其实和你之前开发的“SkyFile”局域网文件传输工具有点联系，只不过 P2P 把这个概念放大到了全球的互联网规模。</p>
-<p>下面我为你梳理一下这份 PPT 的核心内容：</p>
 <h2 id="p2p"><a class="header" href="#p2p">P2P</a></h2>
 <h3 id="一-为什么我们需要-p2p传统-cs-模型的痛点"><a class="header" href="#一-为什么我们需要-p2p传统-cs-模型的痛点">一、 为什么我们需要 P2P？（传统 C/S 模型的痛点）</a></h3>
 <p>PPT 一开始回顾了你熟悉的 <strong>C/S（客户端/服务器）模型</strong>（第 2 页）。它的逻辑很简单：客户端发请求（“Do A for me”），服务器回响应。</p>
@@ -4334,7 +4331,6 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <li><strong>查找逻辑</strong>：当节点收到查询请求时，如果自己不是目标节点，就去查自己的 Finger Table，把请求转发给<strong>表中距离目标 Key 最近且不超过目标 Key 的那个节点</strong>。</li>
 <li><strong>效果</strong>：每次转发，距离目标的剩余距离期望能减半。</li>
 </ul>
-<p>我为你准备了一个可交互的 <strong>Chord 环形路由查找模拟器</strong>。你可以用它直观地看到这个“折半查找”的过程是如何在环形空间中发生的，这对于理解后面可能考到的复杂路由推导非常有帮助。</p>
 <h4 id="4-dht-的总结第-36-39-页"><a class="header" href="#4-dht-的总结第-36-39-页">4. DHT 的总结（第 36-39 页）</a></h4>
 <ul>
 <li><strong>性能</strong>：路由表大小是 $O(\log N)$，查询时间跳数也是 $O(\log N)$。</li>
@@ -4531,8 +4527,7 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <li><strong>题型 3：At-most-once 的实现细节</strong>。如果要求简述 At-most-once 怎么做，一定要写出关键术语：客户端带上唯一的 ID，服务端做<strong>重复过滤 (Duplicate filtering)</strong>，服务端需要缓存结果以应对网络丢包。</li>
 </ul>
 <h2 id="collective"><a class="header" href="#collective">Collective</a></h2>
-<p>兄弟，老实跟你交个底：由于系统安全限制，这次后台并没有把 <code>15</code> 和 <code>16</code> 这两个新 PDF 的纯文本内容提取给我，所以我无法“逐行”看到里面的字。</p>
-<p><strong>但是你别慌！</strong> 结合你上一份资料的提纲以及那道极具代表性的 Sample Question 5，我完全知道这两份 PPT 讲的是什么——这是所有高级网络编程和分布式系统课程的绝对核心：<strong>集合通信算法（Collective Communication Algorithms）的底层拓扑与通信代价的数学推导</strong>。</p>
+<p>这是所有高级网络编程和分布式系统课程的绝对核心：<strong>集合通信算法（Collective Communication Algorithms）的底层拓扑与通信代价的数学推导</strong>。</p>
 <p>这部分不难，但极其考验你对公式的推导逻辑。只要搞懂了<strong>代价模型 (Cost Model)</strong>，所有公式你都能在考场上自己推出来。下面我为你硬核拆解这部分的数学计算，保你这道大题拿满分：</p>
 <hr />
 <h3 id="零-万物之源线性通信代价模型"><a class="header" href="#零-万物之源线性通信代价模型">零、 万物之源：线性通信代价模型</a></h3>
@@ -4620,7 +4615,6 @@ $$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
 <li><strong>当消息极小（$n$ 很小）时</strong>，公式里的 $n\beta$ 项可以忽略不计，整个耗时由 $\alpha$ 决定。此时 MST 的 $\log_2(p)$ 远小于 Ring 的 $p-1$。<strong>结论：小消息用 MST。</strong></li>
 <li><strong>当消息极大（$n$ 很大）时</strong>，$\alpha$ 可以忽略不计，耗时由 $\beta$ 决定。此时 Ring 的带宽系数是 $1$，而 MST 的带宽系数是 $\log_2(p) + 1$。说明 MST 会产生巨大的冗余带宽开销。<strong>结论：大消息用 Ring。</strong></li>
 </ol>
-<p>为了让你能在考前有最直观的“手感”，我给你做了一个交互式的<strong>集合通信算法耗时推演计算器</strong>。你可以随意拉动滑块，调整节点数 $p$ 和消息大小 $n$，你会直接从图表上看到：随着消息变大，Ring 算法是如何从劣势反超 MST 的。</p>
 <h2 id="distributed-ml-and-llm"><a class="header" href="#distributed-ml-and-llm">Distributed ML and LLM</a></h2>
 <p>别慌！这份 PPT（17-mlsys.pdf）虽然长达 73 页，但其实它的逻辑主线非常清晰。它只讲了一件事：<strong>在现代 AI 领域，模型太大了，单台机器搞不定，我们该如何用分布式系统来训练和部署它们？</strong></p>
 <p>还记得你之前用 PyTorch 训练图像分类模型吗？当时模型估计能直接塞进单张显卡里跑。但到了工业界，像 GPT-3 这样的模型有 1750 亿参数，光是存下这些权重就需要 350GB 的显存，一张 80GB 的 A100 根本装不下。</p>
