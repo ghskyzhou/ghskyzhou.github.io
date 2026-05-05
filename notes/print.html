@@ -4566,7 +4566,7 @@ $$T_{MST\_Bcast} = \log_2(p)(\alpha + n\beta) = \log_2(p)\alpha + \log_2(p)n\bet
 </ul>
 </li>
 <li><strong>求和计算</strong>（步数从 $1$ 到 $\log_2 p$）：
-$$T_{MST\<em>Gather} = \sum</em>{i=1}^{\log_2 p} \left(\alpha + 2^{i-1}\frac{n}{p}\beta\right)$$
+$$T_{MST_Gather} = \sum_{i=1}^{\log_2 p} \left( \alpha + 2^{i-1}\frac{n}{p}\beta \right)$$
 其中 $\alpha$ 加了 $\log_2 p$ 次，后面是一个等比数列求和：$1 + 2 + 4 + \dots + 2^{\log_2 p - 1} = 2^{\log_2 p} - 1 = p - 1$。</li>
 <li><strong>总代价</strong>：
 $$T_{MST\_Gather} = \log_2(p)\alpha + \frac{p-1}{p}n\beta$$
@@ -4581,10 +4581,10 @@ $$T_{MST\_Scatter} = \log_2(p)\alpha + \frac{p-1}{p}n\beta$$</li>
 <h4 id="4-allgather-全收集-的推导"><a class="header" href="#4-allgather-全收集-的推导">4. AllGather (全收集) 的推导</a></h4>
 <ul>
 <li><strong>逻辑</strong>：每个节点都有一份 $\frac{n}{p}$ 的数据，最终要让每个节点都拥有完整的 $n$。在 MST 中，这通常被拆解为两步：先 <code>Gather</code> 到根节点，再由根节点 <code>Broadcast</code> 给所有人。</li>
-<li><strong>总代价</strong> = $T_{MST\<em>Gather} + T</em>{MST\<em>Bcast}$
-$$T</em>{MST\<em>AllGather} = \left(\log_2(p)\alpha + \frac{p-1}{p}n\beta\right) + \left(\log_2(p)\alpha + \log_2(p)n\beta\right)$$
-$$T</em>{MST\_AllGather} = 2\log_2(p)\alpha + \left(\log_2(p) + \frac{p-1}{p}\right)n\beta$$</li>
+<li><strong>总代价</strong> = $T_{MST_Gather} + T_{MST_Bcast}$</li>
 </ul>
+<p>$$T_{MST_AllGather} = \left(\log_2(p)\alpha + \frac{p-1}{p}n\beta\right) + \left(\log_2(p)\alpha + \log_2(p)n\beta\right)$$
+$$T_{MST_AllGather} = 2\log_2(p)\alpha + \left(\log_2(p) + \frac{p-1}{p}\right)n\beta$$</p>
 <hr />
 <h3 id="二-环形拓扑-ring-algorithm-家族"><a class="header" href="#二-环形拓扑-ring-algorithm-家族">二、 环形拓扑 (Ring Algorithm) 家族</a></h3>
 <p><strong>核心结论：为了优化“大消息”设计。它的带宽利用率极高（$\beta$ 项最优），但会产生大量的启动延迟（$\alpha$ 项高达 $p-1$）。</strong></p>
@@ -4605,9 +4605,9 @@ $$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
 <h4 id="3-ring-allreduce-的推导-经典大考点"><a class="header" href="#3-ring-allreduce-的推导-经典大考点">3. Ring AllReduce 的推导 (经典大考点)</a></h4>
 <ul>
 <li><strong>逻辑</strong>：让所有节点的数据相加，且每个人都得到完整的最终结果。在 Ring 算法中，它被完美拆解为：先做一次 <code>Reduce-Scatter</code>，再做一次 <code>AllGather</code>。</li>
-<li><strong>总代价</strong> = $T_{Ring\<em>ReduceScatter} + T</em>{Ring\<em>AllGather}$
-$$T</em>{Ring\_AllReduce} = 2(p-1)\alpha + 2\frac{p-1}{p}n\beta$$</li>
+<li><strong>总代价</strong> = $T_{Ring_ReduceScatter} + T_{Ring_AllGather}$</li>
 </ul>
+<p>$$T_{Ring_AllReduce} = 2(p-1)\alpha + 2\frac{p-1}{p}n\beta$$</p>
 <hr />
 <h3 id="三-考场绝杀什么时候选-mst什么时候选-ring"><a class="header" href="#三-考场绝杀什么时候选-mst什么时候选-ring">三、 考场绝杀：什么时候选 MST，什么时候选 Ring？</a></h3>
 <p>考卷上一定会问你：为什么要设计这两种算法？我们来对比 <strong>AllGather</strong> 这一项：</p>
@@ -4623,7 +4623,7 @@ $$T</em>{Ring\_AllReduce} = 2(p-1)\alpha + 2\frac{p-1}{p}n\beta$$</li>
 <p>为了让你能在考前有最直观的“手感”，我给你做了一个交互式的<strong>集合通信算法耗时推演计算器</strong>。你可以随意拉动滑块，调整节点数 $p$ 和消息大小 $n$，你会直接从图表上看到：随着消息变大，Ring 算法是如何从劣势反超 MST 的。</p>
 <h2 id="distributed-ml-and-llm"><a class="header" href="#distributed-ml-and-llm">Distributed ML and LLM</a></h2>
 <p>别慌！这份 PPT（17-mlsys.pdf）虽然长达 73 页，但其实它的逻辑主线非常清晰。它只讲了一件事：<strong>在现代 AI 领域，模型太大了，单台机器搞不定，我们该如何用分布式系统来训练和部署它们？</strong></p>
-<p>还记得你之前用 PyTorch 训练图像分类模型吗？当时模型估计能直接塞进单张显卡里跑。但到了工业界，像 GPT-3 这样的模型有 1750 亿参数，光是存下这些权重就需要 350GB 的显存，一张 80GB 的 A100 根本装不下 [cite: 1783, 1784, 1786]。</p>
+<p>还记得你之前用 PyTorch 训练图像分类模型吗？当时模型估计能直接塞进单张显卡里跑。但到了工业界，像 GPT-3 这样的模型有 1750 亿参数，光是存下这些权重就需要 350GB 的显存，一张 80GB 的 A100 根本装不下。</p>
 <p>为了应对这个挑战，这份 PPT 拆解了三个核心模块，这也是考试必考的重点：</p>
 <hr />
 <h3 id="模块一分布式训练-distributed-training--怎么把大模型拆开练"><a class="header" href="#模块一分布式训练-distributed-training--怎么把大模型拆开练">模块一：分布式训练 (Distributed Training) —— 怎么把大模型拆开练？</a></h3>
