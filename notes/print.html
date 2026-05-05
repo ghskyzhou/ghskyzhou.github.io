@@ -4130,6 +4130,558 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <h4 id="独立测试-independent-test"><a class="header" href="#独立测试-independent-test">独立测试 Independent Test</a></h4>
 <p>由独立测试者来做的测试，尽量破坏软件，找到最深的 bug。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="csc4303-network-programming"><a class="header" href="#csc4303-network-programming">CSC4303 Network Programming</a></h1>
+<h2 id="基础"><a class="header" href="#基础">基础</a></h2>
+<blockquote>
+<p>五层模型，TCP&amp;UDP，三次握手，流控制，滑动窗口，MAX-MIN，IP，DHCP，ARP，ICMP，NAT，最长前缀匹配，HTTP，DNS，CDN</p>
+</blockquote>
+<hr />
+<h3 id="一-宏观架构五层模型-five-layer-model"><a class="header" href="#一-宏观架构五层模型-five-layer-model">一、 宏观架构：五层模型 (Five-Layer Model)</a></h3>
+<p>网络通信的模块化基石。每一层只和对等层（Peer）交互，并向下层请求服务。</p>
+<ul>
+<li><strong>应用层 (Application Layer)</strong>：报文 (Message)。负责应用程序间的通信（如 HTTP, DNS, SMTP）。</li>
+<li><strong>传输层 (Transport Layer)</strong>：报文段 (Segment)。负责<strong>进程到进程 (Process-to-Process)</strong> 的端到端通信，建立在端口号之上（TCP, UDP）。</li>
+<li><strong>网络层 (Network Layer)</strong>：数据报 (Datagram/Packet)。负责<strong>主机到主机 (Host-to-Host)</strong> 的路由和转发，跨越不同的网络（IP, ICMP）。</li>
+<li><strong>链路层 (Link Layer)</strong>：数据帧 (Frame)。负责同一局域网内<strong>相邻节点 (Node-to-Node)</strong> 的数据传输（Ethernet, WiFi, MAC地址）。</li>
+<li><strong>物理层 (Physical Layer)</strong>：比特 (Bit)。负责在线缆、光纤中传输物理信号。</li>
+</ul>
+<hr />
+<h3 id="二-传输层核心tcpudp-与控制机制"><a class="header" href="#二-传输层核心tcpudp-与控制机制">二、 传输层核心：TCP、UDP 与控制机制</a></h3>
+<p>这部分是重灾区，搞懂控制逻辑是关键。</p>
+<h4 id="1-tcp-vs-udp-考点场景选型"><a class="header" href="#1-tcp-vs-udp-考点场景选型">1. TCP vs UDP (考点：场景选型)</a></h4>
+<ul>
+<li><strong>TCP</strong>：面向连接、<strong>可靠的字节流</strong>。有确认重传、流量控制、拥塞控制。适用于对数据完整性要求极高的场景（网页浏览、文件下载、RPC 强一致性调用）。</li>
+<li><strong>UDP</strong>：无连接、<strong>不可靠的数据报</strong>。尽最大努力交付，无拥塞控制（发多快全凭应用程序），报文大小受限。适用于对延迟极其敏感、容忍丢包的场景（视频流、语音通话、DNS查询）。</li>
+</ul>
+<h4 id="2-三次握手-three-way-handshake"><a class="header" href="#2-三次握手-three-way-handshake">2. 三次握手 (Three-Way Handshake)</a></h4>
+<ul>
+<li><strong>目标</strong>：在双向数据传输前，同步双方的<strong>初始序列号 (ISN, Initial Sequence Number)</strong>。</li>
+<li><strong>过程</strong>：
+<ol>
+<li>客户端发送 <code>SYN (SEQ=x)</code>，进入 SYN_SENT 状态。</li>
+<li>服务端收到后，发送 <code>SYN (SEQ=y, ACK=x+1)</code>，进入 SYN_RCVD 状态。</li>
+<li>客户端收到后，发送 <code>ACK (SEQ=x+1, ACK=y+1)</code>，连接建立。</li>
+</ol>
+</li>
+<li><strong>⚠️ 陷阱</strong>：为什么不是两次？因为如果只有两次，服务端发出 SYN-ACK 后就以为连接建立了，但如果这个包在路上丢了，客户端并不知道，服务端就会一直死等，浪费资源。</li>
+</ul>
+<h4 id="3-流控制-flow-control--滑动窗口-sliding-window"><a class="header" href="#3-流控制-flow-control--滑动窗口-sliding-window">3. 流控制 (Flow Control) &amp; 滑动窗口 (Sliding Window)</a></h4>
+<ul>
+<li><strong>目标</strong>：保护<strong>接收方</strong>。防止发送方发得太快，把接收方的缓存（Buffer）撑爆。</li>
+<li><strong>滑动窗口机制</strong>：允许发送方在收到确认之前，连续发送多个数据包，从而提高网络利用率（摆脱了极度低效的停等协议 Stop-and-Wait）。</li>
+<li><strong>两种经典实现 (必考对比)</strong>：
+<ul>
+<li><strong>Go-Back-N (GBN, 回退 N 步)</strong>：发送方只维护<strong>一个</strong>定时器。如果包 $N$ 丢失，定时器超时后，发送方必须重传包 $N$ 以及它之后的所有包（即使后面的包接收方已经收到了，也要重新发）。</li>
+<li><strong>Selective Repeat (SR, 选择性重传)</strong>：为<strong>每个</strong>发出的包维护独立的定时器。接收方缓存乱序到达的包。发送方只重传真正丢失的那个包。效率更高，但实现复杂。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-max-min-fairness-最大最小公平"><a class="header" href="#4-max-min-fairness-最大最小公平">4. Max-Min Fairness (最大最小公平)</a></h4>
+<ul>
+<li><strong>目标</strong>：在多条数据流共享网络瓶颈时，如何分配带宽最公平？</li>
+<li><strong>原则</strong>：最大化那些需求最小的流的分配额。</li>
+<li><strong>算法/计算逻辑</strong>：
+<ol>
+<li>将所有流的需求从小到大排序。</li>
+<li>将剩余总带宽平均分给当前所有未满足的流。</li>
+<li>如果某个流的<strong>需求小于平均值</strong>，就只给它需要的量。</li>
+<li>把它没用完的“找零”带宽，拿出来继续平分给剩下那些“需求大于平均值”的流。</li>
+</ol>
+</li>
+<li><em>(注：TCP 的 AIMD 加法增乘法减机制，最终会在宏观上收敛到这种公平状态。)</em></li>
+</ul>
+<hr />
+<h3 id="三-网络层基石ip路由与辅助协议"><a class="header" href="#三-网络层基石ip路由与辅助协议">三、 网络层基石：IP、路由与辅助协议</a></h3>
+<p>这里主要考对寻址和网络包生存周期的理解。</p>
+<h4 id="1-ip-internet-protocol"><a class="header" href="#1-ip-internet-protocol">1. IP (Internet Protocol)</a></h4>
+<ul>
+<li><strong>核心功能</strong>：全局寻址（IPv4 是 32 位，IPv6 是 128 位）与数据包的路由转发。</li>
+<li><strong>CIDR 表示法</strong>：如 <code>192.168.1.0/24</code>，<code>/24</code> 表示前 24 位是网络号（Subnet），后 8 位是主机号。</li>
+</ul>
+<h4 id="2-最长前缀匹配-longest-prefix-matching"><a class="header" href="#2-最长前缀匹配-longest-prefix-matching">2. 最长前缀匹配 (Longest Prefix Matching)</a></h4>
+<ul>
+<li><strong>机制</strong>：路由器的转发表中，可能有多个子网掩码都能匹配目的 IP。路由器必须选择**掩码最长（即最具体、范围最小）**的那条规则进行转发。</li>
+<li><strong>做题技巧</strong>：把 IP 转换为二进制，从左到右数，看谁匹配的位数最多。</li>
+</ul>
+<h4 id="3-四大辅助神将dhcp-arp-icmp-nat"><a class="header" href="#3-四大辅助神将dhcp-arp-icmp-nat">3. 四大辅助神将：DHCP, ARP, ICMP, NAT</a></h4>
+<ul>
+<li><strong>DHCP (Dynamic Host Configuration Protocol)</strong>：
+<ul>
+<li><strong>作用</strong>：给刚接入网络、还没有 IP 的设备动态分配 IP 地址。</li>
+<li><strong>机制</strong>：新设备因为不知道找谁，只能在局域网内发<strong>广播</strong>（目的 IP 设为 <code>255.255.255.255</code>，MAC 设为全 <code>F</code>）。DHCP 服务器听到后会“租”给它一个 IP。</li>
+</ul>
+</li>
+<li><strong>ARP (Address Resolution Protocol)</strong>：
+<ul>
+<li><strong>作用</strong>：将<strong>逻辑上的 IP 地址</strong>转换为<strong>物理上的 MAC 地址</strong>。</li>
+<li><strong>机制</strong>：要在局域网内发包，你必须知道对方网卡的 MAC 地址。ARP 会在局域网内大喊：“谁的 IP 是 x.x.x.x？把你的 MAC 告诉我！”</li>
+</ul>
+</li>
+<li><strong>ICMP (Internet Control Message Protocol)</strong>：
+<ul>
+<li><strong>作用</strong>：网络层的错误报告与诊断协议（实际上封装在 IP 包里传输）。</li>
+<li><strong>应用</strong>：你用的 <code>ping</code>（发 Echo Request，收 Echo Reply）和 <code>traceroute</code>（利用 TTL 过期报错）底层跑的全是 ICMP。</li>
+</ul>
+</li>
+<li><strong>NAT (Network Address Translation)</strong>：
+<ul>
+<li><strong>作用</strong>：拯救了 IPv4 地址枯竭的救星。允许整个局域网（如校园网）里的所有设备，共享一个公网 IP 上网。</li>
+<li><strong>机制</strong>：路由器内部维护一张 NAT 转换表，通过修改 IP 包头的 <code>源私有IP : 源端口</code> -&gt; <code>路由器公网IP : 新分配端口</code> 来实现映射。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="四-应用层加速httpdns-与-cdn"><a class="header" href="#四-应用层加速httpdns-与-cdn">四、 应用层加速：HTTP、DNS 与 CDN</a></h3>
+<p>这三者是现代互联网秒级加载网页的铁三角。</p>
+<h4 id="1-http-hypertext-transfer-protocol"><a class="header" href="#1-http-hypertext-transfer-protocol">1. HTTP (HyperText Transfer Protocol)</a></h4>
+<ul>
+<li><strong>核心</strong>：建立在 TCP 之上的无状态、Request/Response 模型。</li>
+<li><strong>性能指标</strong>：<strong>PLT (Page Load Time)</strong>。现代 Web 优化全是为了降低 PLT，比如减小文件大小、使用 HTTP 并行连接/复用、使用缓存。</li>
+</ul>
+<h4 id="2-dns-domain-name-system"><a class="header" href="#2-dns-domain-name-system">2. DNS (Domain Name System)</a></h4>
+<ul>
+<li><strong>核心</strong>：互联网的电话本。把人类可读的域名（<code>www.google.com</code>）翻译成机器能懂的 IP 地址。通常跑在 UDP 53 端口上。</li>
+<li><strong>解析层级 (常考顺序)</strong>：
+本地缓存 -&gt; DNS 递归解析器 (ISP提供) -&gt; <strong>Root DNS (根服务器)</strong> -&gt; <strong>TLD DNS (顶级域名服务器，如 .com)</strong> -&gt; <strong>Authoritative DNS (权威服务器，如 google.com)</strong>。</li>
+</ul>
+<h4 id="3-cdn-content-delivery-network"><a class="header" href="#3-cdn-content-delivery-network">3. CDN (Content Delivery Network)</a></h4>
+<ul>
+<li><strong>核心</strong>：对抗物理距离带来的延迟。把静态资源（图片、视频、CSS）缓存在全球各地距离用户最近的“边缘节点”上。</li>
+<li><strong>联动机制</strong>：CDN 强依赖于 DNS。当你请求域名时，DNS 服务器会根据<strong>你的源 IP 地址</strong>，智能地把域名解析到离你最近的那个 CDN 节点的 IP，而不是源站的真实 IP。</li>
+</ul>
+<p>好的，这份 PPT 是关于《网络编程》（Network Programming）课程中的**P2P（对等网络）与 DHT（分布式哈希表）**部分的详细讲解。</p>
+<p>这部分内容其实和你之前开发的“SkyFile”局域网文件传输工具有点联系，只不过 P2P 把这个概念放大到了全球的互联网规模。</p>
+<p>下面我为你梳理一下这份 PPT 的核心内容：</p>
+<h2 id="p2p"><a class="header" href="#p2p">P2P</a></h2>
+<h3 id="一-为什么我们需要-p2p传统-cs-模型的痛点"><a class="header" href="#一-为什么我们需要-p2p传统-cs-模型的痛点">一、 为什么我们需要 P2P？（传统 C/S 模型的痛点）</a></h3>
+<p>PPT 一开始回顾了你熟悉的 <strong>C/S（客户端/服务器）模型</strong>（第 2 页）。它的逻辑很简单：客户端发请求（“Do A for me”），服务器回响应。</p>
+<p>但当客户端数量达到数百万时，<strong>可扩展性问题 (Scaling Problem)</strong> 就出现了（第 3 页）。所有的流量都涌向服务器，会导致网络拥塞和服务器崩溃（Meltdown）。</p>
+<p><strong>解决方案</strong>（第 4-6 页）：</p>
+<ul>
+<li><strong>P2P (Peer-to-Peer) 系统</strong>：与其让服务器一个人干活，不如发动群众。利用客户端机器（Peers）自身的计算、存储和带宽资源。</li>
+<li>传统的 P2P 共享计算、存储和带宽；现代的甚至可以共享移动性、加密货币和传感器数据。</li>
+<li>在 P2P 存储网络中，每个成员既是下载者也是提供者。<strong>难点在于：文件可能在任何地方，我们怎么找到它（Searching/Lookup problem）？</strong> 此外，节点随时可能上线或下线（Node churn），这让搜索更困难。</li>
+</ul>
+<h3 id="二-p2p-的搜索策略演进"><a class="header" href="#二-p2p-的搜索策略演进">二、 P2P 的搜索策略演进</a></h3>
+<p>为了解决“寻找文件”的问题，P2P 网络发展出了几种不同的策略（第 11-23 页）。所有的 P2P 框架都需要解决四个基本原语：<strong>Join（加入）、Publish（发布）、Search（搜索）、Fetch（获取）</strong>。</p>
+<h4 id="1-napster中心化目录"><a class="header" href="#1-napster中心化目录">1. Napster（中心化目录）</a></h4>
+<ul>
+<li><strong>原理</strong>：虽然文件存在各个客户端电脑上，但有一个<strong>中央服务器</strong>记录着“谁拥有什么文件”的目录。</li>
+<li><strong>流程</strong>：
+<ul>
+<li><strong>Publish</strong>：节点告诉服务器“我有文件 X”。</li>
+<li><strong>Search</strong>：客户端问服务器“谁有文件 A？” 服务器返回对应的 IP 节点（例如 <code>123.2.0.18</code>）。</li>
+<li><strong>Fetch</strong>：客户端直接去找 <code>123.2.0.18</code> 下载文件。</li>
+</ul>
+</li>
+<li><strong>优缺点</strong>：
+<ul>
+<li><strong>优点</strong>：简单，搜索速度极快（时间复杂度 $O(1)$）。</li>
+<li><strong>缺点</strong>：中央服务器压力巨大（维护 $O(N)$ 状态），且存在<strong>单点故障</strong>（服务器一挂，全网瘫痪；服务器被查封，游戏结束）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-gnutella去中心化泛洪"><a class="header" href="#2-gnutella去中心化泛洪">2. Gnutella（去中心化泛洪）</a></h4>
+<ul>
+<li><strong>原理</strong>：彻底没有中央服务器。通过节点互相询问来找文件。</li>
+<li><strong>流程</strong>：
+<ul>
+<li><strong>Join</strong>：连上几个邻居节点。</li>
+<li><strong>Search (Query Flooding)</strong>：客户端问邻居“谁有文件 A？”，邻居再问邻居的邻居（广播泛洪）。为了防止消息无限传播，会设置 TTL（生存时间）。谁有文件，就原路返回消息。</li>
+</ul>
+</li>
+<li><strong>优缺点</strong>：
+<ul>
+<li><strong>优点</strong>：彻底去中心化，抗摧毁能力强。支持复杂的搜索语义。</li>
+<li><strong>缺点</strong>：网络开销巨大（为了找一个文件要惊动全网），搜索范围受限，可能找不到文件。网络极不稳定。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-bittorrent-bt-下载"><a class="header" href="#3-bittorrent-bt-下载">3. BitTorrent (BT 下载)</a></h4>
+<ul>
+<li><strong>原理</strong>：结合了 Tracker 服务器和文件分块群集（Swarming）下载。专注于“少数大文件”的分发。</li>
+<li><strong>流程</strong>：
+<ul>
+<li><strong>Join</strong>：连接中央 Tracker 服务器获取同伴列表。</li>
+<li><strong>Fetch</strong>：向其他拥有该文件块的节点（Peers）下载，同时把你自己下载好的块上传给别人。</li>
+</ul>
+</li>
+<li><strong>核心策略：Tit-for-tat（以牙还牙）</strong>：为了防止“只下不传”的伸手党（Freeloaders），BT 规定：谁给我传得快，我就优先给谁传。同时会保留一小部分带宽进行“乐观解锁”（Optimistic unchoke），给新人一点机会，也借此发现更快的节点。</li>
+<li><strong>Rarest first（最稀缺优先）</strong>：优先下载网络中最稀缺的文件块，保证文件的整体存活率。</li>
+</ul>
+<h3 id="三-终极解决方案dht-与-chord-算法"><a class="header" href="#三-终极解决方案dht-与-chord-算法">三、 终极解决方案：DHT 与 Chord 算法</a></h3>
+<p>前面几种方案要么有单点故障，要么搜索效率低。为了保证“只要文件存在，就一定能在有限步数内找到”，科学家引入了 <strong>DHT（分布式哈希表）</strong>（第 24-36 页）。</p>
+<h4 id="1-dht-的概念"><a class="header" href="#1-dht-的概念">1. DHT 的概念</a></h4>
+<p>把整个 P2P 网络抽象成一个巨大的哈希表。</p>
+<ul>
+<li>$Key = Hash(Data)$：文件的标识是哈希值。</li>
+<li>$Lookup(Key) \rightarrow IP$：可以通过 Key 快速找到存储该文件的节点 IP。</li>
+<li>DHT 要求：去中心化、可扩展（网络开销低）、高效（查询延迟低）、动态（能应对节点频繁上下线）。</li>
+</ul>
+<h4 id="2-chord-算法与一致性哈希-consistent-hashing"><a class="header" href="#2-chord-算法与一致性哈希-consistent-hashing">2. Chord 算法与一致性哈希 (Consistent Hashing)</a></h4>
+<p>Chord 是 DHT 的一种经典实现。</p>
+<ul>
+<li><strong>地址空间环</strong>：把所有的 IP 地址和文件 Key 用相同的 Hash 函数（如 SHA-1）映射到一个巨大的环形数字空间里。</li>
+<li><strong>存储规则</strong>：一个 Key 会被存储在顺时针方向上第一个大于等于它的节点上（即它的<strong>后继节点 Successor</strong>）。
+<ul>
+<li><em>举例（第 28 页）</em>：节点有 N32, N60, N90, N105。Key 80 会顺时针找，存到 N90 上。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-chord-的核心finger-table-指针表路由表"><a class="header" href="#3-chord-的核心finger-table-指针表路由表">3. Chord 的核心：Finger Table (指针表/路由表)</a></h4>
+<p>如果每次查找都顺时针一步一步走，那时间复杂度是 $O(N)$，太慢了。Chord 给每个节点配备了一个<strong>路由表 (Finger Table)</strong> 来实现跳跃查找（第 30-35 页）。</p>
+<ul>
+<li><strong>表结构</strong>：假设地址空间大小是 $2^m$。每个节点的 Finger Table 记录了距离自己 $2^0, 2^1, 2^2 \dots 2^{m-1}$ 距离后的第一个后继节点。</li>
+<li><strong>查找逻辑</strong>：当节点收到查询请求时，如果自己不是目标节点，就去查自己的 Finger Table，把请求转发给<strong>表中距离目标 Key 最近且不超过目标 Key 的那个节点</strong>。</li>
+<li><strong>效果</strong>：每次转发，距离目标的剩余距离期望能减半。</li>
+</ul>
+<p>我为你准备了一个可交互的 <strong>Chord 环形路由查找模拟器</strong>。你可以用它直观地看到这个“折半查找”的过程是如何在环形空间中发生的，这对于理解后面可能考到的复杂路由推导非常有帮助。</p>
+<h4 id="4-dht-的总结第-36-39-页"><a class="header" href="#4-dht-的总结第-36-39-页">4. DHT 的总结（第 36-39 页）</a></h4>
+<ul>
+<li><strong>性能</strong>：路由表大小是 $O(\log N)$，查询时间跳数也是 $O(\log N)$。</li>
+<li><strong>优点</strong>：保证能找到数据，良好的可扩展性和容错性。<strong>一致性哈希</strong>这个概念极其成功，不仅用在 P2P，后来还成了所有现代分布式数据库（比如 Amazon Dynamo, Cassandra）的基石。</li>
+<li><strong>缺点</strong>：只能做精确匹配（Hash查找），很难做模糊搜索或关键字搜索。如果需要强一致性或极高性能（比如银行系统），就不适合用 P2P 架构。</li>
+</ul>
+<h2 id="dynamo"><a class="header" href="#dynamo">Dynamo</a></h2>
+<p>没问题，咱们不整花里胡哨的，老老实实、硬核地拆解 Amazon Dynamo 这个分布式系统领域的“扛把子”。这部分是期末考试的绝对重点，特别是它的机制权衡（Trade-offs）和计算。</p>
+<p>结合你前面复习的 P2P 知识，理解 Dynamo 会非常顺畅：<strong>它本质上就是把 P2P 网络里的一致性哈希理念，做成了一个工业级的、去中心化的 Key-Value 数据库。</strong></p>
+<p>以下是面向考试的知识点拆解：</p>
+<h3 id="1-为什么要有-dynamo设计哲学"><a class="header" href="#1-为什么要有-dynamo设计哲学">1. 为什么要有 Dynamo？（设计哲学）</a></h3>
+<p>Dynamo 是亚马逊为“购物车”业务量身定制的。</p>
+<ul>
+<li><strong>核心诉求</strong>：<strong>永远可写（High Availability for Writes）</strong>。对于电商而言，绝不能拒绝用户的“加入购物车”请求，否则就是直接损失收入。</li>
+<li><strong>妥协代价</strong>：为了保证“写”的极高可用性，Dynamo 放弃了强一致性，只保证<strong>最终一致性（Eventual Consistency）</strong>。这意味着在短时间内，用户可能会读到旧的购物车数据，但这比写失败要好。</li>
+</ul>
+<h3 id="2-数据存在哪-一致性哈希与虚拟节点必考概念"><a class="header" href="#2-数据存在哪-一致性哈希与虚拟节点必考概念">2. 数据存在哪？—— 一致性哈希与虚拟节点（必考概念）</a></h3>
+<p>Dynamo 使用完全对等的架构（没有像 GFS 那样的 Master 节点）。</p>
+<ul>
+<li><strong>一致性哈希 (Consistent Hashing)</strong>：所有物理机器和数据 Key 都被哈希映射到一个首尾相接的逻辑环上。一个 Key 顺时针方向遇到的第一个节点，就是负责存储它的节点。</li>
+<li><strong>虚拟节点 (Virtual Nodes / vnodes)</strong>：这是为了解决数据倾斜（负载不均）的绝招。
+<ul>
+<li><strong>问题</strong>：如果环上只有几个物理节点，数据分布会极不均匀。</li>
+<li><strong>解决</strong>：让一台物理机器在环上映射出多个“虚拟节点”。这不仅完美解决了负载均衡，还可以根据物理机的性能高低，分配不同数量的 vnode。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-数据怎么保证不丢-nrw-quorum-机制必考计算与分析"><a class="header" href="#3-数据怎么保证不丢-nrw-quorum-机制必考计算与分析">3. 数据怎么保证不丢？—— N、R、W Quorum 机制（必考计算与分析）</a></h3>
+<p>为了防止节点宕机导致数据丢失，Dynamo 会把数据顺时针复制给 N 个节点。考试最爱考的就是这三个参数的配置组合：</p>
+<ul>
+<li><strong>N（Replication Factor）</strong>：总副本数。</li>
+<li><strong>W（Write Quorum）</strong>：一次写操作，必须收到 W 个节点的确认，才算“写成功”。</li>
+<li><strong>R（Read Quorum）</strong>：一次读操作，必须向 R 个节点发起查询，才能返回数据。</li>
+</ul>
+<p><strong>核心考试逻辑</strong>：</p>
+<ul>
+<li>如果 <code>R + W &gt; N</code>，系统保证<strong>强一致性</strong>。因为读取的集合和写入的集合必然有交集（鸽巢原理），你一定能读到最新写入的那份数据。</li>
+<li>如果 <code>R + W &lt;= N</code>，系统退化为<strong>最终一致性</strong>。</li>
+</ul>
+<p><strong>经典考点（基于 N=3）：</strong></p>
+<ul>
+<li><strong>配置 (3, 2, 2)</strong>：系统最常用的平衡配置。读写速度适中，容错性好。</li>
+<li><strong>配置 (3, 1, 3)</strong>：<strong>写极快、读极慢</strong>。因为写 1 个节点就返回，但读要等 3 个节点。风险：只要有 1 个节点宕机，读操作就会因为凑不齐 3 个响应而直接失败。</li>
+<li><strong>配置 (3, 3, 1)</strong>：<strong>读极快、写极慢</strong>。且写操作非常脆弱，任意一个节点挂了，写操作就会失败（这违背了 Dynamo 的初衷）。</li>
+</ul>
+<h3 id="4-数据冲突了怎么办-向量时钟-vector-clock"><a class="header" href="#4-数据冲突了怎么办-向量时钟-vector-clock">4. 数据冲突了怎么办？—— 向量时钟 (Vector Clock)</a></h3>
+<p>既然 Dynamo 追求极速写入，甚至在网络断开（Network Partition）的情况下也允许不同节点接收写请求，那就必然会产生数据冲突（例如同一个 Key 在两个节点上被改成了不同的值）。</p>
+<ul>
+<li><strong>机制</strong>：系统通过<strong>向量时钟</strong>（如 <code>[Node A: 1, Node B: 2]</code> 这样的计数器数组）来追踪数据的因果关系。</li>
+<li><strong>解决策略</strong>：
+<ul>
+<li>如果向量时钟能看出明显的先后顺序，系统自动用新版本覆盖旧版本。</li>
+<li>如果向量时钟显示这是两个并行的、冲突的版本（比如在断网时，用户分别在手机和电脑往购物车里加了不同的东西），Dynamo <strong>不会自己瞎决定</strong>，而是把两个版本都保留，丢给**客户端（应用层）**去解决。例如，让购物车的业务代码把这两件商品合并。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-gfs-vs-dynamo-终极对比常考辨析题"><a class="header" href="#5-gfs-vs-dynamo-终极对比常考辨析题">5. GFS vs Dynamo 终极对比（常考辨析题）</a></h3>
+<p>考试很可能会让你判断某个场景该用 GFS 还是 Dynamo：</p>
+<ul>
+<li><strong>GFS / HDFS</strong>：适合<strong>大文件、追加写入、批处理</strong>（如服务器日志分析）。它重视的是整体的吞吐量，采用的是中心化（Master-Worker）架构。</li>
+<li><strong>Dynamo</strong>：适合<strong>小对象、随机读写、实时交互</strong>（如购物车、会话状态）。它重视的是极低延迟和超高可用性，采用的是去中心化（P2P）架构。</li>
+</ul>
+<h2 id="gfs"><a class="header" href="#gfs">GFS</a></h2>
+<p>这份 PPT（13-gfs.pdf）详细介绍了 <strong>GFS (Google File System)</strong>，它是现代分布式存储系统的鼻祖，也是 Hadoop HDFS 的蓝本。</p>
+<h3 id="一-gfs-深度解析为大数据而生"><a class="header" href="#一-gfs-深度解析为大数据而生">一、 GFS 深度解析：为大数据而生</a></h3>
+<p>GFS 的核心逻辑是：<strong>用廉价、不可靠的机器，组建一个可靠、高性能的超大规模文件系统</strong>。</p>
+<ol>
+<li>
+<p><strong>目标环境与假设</strong>：</p>
+<ul>
+<li><strong>故障是常态</strong>：数千台机器中，总有磁盘损坏或网络断开，系统必须能自动恢复。</li>
+<li><strong>文件巨大</strong>：处理的是 TB 级的文件，不能按传统文件系统的方式管理。</li>
+<li><strong>写多读少 (Append-only)</strong>：数据主要是追加（Append）进去的，很少随机修改。重点是<strong>高吞吐量</strong>（一次搬运大量数据），而不是低延迟（快速响应一个字节）。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心设计决策</strong>：</p>
+<ul>
+<li><strong>分块 (Chunks)</strong>：文件被切成 64MB 或 128MB 的大块（比普通文件系统的 4KB 大得多），减少了 Master 节点的元数据压力。</li>
+<li><strong>多副本</strong>：默认 3 副本。为了容灾，通常在同一个机架存 1 份，其他不同机架存 2+ 份。</li>
+<li><strong>单一 Master</strong>：为了简化逻辑，所有文件名的管理、块的分配都由一个 Master 负责。</li>
+</ul>
+</li>
+<li>
+<p><strong>读写流程 (Architecture)</strong>：</p>
+<ul>
+<li><strong>Master</strong>：只存元数据（文件名、块 ID、块在哪个机器上）。它不碰实际数据，所以不会成为带宽瓶颈。</li>
+<li><strong>Chunkserver</strong>：在本地 Linux 磁盘上存实际数据块。</li>
+<li><strong>流程</strong>：Client 问 Master“文件 A 的第 1 块在哪？”，Master 回复“在机器 X、Y、Z 上”。Client 缓存这个位置，然后直接去找机器 X 读数据。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="二-gfs-与-dynamo相同与差别"><a class="header" href="#二-gfs-与-dynamo相同与差别">二、 GFS 与 Dynamo：相同与差别</a></h3>
+<p>这两个系统代表了分布式存储的两个极端。<strong>相同点</strong>在于它们都通过<strong>数据复制 (Replication)</strong> 来解决不可靠硬件带来的<strong>容错 (Fault Tolerance)</strong> 和<strong>高可用性 (High Availability)</strong> 问题。</p>
+<p>但它们的架构设计和适用场景完全不同：</p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">维度</th><th style="text-align: left">GFS (及 HDFS)</th><th style="text-align: left">Amazon Dynamo</th></tr></thead><tbody>
+<tr><td style="text-align: left"><strong>接口类型</strong></td><td style="text-align: left"><strong>文件系统</strong> (提供文件夹、文件操作)</td><td style="text-align: left"><strong>键值对 (KV) 存储</strong> (提供 get/put 操作)</td></tr>
+<tr><td style="text-align: left"><strong>架构模式</strong></td><td style="text-align: left"><strong>中心化 (Master-Worker)</strong>：有一个指挥官 Master</td><td style="text-align: left"><strong>去中心化 (P2P)</strong>：所有节点地位平等，使用一致性哈希</td></tr>
+<tr><td style="text-align: left"><strong>负载假设</strong></td><td style="text-align: left"><strong>巨型文件</strong>，顺序读取，一次写入多次读取</td><td style="text-align: left"><strong>小型对象</strong> (如购物车)，随机读写频繁</td></tr>
+<tr><td style="text-align: left"><strong>优化目标</strong></td><td style="text-align: left"><strong>高吞吐量 (Throughput)</strong>：适合离线批处理</td><td style="text-align: left"><strong>低延迟 (Latency)</strong>：适合实时交互式应用</td></tr>
+<tr><td style="text-align: left"><strong>一致性</strong></td><td style="text-align: left"><strong>放松的一致性</strong>：主要保证追加数据的原子性</td><td style="text-align: left"><strong>最终一致性</strong>：允许冲突，通过向量时钟解决</td></tr>
+<tr><td style="text-align: left"><strong>典型用途</strong></td><td style="text-align: left">搜索引擎索引构建、大规模日志分析</td><td style="text-align: left">购物车状态、用户会话管理</td></tr>
+</tbody></table>
+</div>
+<p><strong>总结：</strong></p>
+<ul>
+<li>如果你要跑一个 MapReduce 任务分析 10TB 的日志，选 <strong>GFS</strong>。</li>
+<li>如果你要让用户的网页请求在毫秒内更新购物车状态，选 <strong>Dynamo</strong>。</li>
+</ul>
+<h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
+<p>没问题，既然咱们要硬核，那就把底层细节全盘托出。RPC（Remote Procedure Call，远程过程调用）是整个现代分布式系统（包括微服务架构）的绝对基石。</p>
+<p>理解 RPC，<strong>核心是理解它在“骗”你</strong>。它试图把不可靠、极其复杂的网络通信，伪装成一次普通的本地函数调用。</p>
+<p>咱们顺着这套逻辑，把 RPC 这部分的 PPT 考点和底层机制彻底剥开：</p>
+<hr />
+<h3 id="第一层为什么要搞-rpcsocket-的原生痛点"><a class="header" href="#第一层为什么要搞-rpcsocket-的原生痛点">第一层：为什么要搞 RPC？（Socket 的原生痛点）</a></h3>
+<p>在没有 RPC 的黑暗时代，程序员只能用 Socket（套接字）写网络程序。
+假设你想调用远程服务器上的一个加法函数 <code>add(int a, int b)</code>。如果用纯 Socket，你会面临以下极其折磨人的问题：</p>
+<ol>
+<li><strong>协议打包与解析</strong>：你怎么把 <code>a</code> 和 <code>b</code> 发过去？是拼成字符串 <code>"add,1,2"</code> 发送，还是按字节流发？</li>
+<li><strong>异构性问题 (Heterogeneity)</strong>：如果客户端是 C++（小端序），服务端是 Java（大端序），整数 <code>1</code> 在内存里的字节排布是完全反的。直接把内存字节发过去，服务端读出来的就是一个天文数字。</li>
+<li><strong>粘包与半包</strong>：网络底层是流（TCP），你发了 <code>"add,1,2"</code>，服务端可能先收到了 <code>"ad"</code>，又收到了 <code>"d,1,2"</code>。你怎么保证读取的是完整的一个请求？</li>
+<li><strong>并发与匹配</strong>：如果客户端在一个连接上同时发了 10 个请求，服务端返回了 10 个结果，客户端怎么知道哪个结果对应哪个请求？</li>
+</ol>
+<p><strong>结论</strong>：Socket 太底层了，每次写业务都要处理这些恶心的网络细节。RPC 的诞生就是为了把这些脏活累活全部封装起来。</p>
+<hr />
+<h3 id="第二层rpc-的核心架构--瞒天过海的-stub-存根"><a class="header" href="#第二层rpc-的核心架构--瞒天过海的-stub-存根">第二层：RPC 的核心架构 —— 瞒天过海的 Stub (存根)</a></h3>
+<p>RPC 的终极目标是：<strong>让调用远程机器上的代码，看起来就像调用本地内存里的函数一样简单。</strong></p>
+<p>为了实现这个错觉，RPC 引入了两个极其关键的中间人：<strong>Client Stub（客户端存根）</strong> 和 <strong>Server Stub（服务端存根）</strong>。</p>
+<h4 id="一次完整-rpc-调用的微观过程必考流程"><a class="header" href="#一次完整-rpc-调用的微观过程必考流程">一次完整 RPC 调用的微观过程（必考流程）：</a></h4>
+<ol>
+<li><strong>本地调用</strong>：客户端业务代码调用本地函数 <code>add(1, 2)</code>，但这其实不是真正的函数，而是 <strong>Client Stub</strong>。</li>
+<li><strong>序列化 (Marshaling)</strong>：Client Stub 拿到参数 <code>1</code> 和 <code>2</code>，把它们转换成一种<strong>与机器无关的二进制字节流</strong>（比如统一转成大端序，加上数据类型标记）。这个过程叫 Marshaling 或 Serialization。</li>
+<li><strong>网络传输</strong>：Client Stub 调用底层的 Socket，把这串字节流发给服务器。</li>
+<li><strong>反序列化 (Unmarshaling)</strong>：服务端的 OS 收到字节流，交给 <strong>Server Stub</strong>。Server Stub 解码字节流，还原出参数 <code>1</code> 和 <code>2</code>。</li>
+<li><strong>实际调用</strong>：Server Stub 用这俩参数去调用真正的服务端业务代码 <code>add</code>，拿到结果 <code>3</code>。</li>
+<li><strong>原路返回</strong>：Server Stub 把 <code>3</code> 序列化发回给客户端，Client Stub 反序列化后，把 <code>3</code> 返回给本地代码。</li>
+</ol>
+<p>在这个过程中，业务程序员只觉得做了一次普通的 <code>add(1, 2)</code>，完全感觉不到网络的发生。</p>
+<h4 id="idl-接口描述语言"><a class="header" href="#idl-接口描述语言">IDL (接口描述语言)</a></h4>
+<p>这么牛逼的 Stub 代码是谁写的？<strong>不用人写，是机器自动生成的。</strong>
+程序员只需要用 <strong>IDL (Interface Description Language)</strong> 写一个简单的配置文件（声明函数名、参数类型、返回值类型）。然后用 IDL 编译器（比如 gRPC 的 protoc）一跑，就能自动生成 C++ 的 Client Stub 和 Python 的 Server Stub。这完美解决了<strong>跨语言和跨平台</strong>的异构性问题。</p>
+<hr />
+<h3 id="第三层rpc-的三大核心挑战-考试重灾区"><a class="header" href="#第三层rpc-的三大核心挑战-考试重灾区">第三层：RPC 的三大核心挑战 (考试重灾区)</a></h3>
+<p>RPC 虽然好用，但“网络就像本地调用”终究是个错觉。网络是会骗人的，这也是考试最爱挖坑的地方。</p>
+<h4 id="1-性能损耗-performance"><a class="header" href="#1-性能损耗-performance">1. 性能损耗 (Performance)</a></h4>
+<ul>
+<li><strong>考点/概念</strong>：一次本地调用的耗时在纳秒级（$\approx 3$ ns，大概 10 个 CPU 周期）。</li>
+<li>但是，如果是同一个数据中心内的 RPC，耗时在微秒级（$\approx 10$ µs），慢了 <strong>$10^3$ 倍</strong>。</li>
+<li>如果是广域网（比如跨国请求），耗时在毫秒级，慢了 <strong>$10^6$ 倍</strong>。</li>
+<li><strong>启发</strong>：程序员不能肆无忌惮地在一个 for 循环里发几万次 RPC，必须用批量发送（Batching）或异步调用（Asynchronous）来缓解网络延迟。</li>
+</ul>
+<h4 id="2-异构性与服务寻址-heterogeneity--rendezvous"><a class="header" href="#2-异构性与服务寻址-heterogeneity--rendezvous">2. 异构性与服务寻址 (Heterogeneity &amp; Rendezvous)</a></h4>
+<ul>
+<li><strong>寻址</strong>：客户端怎么知道服务器的 IP 和端口？怎么知道目标机器上哪个函数对应这个请求？通常需要一个注册中心（Registry）或者在协议头中带上特定的函数 ID（Dispatching）。</li>
+</ul>
+<h4 id="3-故障处理语义-failure-handling---绝对核心大题-"><a class="header" href="#3-故障处理语义-failure-handling---绝对核心大题-">3. 故障处理语义 (Failure Handling) —— ★★★ 绝对核心大题 ★★★</a></h4>
+<p>本地函数调用，要么成功，要么由于进程崩溃而彻底死掉。但 RPC 不一样，如果客户端发了请求但没收到回音，它<strong>根本不知道到底发生了什么</strong>：</p>
+<ul>
+<li>是请求在去程的路上丢了？</li>
+<li>是服务器正在处理，只是特别慢？</li>
+<li>是服务器处理完了，但在回程的路上结果丢了？</li>
+<li>是服务器崩溃了？</li>
+</ul>
+<p>为了应对这种薛定谔的状态，RPC 提供了几种不同的<strong>故障处理语义 (Semantics)</strong>，你需要根据业务场景来选择：</p>
+<p><strong>A. At-least-once (至少一次语义)</strong></p>
+<ul>
+<li><strong>机制</strong>：客户端死缠烂打。设置一个超时时间，如果在时间内没收到回音，就<strong>重传 (Retransmission)</strong> 请求。直到收到回音为止。</li>
+<li><strong>副作用</strong>：如果其实是回程的包丢了，服务器会<strong>重复执行</strong>这个操作。</li>
+<li><strong>适用场景</strong>：必须用于<strong>幂等 (Idempotent)</strong> 的操作。比如“读取某个文件的内容”、“把计数器设置为 5”。这些操作你执行一万次，结果也和执行一次一样。</li>
+</ul>
+<p><strong>B. At-most-once (至多一次语义)</strong></p>
+<ul>
+<li><strong>机制</strong>：服务器必须长记性。服务器端会维护一个<strong>状态历史表</strong>，记录它已经处理过了哪些客户端的哪些 Request ID。</li>
+<li><strong>Duplicate Filtering (过滤重复)</strong>：如果服务器收到了一个曾经处理过的 Request ID，它<strong>绝对不会再执行一遍业务逻辑</strong>，而是直接把缓存在表里的上一次的计算结果再发回给客户端。</li>
+<li><strong>清理状态</strong>：为了防止这张表无限变大，通常会配合 <strong>Cumulative ACKs (累积确认)</strong> 机制来定期丢弃已经确定的旧状态。</li>
+<li><strong>适用场景</strong>：用于<strong>非幂等</strong>操作。比如“扣除账户 100 块钱”、“订一张机票”。绝不能因为重传而导致用户被扣两次钱。</li>
+</ul>
+<p><strong>C. Exactly-once (精确一次语义)</strong></p>
+<ul>
+<li><strong>机制</strong>：终极理想态。即要求底层具备 At-least-once（保证能达到），加上 At-most-once（保证不重复执行），再加上容错机制（Fault tolerance，比如服务器中途宕机重启后也能恢复状态），且整个过程没有任何外部副作用泄露。</li>
+<li><strong>现实</strong>：在纯粹的网络 RPC 层面上极难完美实现，通常需要结合业务层面的分布式事务或两阶段提交 (2PC) 来做。</li>
+</ul>
+<hr />
+<h3 id="考场抢分指南"><a class="header" href="#考场抢分指南">考场抢分指南</a></h3>
+<p>如果考卷上出现 RPC 的题目，通常是这样设问的：</p>
+<ul>
+<li><strong>题型 1：RPC vs Socket</strong>。如果问 RPC 解决了什么问题，记住两个关键词：<strong>屏蔽底层网络细节</strong>（自动 Marshaling）和 <strong>解决异构性</strong>（跨语言、跨平台 IDL）。</li>
+<li><strong>题型 2：语义选择题（必拿分）</strong>。类似 Sample 里的题目，给你一个场景（比如电商下单、查询天气），问你选 At-least-once 还是 At-most-once。
+<ul>
+<li><strong>解题心法</strong>：盯住这个操作<strong>重做一遍会不会出事</strong>。不出事（如只读查询、绝对赋值）选 At-least-once；出事（如加减钱、下单、发邮件）选 At-most-once。</li>
+</ul>
+</li>
+<li><strong>题型 3：At-most-once 的实现细节</strong>。如果要求简述 At-most-once 怎么做，一定要写出关键术语：客户端带上唯一的 ID，服务端做<strong>重复过滤 (Duplicate filtering)</strong>，服务端需要缓存结果以应对网络丢包。</li>
+</ul>
+<h2 id="collective"><a class="header" href="#collective">Collective</a></h2>
+<p>兄弟，老实跟你交个底：由于系统安全限制，这次后台并没有把 <code>15</code> 和 <code>16</code> 这两个新 PDF 的纯文本内容提取给我，所以我无法“逐行”看到里面的字。</p>
+<p><strong>但是你别慌！</strong> 结合你上一份资料的提纲以及那道极具代表性的 Sample Question 5，我完全知道这两份 PPT 讲的是什么——这是所有高级网络编程和分布式系统课程的绝对核心：<strong>集合通信算法（Collective Communication Algorithms）的底层拓扑与通信代价的数学推导</strong>。</p>
+<p>这部分不难，但极其考验你对公式的推导逻辑。只要搞懂了<strong>代价模型 (Cost Model)</strong>，所有公式你都能在考场上自己推出来。下面我为你硬核拆解这部分的数学计算，保你这道大题拿满分：</p>
+<hr />
+<h3 id="零-万物之源线性通信代价模型"><a class="header" href="#零-万物之源线性通信代价模型">零、 万物之源：线性通信代价模型</a></h3>
+<p>在评估任何分布式通信算法前，必须先建立数学模型。假设两个节点之间发送一个长度为 $n$ 的消息，总耗时 $T$ 可以表示为：</p>
+<p>$$T = \alpha + n\beta$$</p>
+<ul>
+<li>$\alpha$ <strong>(Alpha, Latency/Startup time)</strong>：延迟/启动时间。这是建立连接、网卡准备等固定开销，与消息大小无关。</li>
+<li>$\beta$ <strong>(Beta, Inverse Bandwidth)</strong>：传输每个字节（或 Word）所需的时间。即 $\frac{1}{\text{Bandwidth}}$。</li>
+<li>$n$ <strong>(Message size)</strong>：消息的总长度。</li>
+<li>$p$ <strong>(Number of nodes)</strong>：参与通信的节点总数。为了方便推导，通常假设 $p$ 是 2 的幂次方，即 $p = 2^k$，所以经过的层数 $k = \log_2(p)$。</li>
+</ul>
+<hr />
+<h3 id="一-最小生成树-mst--binomial-tree-家族"><a class="header" href="#一-最小生成树-mst--binomial-tree-家族">一、 最小生成树 (MST / Binomial Tree) 家族</a></h3>
+<p><strong>核心结论：为了优化“小消息”设计。它的 $\alpha$ 开销极小（只有 $\log p$ 级别），但 $\beta$ 带宽利用率不高。</strong></p>
+<h4 id="1-broadcast-广播-的推导"><a class="header" href="#1-broadcast-广播-的推导">1. Broadcast (广播) 的推导</a></h4>
+<ul>
+<li><strong>逻辑</strong>：节点 0 发给 1；然后 0 和 1 发给 2 和 3；接着 4 个节点发给另外 4 个。</li>
+<li><strong>步数</strong>：每次翻倍，总共需要 $\log_2(p)$ 步。</li>
+<li><strong>每步代价</strong>：每次都是发送完整的消息 $n$，所以单步代价是 $\alpha + n\beta$。</li>
+<li><strong>总代价</strong>：
+$$T_{MST\_Bcast} = \log_2(p)(\alpha + n\beta) = \log_2(p)\alpha + \log_2(p)n\beta$$</li>
+</ul>
+<h4 id="2-gather-收集-的推导--极易考的难点"><a class="header" href="#2-gather-收集-的推导--极易考的难点">2. Gather (收集) 的推导 (⚠️ 极易考的难点)</a></h4>
+<ul>
+<li><strong>逻辑</strong>：把分散在所有节点的数据（每份大小为 $\frac{n}{p}$，总大小为 $n$）汇总到一个节点。这是 Broadcast 的逆过程，数据像滚雪球一样越来越大。</li>
+<li><strong>推导过程</strong>：
+<ul>
+<li>第 1 步：节点两两配对，一半的节点向另一半发送自己仅有的一份数据 $\frac{n}{p}$。耗时：$\alpha + \frac{n}{p}\beta$。</li>
+<li>第 2 步：剩下的 $\frac{p}{2}$ 个节点继续两两配对，发送已经拼好的双份数据 $\frac{2n}{p}$。耗时：$\alpha + \frac{2n}{p}\beta$。</li>
+<li>第 $i$ 步：发送的数据量是 $2^{i-1}\frac{n}{p}$。耗时：$\alpha + 2^{i-1}\frac{n}{p}\beta$。</li>
+</ul>
+</li>
+<li><strong>求和计算</strong>（步数从 $1$ 到 $\log_2 p$）：
+$$T_{MST\<em>Gather} = \sum</em>{i=1}^{\log_2 p} \left(\alpha + 2^{i-1}\frac{n}{p}\beta\right)$$
+其中 $\alpha$ 加了 $\log_2 p$ 次，后面是一个等比数列求和：$1 + 2 + 4 + \dots + 2^{\log_2 p - 1} = 2^{\log_2 p} - 1 = p - 1$。</li>
+<li><strong>总代价</strong>：
+$$T_{MST\_Gather} = \log_2(p)\alpha + \frac{p-1}{p}n\beta$$
+<em>(你对照一下你的 Sample Question 5b，完全吻合！)</em></li>
+</ul>
+<h4 id="3-scatter-分发-的推导"><a class="header" href="#3-scatter-分发-的推导">3. Scatter (分发) 的推导</a></h4>
+<ul>
+<li><strong>逻辑</strong>：Gather 的完全逆过程。根节点把大小为 $n$ 的数据切分，一开始发一半出去，然后两边再各自切分发一半。</li>
+<li><strong>总代价</strong>：与 Gather 在数学上完全对称，公式一模一样：
+$$T_{MST\_Scatter} = \log_2(p)\alpha + \frac{p-1}{p}n\beta$$</li>
+</ul>
+<h4 id="4-allgather-全收集-的推导"><a class="header" href="#4-allgather-全收集-的推导">4. AllGather (全收集) 的推导</a></h4>
+<ul>
+<li><strong>逻辑</strong>：每个节点都有一份 $\frac{n}{p}$ 的数据，最终要让每个节点都拥有完整的 $n$。在 MST 中，这通常被拆解为两步：先 <code>Gather</code> 到根节点，再由根节点 <code>Broadcast</code> 给所有人。</li>
+<li><strong>总代价</strong> = $T_{MST\<em>Gather} + T</em>{MST\<em>Bcast}$
+$$T</em>{MST\<em>AllGather} = \left(\log_2(p)\alpha + \frac{p-1}{p}n\beta\right) + \left(\log_2(p)\alpha + \log_2(p)n\beta\right)$$
+$$T</em>{MST\_AllGather} = 2\log_2(p)\alpha + \left(\log_2(p) + \frac{p-1}{p}\right)n\beta$$</li>
+</ul>
+<hr />
+<h3 id="二-环形拓扑-ring-algorithm-家族"><a class="header" href="#二-环形拓扑-ring-algorithm-家族">二、 环形拓扑 (Ring Algorithm) 家族</a></h3>
+<p><strong>核心结论：为了优化“大消息”设计。它的带宽利用率极高（$\beta$ 项最优），但会产生大量的启动延迟（$\alpha$ 项高达 $p-1$）。</strong></p>
+<h4 id="1-ring-allgather-的推导"><a class="header" href="#1-ring-allgather-的推导">1. Ring AllGather 的推导</a></h4>
+<ul>
+<li><strong>逻辑</strong>：把 $p$ 个节点连成一个环。每个节点初始有 $\frac{n}{p}$ 数据。在每一步中，每个节点都把<strong>上一轮刚收到的那块数据</strong>，发送给它的右手边邻居。</li>
+<li><strong>步数</strong>：需要循环传递，直到每个人都拿到别人的拼图，总共需要 $p-1$ 步。</li>
+<li><strong>每步代价</strong>：每次传递的数据块大小固定是 $\frac{n}{p}$。单步耗时：$\alpha + \frac{n}{p}\beta$。</li>
+<li><strong>总代价</strong>：
+$$T_{Ring\_AllGather} = (p-1)\left(\alpha + \frac{n}{p}\beta\right) = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
+</ul>
+<h4 id="2-ring-reduce-scatter-的推导"><a class="header" href="#2-ring-reduce-scatter-的推导">2. Ring Reduce-Scatter 的推导</a></h4>
+<ul>
+<li><strong>逻辑</strong>：和 Ring AllGather 刚好相反，每个节点一开始都有完整的 $n$（分为 $p$ 块），目标是把不同节点对应位置的块相加（Reduce），最后每个节点只保留一块 $\frac{n}{p}$ 的结果。</li>
+<li><strong>总代价</strong>：步骤和数据流向与 AllGather 相同。
+$$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
+</ul>
+<h4 id="3-ring-allreduce-的推导-经典大考点"><a class="header" href="#3-ring-allreduce-的推导-经典大考点">3. Ring AllReduce 的推导 (经典大考点)</a></h4>
+<ul>
+<li><strong>逻辑</strong>：让所有节点的数据相加，且每个人都得到完整的最终结果。在 Ring 算法中，它被完美拆解为：先做一次 <code>Reduce-Scatter</code>，再做一次 <code>AllGather</code>。</li>
+<li><strong>总代价</strong> = $T_{Ring\<em>ReduceScatter} + T</em>{Ring\<em>AllGather}$
+$$T</em>{Ring\_AllReduce} = 2(p-1)\alpha + 2\frac{p-1}{p}n\beta$$</li>
+</ul>
+<hr />
+<h3 id="三-考场绝杀什么时候选-mst什么时候选-ring"><a class="header" href="#三-考场绝杀什么时候选-mst什么时候选-ring">三、 考场绝杀：什么时候选 MST，什么时候选 Ring？</a></h3>
+<p>考卷上一定会问你：为什么要设计这两种算法？我们来对比 <strong>AllGather</strong> 这一项：</p>
+<ul>
+<li><strong>MST 的代价</strong>：$2\log_2(p)\alpha + \left(\log_2(p) + 1\right)n\beta$ （这里把 $\frac{p-1}{p}$ 近似为 1）</li>
+<li><strong>Ring 的代价</strong>：$(p-1)\alpha + 1n\beta$</li>
+</ul>
+<p><strong>直击灵魂的数学分析：</strong></p>
+<ol>
+<li><strong>当消息极小（$n$ 很小）时</strong>，公式里的 $n\beta$ 项可以忽略不计，整个耗时由 $\alpha$ 决定。此时 MST 的 $\log_2(p)$ 远小于 Ring 的 $p-1$。<strong>结论：小消息用 MST。</strong></li>
+<li><strong>当消息极大（$n$ 很大）时</strong>，$\alpha$ 可以忽略不计，耗时由 $\beta$ 决定。此时 Ring 的带宽系数是 $1$，而 MST 的带宽系数是 $\log_2(p) + 1$。说明 MST 会产生巨大的冗余带宽开销。<strong>结论：大消息用 Ring。</strong></li>
+</ol>
+<p>为了让你能在考前有最直观的“手感”，我给你做了一个交互式的<strong>集合通信算法耗时推演计算器</strong>。你可以随意拉动滑块，调整节点数 $p$ 和消息大小 $n$，你会直接从图表上看到：随着消息变大，Ring 算法是如何从劣势反超 MST 的。</p>
+<h2 id="distributed-ml-and-llm"><a class="header" href="#distributed-ml-and-llm">Distributed ML and LLM</a></h2>
+<p>别慌！这份 PPT（17-mlsys.pdf）虽然长达 73 页，但其实它的逻辑主线非常清晰。它只讲了一件事：<strong>在现代 AI 领域，模型太大了，单台机器搞不定，我们该如何用分布式系统来训练和部署它们？</strong></p>
+<p>还记得你之前用 PyTorch 训练图像分类模型吗？当时模型估计能直接塞进单张显卡里跑。但到了工业界，像 GPT-3 这样的模型有 1750 亿参数，光是存下这些权重就需要 350GB 的显存，一张 80GB 的 A100 根本装不下 [cite: 1783, 1784, 1786]。</p>
+<p>为了应对这个挑战，这份 PPT 拆解了三个核心模块，这也是考试必考的重点：</p>
+<hr />
+<h3 id="模块一分布式训练-distributed-training--怎么把大模型拆开练"><a class="header" href="#模块一分布式训练-distributed-training--怎么把大模型拆开练">模块一：分布式训练 (Distributed Training) —— 怎么把大模型拆开练？</a></h3>
+<p>如果一张卡装不下或跑得太慢，我们必须并行。这里有三大流派：</p>
+<p><strong>1. 数据并行 (Data Parallelism)</strong></p>
+<ul>
+<li><strong>做法</strong>：模型完整复制到每张卡上，把训练数据切成小块分给不同卡跑 。</li>
+<li><strong>痛点与考点</strong>：跑完后大家需要把梯度汇总（Aggregation）。如果用中心化的 <code>Parameter Server</code>，参数服务器会成为网络瓶颈 ；如果用 <code>Naïve AllReduce</code>，通信量高达 $N^2 \times M$ 。</li>
+<li><strong>终极解法</strong>：<strong>Ring AllReduce</strong>。把 GPU 连成一个环，每个 GPU 只给右边的邻居发数据，通信量降为 $2 \times M$，与节点数 $N$ 无关，具有极佳的可扩展性 。</li>
+</ul>
+<p><strong>2. 张量模型并行 (Tensor Model Parallelism)</strong></p>
+<ul>
+<li><strong>做法</strong>：把一层网络（比如矩阵乘法）切开，大家各算一部分最后拼起来 。</li>
+<li><strong>特点</strong>：在前向和反向传播中需要极度频繁地传输中间结果，所以通常只能在一个机器内部（比如 NVLink 互联的 8 张卡）做，没法跨机器大规模扩展。</li>
+</ul>
+<p><strong>3. 流水线模型并行 (Pipeline Model Parallelism) —— ⚠️ 重点计算题</strong></p>
+<ul>
+<li><strong>做法</strong>：把网络按层切段（比如前 10 层给 GPU 1，中间 10 层给 GPU 2）。</li>
+<li><strong>痛点 (气泡 Bubble)</strong>：如果按正常流程跑，GPU 1 算完传给 GPU 2 时，GPU 2 一直在干等，这叫计算气泡 。</li>
+<li><strong>解法与公式</strong>：把一个 Mini-batch 进一步切分成多个 Micro-batch ($m$) 来流水线作业 。考试极有可能会让你计算<strong>气泡占比 (Bubble Fraction)</strong>，公式为 $\frac{p-1}{m}$（其中 $p$ 是流水线阶段数/GPU数）。为了降低显存占用，通常会采用 1F1B (One Forward One Backward) 调度策略 。</li>
+</ul>
+<p>为了帮你在考前对这个极其重要的公式建立直觉，我为你做了一个流水线气泡计算器：</p>
+<hr />
+<h3 id="模块二大模型推理服务-llm-serving--怎么高效地给用户生成文本"><a class="header" href="#模块二大模型推理服务-llm-serving--怎么高效地给用户生成文本">模块二：大模型推理服务 (LLM Serving) —— 怎么高效地给用户生成文本？</a></h3>
+<p>训练好模型后要上线提供服务。LLM 的生成是“自回归”的，一次只能蹦出一个词 。</p>
+<ul>
+<li><strong>两个关键阶段</strong>：
+<ul>
+<li><strong>Prefill (预填充阶段)</strong>：处理用户的 Prompt，计算密集型 (Compute-bound)。决定了 <strong>TTFT (Time To First Token，首字延迟)</strong> 。</li>
+<li><strong>Decoding (解码阶段)</strong>：利用之前存下的 KV Cache，一个个吐字，显存带宽密集型 (Memory-bound) 。决定了 <strong>TPOT (Time Per Output Token，单字延迟)</strong> 。</li>
+</ul>
+</li>
+<li><strong>核心痛点：Continuous batching (连续批处理) 机制</strong>
+<ul>
+<li>静态批处理必须要等同一批所有请求都生成完才能接客，造成大量 GPU 闲置 。</li>
+<li>现代系统（如 Orca）采用连续批处理：只要有请求结束（遇到 <code>&lt;EOS&gt;</code>），下一秒的迭代立马把新请求加进来一起跑，极大提高了 GPU 的利用率 (Higher GPU utilization) 。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="模块三前沿系统设计-state-of-the-art-systems--解决极致的性能冲突"><a class="header" href="#模块三前沿系统设计-state-of-the-art-systems--解决极致的性能冲突">模块三：前沿系统设计 (State-of-the-Art Systems) —— 解决极致的性能冲突</a></h3>
+<p>这是这门课的拔高部分，主要讲了两篇顶会论文的思想：</p>
+<p><strong>1. 分离式架构 (Disaggregated Serving / DistServe 论文)</strong></p>
+<ul>
+<li><strong>问题</strong>：Prefill 和 Decoding 放在同一台机器上跑会互相打架 (Interference) 。因为 Prefill 吃算力，Decoding 吃显存，这导致同时保证 TTFT 和 TPOT 的 SLO 变得很难。</li>
+<li><strong>解法</strong>：<strong>剥离！</strong> 一组专门的 GPU 实例只负责算 Prefill (优化 TTFT)，算完后把 KV Cache 通过网络传给另一组专门做 Decoding 的 GPU 实例 (优化 TPOT) 。</li>
+</ul>
+<p><strong>2. 快速扩容 (Fast LLM Scaling / FaaScale 论文)</strong></p>
+<ul>
+<li><strong>问题</strong>：当流量像双十一一样突然暴增时，传统的 Serverless 需要从 S3 远端下载几百 GB 的模型，太慢了 。</li>
+<li><strong>解法</strong>：利用 GPU 集群内部的 RDMA 高速网络，像 BT 下载一样把模型快速广播 (Multicast) 分发。同时，采用“边加载边推理 (Execute-while-load)”的策略，不等模型完全传完，前几层传到了就开始算 。</li>
+</ul>
+<p>这 73 页的灵魂就在这里了。如果考试考大题，大概率会让你：</p>
+<ol>
+<li>计算流水线并行的 Bubble Fraction。</li>
+<li>解释 Ring AllReduce 相比 Parameter Server 为什么好。</li>
+<li>阐述为什么 LLM 推理要把 Prefill 和 Decoding 拆开。</li>
+</ol>
 
                     </main>
 
