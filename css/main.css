@@ -158,6 +158,15 @@ a:hover {
 .md-text p:not([class]) {
   text-align: left;
 }
+.md-text.content {
+  position: relative;
+  margin-top: 1.5rem;
+  padding-top: 0;
+  background-color: rgba(37,38,41,0.88);
+  padding-bottom: 2rem;
+  overflow: hidden;
+  border-radius: 8px;
+}
 hr {
   color: var(--text-meta);
   opacity: 0.1;
