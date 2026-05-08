@@ -58,11 +58,11 @@
   --alpha75: rgba(255,255,255,0.75);
   --alpha100: #fff;
   --text: #000;
-  --text-p1: #333;
-  --text-p2: #4d4d4d;
-  --text-p3: #808080;
-  --text-p4: #999;
-  --text-meta: #ccc;
+  --text-p1: #262626;
+  --text-p2: #393939;
+  --text-p3: #606060;
+  --text-p4: #737373;
+  --text-meta: #999;
   --text-code: #14181f;
 }
 :root[data-theme="dark"] {
@@ -79,11 +79,11 @@
   --alpha75: rgba(0,0,0,0.75);
   --alpha100: #000;
   --text: #fff;
-  --text-p1: #ccc;
-  --text-p2: #b3b3b3;
-  --text-p3: #858585;
-  --text-p4: #707070;
-  --text-meta: #4d4d4d;
+  --text-p1: #d9d9d9;
+  --text-p2: #c6c6c6;
+  --text-p3: #a3a3a3;
+  --text-p4: #949494;
+  --text-meta: #797979;
   --text-code: #fff;
 }
 @media screen and (max-width: 667px) {
@@ -105,11 +105,11 @@
   --alpha75: rgba(255,255,255,0.75);
   --alpha100: #fff;
   --text: #000;
-  --text-p1: #333;
-  --text-p2: #4d4d4d;
-  --text-p3: #808080;
-  --text-p4: #999;
-  --text-meta: #ccc;
+  --text-p1: #262626;
+  --text-p2: #393939;
+  --text-p3: #606060;
+  --text-p4: #737373;
+  --text-meta: #999;
   --text-code: #14181f;
 }
 @media (prefers-color-scheme: dark) {
@@ -127,11 +127,11 @@
     --alpha75: rgba(0,0,0,0.75);
     --alpha100: #000;
     --text: #fff;
-    --text-p1: #ccc;
-    --text-p2: #b3b3b3;
-    --text-p3: #858585;
-    --text-p4: #707070;
-    --text-meta: #4d4d4d;
+    --text-p1: #d9d9d9;
+    --text-p2: #c6c6c6;
+    --text-p3: #a3a3a3;
+    --text-p4: #949494;
+    --text-meta: #797979;
     --text-code: #fff;
   }
 }
@@ -162,7 +162,7 @@ a:hover {
   position: relative;
   margin-top: 1.5rem;
   padding-top: 0;
-  background-color: rgba(37,38,41,0.88);
+  background-color: rgba(45,47,51,0.88);
   padding-bottom: 2rem;
   overflow: hidden;
   border-radius: 8px;
