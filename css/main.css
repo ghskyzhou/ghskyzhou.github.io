@@ -74,6 +74,14 @@
   margin-left: 12px;
   margin-bottom: 8px;
 }
+.l_left .widget-wrap,
+.l_left .widget-wrapper,
+.l_right .widget-wrap,
+.l_right .widget-wrapper {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
 @-moz-keyframes accordion-expand {
   0% {
     max-height: 0;
