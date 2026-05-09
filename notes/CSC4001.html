@@ -177,53 +177,511 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="csc4001-software-engineering"><a class="header" href="#csc4001-software-engineering">CSC4001 Software Engineering</a></h1>
-<h2 id="l0-前言"><a class="header" href="#l0-前言">L0 前言</a></h2>
-<p>教学计划：</p>
-<ol>
-<li>介绍</li>
-<li>测试基础</li>
-<li>变形测试、差分测试、内变形测试</li>
-<li>模糊测试</li>
-<li>测试用例约简</li>
-<li>数据流分析</li>
-<li>符号执行</li>
-<li>软件维护</li>
-<li>软件开发生命周期、需求分析</li>
-<li>软件建模</li>
-</ol>
-<p>软件工程是什么？</p>
-<blockquote>
-<p>软件工程关注软件开发的各个阶段，包括需求、<strong>建模</strong>、原型设计、设计、实现、生成、<strong>分析</strong>、验证、<strong>测试</strong>、<strong>评估</strong>、<strong>维护</strong>以及软件系统的复用。</p>
-</blockquote>
-<h2 id="l1-软件测试"><a class="header" href="#l1-软件测试">L1 软件测试</a></h2>
-<p>软件测试就是，评估和验证一个软件产品应用有没有做到它该做的，的过程。</p>
-<p>尽可能找到更多的 bug。</p>
-<h3 id="测试阶段"><a class="header" href="#测试阶段">测试阶段</a></h3>
-<p align="center">
-    <img src="https://img.skyzhou.top/i/2026/01/07/695dcaa8917b1.png" height="250px">
-</p>
-<p>从图中可以看到，从产品需求开始到最实现，都是可以返回来测试的。</p>
-<p>推荐读物：<a href="https://andrewbegel.com/info461/readings/index.html">Cooperative Software Design</a></p>
-<h3 id="单元测试-unit-test"><a class="header" href="#单元测试-unit-test">单元测试 Unit Test</a></h3>
-<p>测试独立的单元。</p>
-<p>目标：确认每个单元都是对的，而且能完成它们的功能。</p>
-<h3 id="集成测试-integration-test"><a class="header" href="#集成测试-integration-test">集成测试 Integration Test</a></h3>
-<p>测试一群子系统，最终测试整个系统。</p>
-<p>目标：测试多个子系统之间的交互，确保合并起来的整个系统满足需求。</p>
-<h3 id="系统测试-system-test"><a class="header" href="#系统测试-system-test">系统测试 System Test</a></h3>
-<p align="center">
-    <img src="https://img.skyzhou.top/i/2026/01/07/695dcc668cff0.png" height="250px">
-</p>
-<h4 id="功能测试-functional-test"><a class="header" href="#功能测试-functional-test">功能测试 Functional Test</a></h4>
-<p>目标：测试系统的功能。</p>
-<h4 id="验收测试-acceptance-test"><a class="header" href="#验收测试-acceptance-test">验收测试 Acceptance Test</a></h4>
-<p>目标：证明系统迎合用户的需求。</p>
+<h3 id="模块一测试基础生命周期与需求-ppt-p7-15-p45-47"><a class="header" href="#模块一测试基础生命周期与需求-ppt-p7-15-p45-47">模块一：测试基础、生命周期与需求 (PPT P7-15, P45-47)</a></h3>
+<p>这部分考点非常死，主要是概念的对应关系，闭卷考最容易出选择题。</p>
+<h4 id="1-核心概念什么是测试"><a class="header" href="#1-核心概念什么是测试">1. 核心概念：什么是测试？</a></h4>
 <ul>
-<li>Alpha 测试（内测）</li>
-<li>Beta 测试（公测）</li>
+<li>
+<p><strong>学术定义：</strong> 评估和验证软件是否完成了预期目标 。</p>
+</li>
+<li>
+<p><strong>“说人话” (必记)：</strong> <strong>找到尽可能多的 bug</strong> (Find as many bugs as possible) 。</p>
+</li>
+<li>
+<p><strong>Testing 与 Analysis 的二维分类矩阵 (极易考)：</strong></p>
+<ul>
+<li><strong>经验主义 (Empirical)：</strong> 跑起来测。分为人工操作的 <strong>Manual testing</strong> (手动测试) 和机器执行的 <strong>Automated testing</strong> (自动测试)。</li>
+<li><strong>分析主义 (Analytical)：</strong> 静态分析代码。人工看代码叫 <strong>Inspection</strong> (审查)，机器分析叫 <strong>Program analysis</strong> (程序分析)。</li>
 </ul>
-<h4 id="独立测试-independent-test"><a class="header" href="#独立测试-independent-test">独立测试 Independent Test</a></h4>
-<p>由独立测试者来做的测试，尽量破坏软件，找到最深的 bug。</p>
+</li>
+</ul>
+<h4 id="2-v-模型测试与开发的严格对应-ppt-核心图"><a class="header" href="#2-v-模型测试与开发的严格对应-ppt-核心图">2. V 模型：测试与开发的严格对应 (PPT 核心图)</a></h4>
+<p>在瀑布模型 (Waterfall) 中，测试是呈 V 字形与开发阶段一一对应的。你必须把哪种测试对应哪种设计文档死死记住 ：</p>
+<ul>
+<li>
+<p><strong>单元测试 (Unit Test)：</strong></p>
+<ul>
+<li>
+<p><strong>对应开发阶段：</strong> 详细设计 (Detailed Design Model) 。</p>
+</li>
+<li>
+<p><strong>目标：</strong> 确认独立单元代码逻辑正确 。</p>
+</li>
+<li>
+<p><strong>测试脚手架的两个核心组件 (必背)：</strong></p>
+<ul>
+<li>
+<p><strong>Test Driver (测试驱动)：</strong> 主动调起被测模块，传入数据，并负责测试环境的初始化与清理 (setup &amp; clean-up) 。</p>
+</li>
+<li>
+<p><strong>Test Stub (测试桩)：</strong> 被动等待调用。因为其他模块还没写好，用它来充当一个临时的替代品，直接返回假数据 (Mock/fake data) 。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>集成测试 (Integration Test)：</strong></p>
+<ul>
+<li>
+<p><strong>对应开发阶段：</strong> 软件架构 (Software Architecture) 。</p>
+</li>
+<li>
+<p><strong>目标：</strong> 不看具体代码细节，专门测试子系统之间的<strong>接口 (interfaces)</strong> 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>系统测试 (System Test)：</strong></p>
+<ul>
+<li>
+<p><strong>对应开发阶段：</strong> 需求规格说明 (Requirements Specification) 。</p>
+</li>
+<li>
+<p><strong>目标：</strong> 验证整个系统是否满足了所有的功能性和非功能性需求 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-测试的四大步骤-ppt-p15"><a class="header" href="#3-测试的四大步骤-ppt-p15">3. 测试的四大步骤 (PPT P15)</a></h4>
+<p>这四个步骤是有严格先后顺序的 ：</p>
+<ol>
+<li>
+<p><strong>Select what will be tested</strong>：决定测系统的哪些部分 。</p>
+</li>
+<li>
+<p><strong>Select test strategy</strong>：决定测试策略（怎么搞出测试数据） 。</p>
+</li>
+<li>
+<p><strong>Define test cases</strong>：明确具体的测试用例和步骤 。</p>
+</li>
+<li>
+<p><strong>Create test oracle (创建测试预言)</strong>：明确预期结果是什么。注意，预期结果必须在<strong>执行测试之前</strong>就定义好 。</p>
+</li>
+</ol>
+<h4 id="4-需求分析的边界-ppt-p45-47"><a class="header" href="#4-需求分析的边界-ppt-p45-47">4. 需求分析的边界 (PPT P45-47)</a></h4>
+<p>闭卷考最喜欢在这给你挖坑，让你判断什么属于需求，什么不属于。</p>
+<ul>
+<li>
+<p><strong>最高原则：</strong> 需求只描述用户视角的“做什么 (what)”<strong>，坚决不涉及代码视角的</strong>“怎么做 (how)” 。</p>
+</li>
+<li>
+<p><strong>属于需求的 (Part of)：</strong> 功能性、用户交互、错误处理、环境条件与接口 。</p>
+</li>
+<li>
+<p><strong>绝对不属于需求的 (Not part of)：</strong> 系统结构、实现技术、系统设计、开发方法学 。</p>
+</li>
+<li>
+<p><strong>需求的分类：</strong></p>
+<ul>
+<li>
+<p><strong>功能性 (Functional)：</strong> 软件到底该做啥 。</p>
+</li>
+<li>
+<p><strong>非功能性 (Nonfunctional)：</strong> 外部接口、性能指标 (速度、响应时间)、质量属性 (正确性、可移植性、可维护性等)、设计约束 (标准、运行环境) 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="模块二控制流图-cfg-与测试覆盖率-ppt-p17-p33"><a class="header" href="#模块二控制流图-cfg-与测试覆盖率-ppt-p17-p33">模块二：控制流图 (CFG) 与测试覆盖率 (PPT P17-P33)</a></h3>
+<h4 id="1-核心基石什么是基本块-basic-block-bb"><a class="header" href="#1-核心基石什么是基本块-basic-block-bb">1. 核心基石：什么是基本块 (Basic Block, BB)？</a></h4>
+<p>你要画控制流图，第一步就是把代码切分成一个个“基本块”。闭卷考特别喜欢考基本块的定义和切分规则。</p>
+<ul>
+<li>
+<p><strong>死记定义：</strong> 只有一个入口点（One entry point）和一个出口点（One exit point）的连续代码序列 。</p>
+</li>
+<li>
+<p><strong>核心特征：</strong> 只要基本块的第一条指令执行了，里面的剩下所有指令都<strong>必定会被执行</strong> 。</p>
+</li>
+<li>
+<p><strong>怎么找基本块？（三步找 Leader 法则，画图大题必用）：</strong> 你必须先找出所有基本块的“头头”（Leader），一个 Leader 带着它后面的小弟，直到遇到下一个 Leader，这就组成了一个基本块 。</p>
+<ul>
+<li>
+<p><strong>法则 1：</strong> 整个程序的第一条指令必定是 Leader 。</p>
+</li>
+<li>
+<p><strong>法则 2：</strong> 任何一个“跳转目标”（被别人 <code>goto</code> 或 <code>if</code> 指向的指令）必定是 Leader 。</p>
+</li>
+<li>
+<p><strong>法则 3：</strong> 紧跟在“跳转指令”（如 <code>if</code>、<code>goto</code>、<code>return</code>、<code>break</code>）<strong>后面</strong>的那条指令，必定是 Leader 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-画出控制流图-control-flow-graph-cfg"><a class="header" href="#2-画出控制流图-control-flow-graph-cfg">2. 画出控制流图 (Control Flow Graph, CFG)</a></h4>
+<p>找出基本块后，把它们连起来就是 CFG。</p>
+<ul>
+<li>
+<p><strong>节点 (Nodes)：</strong> 刚才切分出来的每一个基本块 (BB) 就是一个节点 。</p>
+</li>
+<li>
+<p><strong>连线 (Edges)：</strong> 怎么连箭头？</p>
+<ul>
+<li>
+<p>如果有跳转指令（如 <code>goto B</code>），就从当前块画个箭头指向 B 。</p>
+</li>
+<li>
+<p>如果代码是按顺序往下挨着写的，并且当前块没有无条件跳转（比如没有 <code>goto</code> 强行跳走），那就顺势画个箭头指向紧挨着的下一个块 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>送分细节：</strong> 考试画图时，<strong>千万别忘了自己加上 <code>Entry</code> 和 <code>Exit</code> 两个节点</strong> 。从 <code>Entry</code> 指向第一个 BB，从所有可能结束的 BB 指向 <code>Exit</code>。</p>
+</li>
+</ul>
+<h4 id="3-测试覆盖率-test-coverage"><a class="header" href="#3-测试覆盖率-test-coverage">3. 测试覆盖率 (Test Coverage)</a></h4>
+<p>看着 CFG，我们需要衡量测试用例到底跑得多彻底。记住这四个公式：</p>
+<ul>
+<li>
+<p><strong>语句覆盖 (Statement Coverage)：</strong> 执行过的语句数 / 总语句数 。</p>
+</li>
+<li>
+<p><strong>分支覆盖 (Branch Coverage)：</strong> 执行过的分支数 / 总分支数 。（注意：包含 <code>if</code> 的 True 和 False 两条路都要走一遍）。</p>
+</li>
+<li>
+<p><strong>路径覆盖 (Path Coverage)：</strong> 执行过的路径数 / 总路径数 。（最严格的覆盖，如果有循环，路径可能是无限的，所以极难达到 100%）。</p>
+</li>
+<li>
+<p><strong>循环覆盖 (Loop Coverage)：</strong> 针对循环，要求分别执行 0次、1次、大于1次，公式是：执行过的循环状态 / (总循环数 * 3) 。</p>
+</li>
+</ul>
+<h4 id="4-变异测试-mutation-testing"><a class="header" href="#4-变异测试-mutation-testing">4. 变异测试 (Mutation Testing)</a></h4>
+<p>普通测试是为了找代码的 bug，而<strong>变异测试是为了找“测试用例”的 bug</strong>（评估测试套件的质量） 。</p>
+<ul>
+<li>
+<p><strong>怎么做：</strong> 故意在源代码里制造一个小错误（比如把 <code>+</code> 变成 <code>-</code>），这叫生成一个“变异体 (Mutant)” 。</p>
+</li>
+<li>
+<p><strong>核心术语 (Killed)：</strong> 把测试用例跑在这个变异体上，如果测试结果和原版不一样（报错了），说明测试用例够强，把变异体<strong>杀死了 (Killed)</strong> 。</p>
+</li>
+<li>
+<p><strong>强变异 vs 弱变异 (必考概念，务必分清)：</strong>
+找 bug 需要满足三个条件：到达错误代码 (Reachability)、感染状态 (Infection)、传播到最终输出 (Propagation) 。</p>
+<ul>
+<li>
+<p><strong>弱变异 (Weak Mutant)：</strong> 只要运行完那行被篡改的代码后，<strong>内部状态</strong>和原版不一样了，就算 killed 。它只满足了 Reachability 和 Infection 。</p>
+</li>
+<li>
+<p><strong>强变异 (Strong Mutant)：</strong> 错误不仅要发生，还必须一直传播下去，导致<strong>最终输出的程序结果</strong>和原版不一样，才算 killed 。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="模块三进阶测试与符号执行-ppt-p34-44-p8-10-往年卷"><a class="header" href="#模块三进阶测试与符号执行-ppt-p34-44-p8-10-往年卷">模块三：进阶测试与符号执行 (PPT P34-44, P8-10 往年卷)</a></h3>
+<h4 id="1-解决-test-oracle-难题的花式测试"><a class="header" href="#1-解决-test-oracle-难题的花式测试">1. 解决 Test Oracle 难题的花式测试</a></h4>
+<p>前面说过，Test Oracle（测试预言）是判断对错的标准。但有些软件（比如机器学习、机器翻译、搜索引擎），你输入一个东西，根本不知道绝对正确的输出该长啥样。何教授非常喜欢考这几种“没有绝对标准”时的测试方法：</p>
+<ul>
+<li>
+<p><strong>差异测试 (Differential Testing)：</strong></p>
+<ul>
+<li>
+<p><strong>怎么做：</strong> 找几个功能相同的不同软件版本（比如 $P_1, P_2, P_3$），给它们喂同一个输入 $I$，看它们的输出 $O_1, O_2, O_3$ 是不是一样 。</p>
+</li>
+<li>
+<p><strong>考点：</strong> 互相作为对方的 Oracle。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>蜕变测试 (Metamorphic Testing) —— 极高频考点！</strong></p>
+<ul>
+<li>
+<p><strong>怎么做：</strong> 关注<strong>输入和输入之间的关系</strong>，看输出是否满足对应的关系 。</p>
+</li>
+<li>
+<p><strong>举个栗子 (闭卷考常考场景)：</strong> 测试一个“求最短路径”的算法。输入图 A，得到路径长度 $L$。如果你把图 A 里所有的边权重都乘以 2 得到图 B（这是 Derived follow-up input），那你不需要知道具体的答案，你也知道图 B 的最短路径长度一定是 $2L$。这就叫<strong>蜕变关系 (Metamorphic Relations)</strong> 。</p>
+</li>
+<li>
+<p><strong>哪些系统适用：</strong> 机器翻译 (Machine translation service)、机器学习模型等 。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>增量调试 / 最小化调试 (Delta Debugging)：</strong></p>
+<ul>
+<li><strong>怎么做：</strong> 当你发现一个巨大的输入（比如一万行的文件）会导致程序崩溃时，你怎么找出到底是哪一行导致的？这就用 Delta Debugging。</li>
+<li><strong>核心逻辑 (必背选择题考点)：</strong> 它的底层逻辑<strong>类似于二分查找 (Binary search)</strong> 。把输入集切成两半，看看哪一半会触发 bug，不断缩小范围，最终得到一个引发崩溃的“最小输入集合” 。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-符号执行-symbolic-execution--10分必考大题"><a class="header" href="#2-符号执行-symbolic-execution--10分必考大题">2. 符号执行 (Symbolic Execution) —— 10分必考大题！</a></h4>
+<p>传统测试是给变量赋具体的值（如 $x=1$），而符号执行是把变量变成<strong>代数符号</strong>（如 $x=\alpha$），让程序去推导数学表达式 。这道 10 分大题的套路非常死，严格按以下三步走：</p>
+<ul>
+<li>
+<p><strong>核心概念 1：符号状态 (Symbolic State)</strong>
+随着代码一行行往下走，变量的代数式会不断变化。比如 <code>x = a</code>，下一行 <code>y = x + 1</code>，那么在符号状态里 $y$ 就等于 $a + 1$ 。</p>
+</li>
+<li>
+<p><strong>核心概念 2：路径约束 (Path Constraint, PC)</strong>
+遇到 <code>if</code> 语句时，只有满足特定条件才能走进去。你把一路走来的 <code>if</code> 条件用逻辑与（$&amp;&amp;$）连起来，就是这条路径的“通关密码” 。</p>
+</li>
+</ul>
+<p><strong>期末大题解题套路 (参考往年卷 Q7)：</strong></p>
+<ol>
+<li>
+<p><strong>数路径：</strong> 题目会问有几条路径能到达 <code>ERROR</code>。你就看 <code>ERROR</code> 外面包着几个 <code>if</code>，画一画分支，数清楚到底有几条逻辑线能走到那一步 。</p>
+</li>
+<li>
+<p><strong>写约束 (极易出错的地方！)：</strong> 把初始输入设为符号（比如 $a_0, b_0$）。<strong>一定要注意变量被覆盖的情况！</strong></p>
+</li>
+</ol>
+<ul>
+<li><em>错误示范：</em> 看到 <code>if (x &gt; 10)</code>，直接写约束 $x &gt; 10$。</li>
+<li><em>正确做法：</em> 往回找 $x$ 是怎么算出来的。如果前面写着 $x = 2 * a_0 + b_0$，那约束必须写成 $2 * a_0 + b_0 &gt; 10$。路径约束里<strong>只能包含初始的输入符号</strong>，不能有中间变量 。</li>
+</ul>
+<ol start="3">
+<li><strong>判断可解性 (Satisfiability)：</strong> 看着你写出的一堆不等式/等式，问自己：这套方程有解吗？</li>
+</ol>
+<ul>
+<li>
+<p>有解就是 <strong>Satisfiable (T)</strong>。然后你随便猜一组数字（比如 $a_0=1, b_0=2$）写上去，这就是生成的高覆盖率 Test Input 。</p>
+</li>
+<li>
+<p>如果条件互相矛盾（比如 $a &gt; 5 &amp;&amp; a &lt; 3$），那就是 <strong>Unsatisfiable (F)</strong>，说明这条路径在现实中是不可能走通的（死代码） 。</p>
+</li>
+</ul>
+<h4 id="3-混合执行-concolic-execution--动态符号执行"><a class="header" href="#3-混合执行-concolic-execution--动态符号执行">3. 混合执行 (Concolic Execution) / 动态符号执行</a></h4>
+<p>符号执行虽然厉害，但遇到非常复杂的数学运算（比如哈希、加密）或者外部库调用时，方程根本解不出来 。</p>
+<ul>
+<li>
+<p><strong>应对策略：</strong> Concolic = Concrete (具体) + Symbolic (符号) 。</p>
+</li>
+<li>
+<p><strong>考点：</strong> 它是先随机给一个具体的真实输入（比如 $x=3$）跑一遍，把沿途的条件收集起来。遇到解不开的复杂约束，直接用具体的真实数值替换掉，强行解开并探索新的分支。它极大扩展了纯符号执行的能力边界 。</p>
+</li>
+</ul>
+<p>符号执行的逻辑推导是软件分析里最经典的题型。到了考场上，遇到这种题千万别慌，拿笔在草稿纸上把变量 $x, y, z$ 的代数式一步步列出来，最后把 <code>if</code> 里的变量替换掉，稳拿 10 分。</p>
+<hr />
+<h3 id="模块四建模uml-与有限状态机-ppt-p48-p55"><a class="header" href="#模块四建模uml-与有限状态机-ppt-p48-p55">模块四：建模、UML 与有限状态机 (PPT P48-P55)</a></h3>
+<p>这部分的本质是<strong>建模 (Modeling)</strong>。闭卷考选择题喜欢考建模的目的：建模是建立现实的抽象 (Abstraction of reality)，为了应对复杂性 (dealing with complexity) 而忽略无关细节 (ignore irrelevant details) 。</p>
+<h4 id="1-uml-的两大阵营-选择题必考"><a class="header" href="#1-uml-的两大阵营-选择题必考">1. UML 的两大阵营 (选择题必考)</a></h4>
+<p>UML 图分为两派，选择题极大概率会给你几个图的名字，问你哪个是静态的，哪个是动态的 ：</p>
+<ul>
+<li>
+<p><strong>静态/结构图 (Static/Structural)：</strong> 描述系统长什么样。<strong>类图 (Class Diagram)</strong> 是绝对的核心代表 。</p>
+</li>
+<li>
+<p><strong>动态/行为图 (Dynamic/Behavioral)：</strong> 描述系统怎么动。记住三大代表：<strong>用例图 (Use Case Diagram)</strong>、<strong>时序图 (Sequence Diagram)</strong>、<strong>状态机图 (State Machine Diagram)</strong> 。</p>
+</li>
+</ul>
+<h4 id="2-怎么画-uml-类图-class-diagram---大题考点"><a class="header" href="#2-怎么画-uml-类图-class-diagram---大题考点">2. 怎么画 UML 类图 (Class Diagram) - 大题考点</a></h4>
+<p>类图非常死板，就是一个分成三层的长方形 ：</p>
+<ul>
+<li>
+<p><strong>第一层 (Name)：</strong> 类名。这是<strong>唯一强制要求必须有</strong>的信息 。</p>
+</li>
+<li>
+<p><strong>第二层 (Attributes)：</strong> 属性/状态。格式是 <code>变量名: 类型</code>（比如 <code>zone2price: Table</code>） 。</p>
+</li>
+<li>
+<p><strong>第三层 (Operations)：</strong> 方法/行为。格式是 <code>方法名(参数): 返回值类型</code>（比如 <code>getPrice(z: Zone): Price</code>） 。</p>
+</li>
+</ul>
+<h4 id="3-怎么画-uml-时序图-sequence-diagram---大题考点"><a class="header" href="#3-怎么画-uml-时序图-sequence-diagram---大题考点">3. 怎么画 UML 时序图 (Sequence Diagram) - 大题考点</a></h4>
+<p>时序图用来描述对象之间是如何按时间顺序交互的。闭卷考时，你需要把题目给的一大段文字交互步骤翻译成这个图 ：</p>
+<ul>
+<li>
+<p><strong>参与者/对象 (Actors and objects)：</strong> 画在最顶部，作为列的表头（比如一个小人代表 <code>:Client</code>，一个方框代表 <code>:Terminal</code>） 。</p>
+</li>
+<li>
+<p><strong>时间线 (Time)：</strong> 时间是<strong>从上往下</strong>流动的 。</p>
+</li>
+<li>
+<p><strong>生命线 (Lifelines)：</strong> 从顶部的对象往下画的<strong>虚线</strong> 。</p>
+</li>
+<li>
+<p><strong>激活期 (Activations)：</strong> 虚线上的<strong>细长矩形</strong>，表示这个对象这段时间正在干活 。</p>
+</li>
+<li>
+<p><strong>消息 (Messages)：</strong> 对象之间传递的动作，用<strong>带箭头的实线</strong>表示（比如 <code>insertCard()</code>），从一个生命线指向另一个生命线 。</p>
+</li>
+</ul>
+<h4 id="4-怎么画有限状态机-fsm---大题考点"><a class="header" href="#4-怎么画有限状态机-fsm---大题考点">4. 怎么画有限状态机 (FSM) - 大题考点</a></h4>
+<p>FSM 专门用来描述系统的<strong>控制层面 (control aspects)</strong> 。系统有有限个状态，遇到不同的事件/输入就会在状态之间跳来跳去。</p>
+<ul>
+<li>
+<p><strong>基本画法规范 (极易漏掉扣分)：</strong></p>
+<ul>
+<li><strong>初始状态 (Initial state)：</strong> 必须有一个箭头从虚空中指过来，通常标记为 $q_0$ 。</li>
+<li><strong>最终/接受状态 (Final state)：</strong> 必须画成<strong>双层圆圈</strong>（比如 $q_f$），表示到这里任务成功结束 。</li>
+<li><strong>状态跳转：</strong> 两个圆圈之间的箭头，上面标明是因为什么输入（比如输入了字母 <code>e</code>，或投入了 <code>5p</code> 硬币）才跳转的 。</li>
+</ul>
+</li>
+<li>
+<p><strong>经典考法 (FSM as Recognizers)：</strong> PPT 里给的经典例子是“识别编程语言的标识符 (变量名)”。规则是：必须以字母开头，后面可以跟字母或数字 。</p>
+<ul>
+<li><strong>怎么画：</strong> 初始状态 $q_0$ 遇到 <code>&lt;letter&gt;</code> 跳到 $q_1$（此时变成了接受状态，因为单字母也是合法变量名）；$q_1$ 遇到 <code>&lt;letter&gt;</code> 或 <code>&lt;digit&gt;</code> 自己绕圈（指向自己）；如果中途遇到任何非法字符，就走到死胡同 。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="模块五静态分析数据流与格理论-ppt-p56-p83"><a class="header" href="#模块五静态分析数据流与格理论-ppt-p56-p83">模块五：静态分析、数据流与格理论 (PPT P56-P83)</a></h3>
+<h4 id="一-静态分析的极限与妥协-static-analysis-limits"><a class="header" href="#一-静态分析的极限与妥协-static-analysis-limits">一、 静态分析的极限与妥协 (Static Analysis Limits)</a></h4>
+<p>静态分析是在不运行程序的情况下推断其行为。为什么我们不能做一个完美的静态分析工具？</p>
+<p>核心在于 <strong>Rice's Theorem (莱斯定理)</strong>：任何关于图灵完备语言的非平凡属性（比如有没有除零错误、会不会死循环），都是<strong>不可判定 (Undecidable)</strong> 的 。</p>
+<p>既然得不到完美答案，我们就必须在<strong>Soundness (健全性)</strong> 和 <strong>Completeness (完备性)</strong> 之间做数学上的妥协：</p>
+<ul>
+<li>
+<p><strong>Sound (健全 / 宁杀错不放过)</strong>：包含所有真实的可能，<strong>允许误报 (False Positives)</strong>，但绝不漏报。数学表达为 $Truth \subseteq Sound$ 。</p>
+</li>
+<li>
+<p><strong>Complete (完备 / 宁漏网不冤枉)</strong>：报出来的全是真的，<strong>允许漏报 (False Negatives)</strong>，但绝不误报。数学表达为 $Complete \subseteq Truth$ 。</p>
+</li>
+</ul>
+<p>绝大多数静态分析为了保证安全（比如排查漏洞），选择的是 <strong>Soundness</strong>。其核心方法论是：<strong>Abstraction (抽象) + Over-approximation (过度近似)</strong> 。</p>
+<h4 id="二-数据流分析框架-data-flow-analysis-framework"><a class="header" href="#二-数据流分析框架-data-flow-analysis-framework">二、 数据流分析框架 (Data Flow Analysis Framework)</a></h4>
+<p>数据流分析旨在计算程序在每个控制流节点（Basic Block）的输入状态 ($IN$) 和输出状态 ($OUT$)。一个完整的数据流分析框架可以形式化为一个三元组 $(D, L, F)$ ：</p>
+<ul>
+<li><strong>$D$</strong>: 数据流的方向 (Direction, Forwards 或 Backwards)。</li>
+<li><strong>$L$</strong>: 包含定义域值集合 $V$ 以及交/并算子的格 (Lattice)。</li>
+<li><strong>$F$</strong>: 状态转移函数族 (Transfer functions, $V \rightarrow V$)。</li>
+</ul>
+<p>何教授重点考以下三大经典数据流分析的公式推导 ：</p>
+<h5 id="1-到达定值-reaching-definitions-rd"><a class="header" href="#1-到达定值-reaching-definitions-rd">1. 到达定值 (Reaching Definitions, RD)</a></h5>
+<p><strong>目标</strong>：判断某个赋值语句（Definition）能否未经覆盖地到达某一点。</p>
+<ul>
+<li>
+<p><strong>方向</strong>：<strong>Forwards (向前)</strong> 。</p>
+</li>
+<li>
+<p><strong>算子 (Meet Operator)</strong>：<strong>May (可能) $\Rightarrow$ 集合并集 ($\cup$)</strong> 。</p>
+</li>
+<li>
+<p><strong>转移方程 (Transfer Function)</strong>：</p>
+</li>
+</ul>
+<p>$$OUT[B] = gen_B \cup (IN[B] - kill_B)$$</p>
+<p><em>(解释：流出基本块B的定值 = B自己产生的新定值 $\cup$ (流进B的定值 - 被B中途覆盖掉的定值))</em></p>
+<ul>
+<li><strong>控制流交汇 (Control Flow Meet)</strong>：</li>
+</ul>
+<p>$$IN[B] = \bigcup_{P \in pred(B)} OUT[P]$$</p>
+<p><em>(解释：流入B的定值 = B的所有前驱节点 P 流出定值的总和)</em></p>
+<ul>
+<li><strong>边界与初始化</strong>：</li>
+</ul>
+<p>$$OUT[entry] = \emptyset$$</p>
+<p>$$\forall B \neq entry, OUT[B] = \emptyset$$</p>
+<h5 id="2-活跃变量-live-variables-lv"><a class="header" href="#2-活跃变量-live-variables-lv">2. 活跃变量 (Live Variables, LV)</a></h5>
+<p><strong>目标</strong>：判断一个变量在某点的值，在未来是否会被使用。</p>
+<ul>
+<li>
+<p><strong>方向</strong>：<strong>Backwards (向后)</strong> 。</p>
+</li>
+<li>
+<p><strong>算子 (Meet Operator)</strong>：<strong>May (可能) $\Rightarrow$ 集合并集 ($\cup$)</strong> 。</p>
+</li>
+<li>
+<p><strong>转移方程 (Transfer Function)</strong>：注意 $IN$ 和 $OUT$ 反过来了！</p>
+</li>
+</ul>
+<p>$$IN[B] = use_B \cup (OUT[B] - def_B)$$</p>
+<p><em>(解释：流入B的活跃变量 = B中使用的变量 $\cup$ (流出B的活跃变量 - 在B中被重新赋值的变量))</em></p>
+<ul>
+<li><strong>控制流交汇 (Control Flow Meet)</strong>：</li>
+</ul>
+<p>$$OUT[B] = \bigcup_{S \in succ(B)} IN[S]$$</p>
+<p><em>(解释：流出B的活跃变量 = B的所有后继节点 S 需求变量的总和)</em></p>
+<ul>
+<li><strong>边界与初始化</strong>：</li>
+</ul>
+<p>$$IN[exit] = \emptyset$$</p>
+<p>$$\forall B \neq exit, IN[B] = \emptyset$$</p>
+<h5 id="3-可用表达式-available-expressions-ae"><a class="header" href="#3-可用表达式-available-expressions-ae">3. 可用表达式 (Available Expressions, AE)</a></h5>
+<p><strong>目标</strong>：判断在某一点，某个数学表达式（如 $x+y$）是否已经被计算过，且其操作数未被修改。</p>
+<ul>
+<li>
+<p><strong>方向</strong>：<strong>Forwards (向前)</strong> 。</p>
+</li>
+<li>
+<p><strong>算子 (Meet Operator)</strong>：<strong>Must (必须) $\Rightarrow$ 集合交集 ($\cap$)</strong> 。</p>
+</li>
+<li>
+<p><strong>转移方程 (Transfer Function)</strong>：</p>
+</li>
+</ul>
+<p>$$OUT[B] = gen_B \cup (IN[B] - kill_B)$$</p>
+<ul>
+<li><strong>控制流交汇 (Control Flow Meet)</strong>：注意这里是交集！</li>
+</ul>
+<p>$$IN[B] = \bigcap_{P \in pred(B)} OUT[P]$$</p>
+<p><em>(解释：必须所有前驱节点都计算过该表达式，它才算“可用”)</em></p>
+<ul>
+<li><strong>边界与初始化 (极易出错考点)</strong>：</li>
+</ul>
+<p>$$OUT[entry] = \emptyset$$</p>
+<p>$$\forall B \neq entry, OUT[B] = U$$</p>
+<p>(全集 Universal Set)
+<em>(解释：由于求的是交集，如果初始化为 $\emptyset$，那么任何集合跟它取交集都会变成 $\emptyset$。所以必须初始化为全集 $U$)</em></p>
+<h4 id="三-数学地基偏序集格与不动点定理-poset-lattice--fixed-point"><a class="header" href="#三-数学地基偏序集格与不动点定理-poset-lattice--fixed-point">三、 数学地基：偏序集、格与不动点定理 (Poset, Lattice &amp; Fixed-Point)</a></h4>
+<p>迭代算法为什么能停下来？凭什么保证算出来的结果是对的？这需要数学理论支撑。考卷上大概率会出理论概念判定。</p>
+<h5 id="1-偏序集-partially-ordered-set-poset"><a class="header" href="#1-偏序集-partially-ordered-set-poset">1. 偏序集 (Partially Ordered Set, Poset)</a></h5>
+<p>定义为一个二元组 $(P, \sqsubseteq)$。要成为偏序集，关系 $\sqsubseteq$ 必须满足三大公理 ：</p>
+<ol>
+<li>
+<p><strong>Reflexivity (自反性)</strong>: $\forall x \in P, x \sqsubseteq x$ 。</p>
+</li>
+<li>
+<p><strong>Antisymmetry (反对称性)</strong>: $\forall x, y \in P, x \sqsubseteq y \wedge y \sqsubseteq x \Rightarrow x = y$ 。</p>
+</li>
+<li>
+<p><strong>Transitivity (传递性)</strong>: $\forall x, y, z \in P, x \sqsubseteq y \wedge y \sqsubseteq z \Rightarrow x \sqsubseteq z$ 。</p>
+</li>
+</ol>
+<h5 id="2-上下界与格-bounds--lattice"><a class="header" href="#2-上下界与格-bounds--lattice">2. 上下界与格 (Bounds &amp; Lattice)</a></h5>
+<ul>
+<li>
+<p><strong>Least Upper Bound (lub / join / $\sqcup$)</strong>: 集合 $S$ 的最小上界 。</p>
+</li>
+<li>
+<p><strong>Greatest Lower Bound (glb / meet / $\sqcap$)</strong>: 集合 $S$ 的最大下界 。</p>
+</li>
+<li>
+<p><strong>Lattice (格)</strong>: 在偏序集 $(P, \sqsubseteq)$ 中，如果<strong>任意两个元素</strong>都存在 $\sqcup$ 和 $\sqcap$，它就是格 。</p>
+</li>
+<li>
+<p><strong>Complete Lattice (完全格)</strong>: 如果<strong>任意子集</strong> $S$ 都存在 $\sqcup$ 和 $\sqcap$，它就是完全格。完全格必然存在最大元素 <strong>Top ($\top$)</strong> 和最小元素 <strong>Bottom ($\bot$)</strong> 。</p>
+</li>
+</ul>
+<h5 id="3-不动点定理-fixed-point-theorem---核心考点"><a class="header" href="#3-不动点定理-fixed-point-theorem---核心考点">3. 不动点定理 (Fixed-Point Theorem) - 核心考点</a></h5>
+<p>不动点定理保证了数据流分析必定会收敛。
+前提条件 ：</p>
+<ol>
+<li>给定一个完全格 $(L, \sqsubseteq)$，且 $L$ 是有限的 (finite)。</li>
+<li>状态转移函数 $f: L \rightarrow L$ 是<strong>单调的 (Monotonic)</strong>：</li>
+</ol>
+<p>$$x \sqsubseteq y \Rightarrow f(x) \sqsubseteq f(y)$$</p>
+<p><strong>结论与迭代公式</strong> ：</p>
+<ul>
+<li><strong>最小不动点 (Least Fixed Point)</strong>：通过从底端不断向上迭代得到：</li>
+</ul>
+<p>$$f(\bot), f(f(\bot)), \dots, f^k(\bot)$$</p>
+<p>直到 $f^k(\bot) = f^{k-1}(\bot)$</p>
+<ul>
+<li><strong>最大不动点 (Greatest Fixed Point)</strong>：通过从顶端不断向下迭代得到：</li>
+</ul>
+<p>$$f(\top), f(f(\top)), \dots, f^k(\top)$$</p>
+<p>直到 $f^k(\top) = f^{k-1}(\top)$</p>
+<p>(注：May 分析通常求最小不动点，Must 分析通常求最大不动点 。)</p>
+<p><strong>最大迭代次数估算</strong> ：
+如果格的高度为 $h$ (从 Top 到 Bottom 的最长路径长度)，CFG 有 $k$ 个节点，那么算法<strong>最多</strong>经过 $i = h \times k$ 次迭代就能到达不动点 。</p>
+<h4 id="四-算法优化worklist-algorithm"><a class="header" href="#四-算法优化worklist-algorithm">四、 算法优化：Worklist Algorithm</a></h4>
+<p>普通的迭代算法（Iterative Algorithm）非常低效，因为只要有一个节点的 $OUT$ 变了，下一个循环就会把<strong>所有</strong>节点重新算一遍。</p>
+<p><strong>Worklist 算法的优化逻辑</strong>：只有当节点 $B$ 的输出改变时，才将受它影响的节点（即它的后继节点）加入待处理队列 。</p>
+<p><strong>核心伪代码逻辑</strong> (以 Forward 分析为例) ：</p>
+<ol>
+<li>将所有节点加入 <code>Worklist</code>。</li>
+<li><code>while (Worklist is not empty)</code>:</li>
+</ol>
+<ul>
+<li>从队列中取出一个块 $B$。</li>
+<li>记录 <code>old_OUT = OUT[B]</code>。</li>
+<li>计算 <code>IN[B]</code> 和新的 <code>OUT[B]</code>。</li>
+<li><strong>核心判断</strong>：<code>if (old_OUT != OUT[B])</code></li>
+<li>将 $B$ 的所有<strong>后继节点 (successors)</strong> 重新加入 <code>Worklist</code>。</li>
+</ul>
 
                     </main>
 
