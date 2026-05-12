@@ -284,7 +284,7 @@
 </li>
 </ul>
 <hr />
-<h3 id="模块二控制流图-cfg-与测试覆盖率-ppt-p17-p33"><a class="header" href="#模块二控制流图-cfg-与测试覆盖率-ppt-p17-p33">模块二：控制流图 (CFG) 与测试覆盖率 (PPT P17-P33)</a></h3>
+<h3 id="模块二控制流图-cfg-与编译器-ppt-p17-p33"><a class="header" href="#模块二控制流图-cfg-与编译器-ppt-p17-p33">模块二：控制流图 (CFG) 与编译器 (PPT P17-P33)</a></h3>
 <h4 id="1-核心基石什么是基本块-basic-block-bb"><a class="header" href="#1-核心基石什么是基本块-basic-block-bb">1. 核心基石：什么是基本块 (Basic Block, BB)？</a></h4>
 <p>你要画控制流图，第一步就是把代码切分成一个个“基本块”。闭卷考特别喜欢考基本块的定义和切分规则。</p>
 <ul>
@@ -346,67 +346,152 @@
 <p><strong>循环覆盖 (Loop Coverage)：</strong> 针对循环，要求分别执行 0次、1次、大于1次，公式是：执行过的循环状态 / (总循环数 * 3) 。</p>
 </li>
 </ul>
-<h4 id="4-变异测试-mutation-testing"><a class="header" href="#4-变异测试-mutation-testing">4. 变异测试 (Mutation Testing)</a></h4>
-<p>普通测试是为了找代码的 bug，而<strong>变异测试是为了找“测试用例”的 bug</strong>（评估测试套件的质量） 。</p>
+<h4 id="4-编译器的流水线-the-compiler-pipeline"><a class="header" href="#4-编译器的流水线-the-compiler-pipeline">4. 编译器的流水线 (The Compiler Pipeline)</a></h4>
+<p>选择题经常会考各个阶段的对应关系，你只需要记住这个“一一对应”的匹配表 ：</p>
 <ul>
 <li>
-<p><strong>怎么做：</strong> 故意在源代码里制造一个小错误（比如把 <code>+</code> 变成 <code>-</code>），这叫生成一个“变异体 (Mutant)” 。</p>
-</li>
-<li>
-<p><strong>核心术语 (Killed)：</strong> 把测试用例跑在这个变异体上，如果测试结果和原版不一样（报错了），说明测试用例够强，把变异体<strong>杀死了 (Killed)</strong> 。</p>
-</li>
-<li>
-<p><strong>强变异 vs 弱变异 (必考概念，务必分清)：</strong>
-找 bug 需要满足三个条件：到达错误代码 (Reachability)、感染状态 (Infection)、传播到最终输出 (Propagation) 。</p>
+<p><strong>Scanner (扫描器) $\rightarrow$ Lexical Analysis (词法分析) $\rightarrow$ 输出 Tokens (词法单元)</strong></p>
 <ul>
-<li>
-<p><strong>弱变异 (Weak Mutant)：</strong> 只要运行完那行被篡改的代码后，<strong>内部状态</strong>和原版不一样了，就算 killed 。它只满足了 Reachability 和 Infection 。</p>
-</li>
-<li>
-<p><strong>强变异 (Strong Mutant)：</strong> 错误不仅要发生，还必须一直传播下去，导致<strong>最终输出的程序结果</strong>和原版不一样，才算 killed 。</p>
-</li>
+<li><em>底层依赖：</em> 正则表达式 (Regular Expression) 。</li>
+<li><em>查什么错：</em> 查有没有拼写错误（图例："You $\rightarrow$ goouojd"） 。</li>
 </ul>
 </li>
+<li>
+<p><strong>Parser (解析器) $\rightarrow$ Syntax Analysis (语法分析) $\rightarrow$ 输出 AST (抽象语法树)</strong></p>
+<ul>
+<li><em>底层依赖：</em> 上下文无关文法 (Context-Free Grammar) 。</li>
+<li><em>查什么错：</em> 查语法结构对不对（图例："Like your hair I"，单词都对，但连起来不像句英语） 。</li>
+</ul>
+</li>
+<li>
+<p><strong>Type Checker (类型检查器) $\rightarrow$ Semantic Analysis (语义分析) $\rightarrow$ 输出 Decorated AST (带标注的抽象语法树)</strong></p>
+<ul>
+<li><em>底层依赖：</em> 属性文法 (Attribute Grammar) 。</li>
+<li><em>查什么错：</em> 查逻辑和类型匹配不匹配（图例："Apples eat you"，语法是对的，但语义逻辑是错的） 。</li>
+</ul>
+</li>
+<li>
+<p><strong>Translator (翻译器) $\rightarrow$ 输出 IR (中间表示)</strong> 。</p>
+</li>
+<li>
+<p><strong>Code Generator (代码生成器) $\rightarrow$ 输出 Machine Code (机器码)</strong></p>
+</li>
+<li>
+<p><em>重点考点：</em> 我们学的<strong>静态分析 (Static Analysis)</strong> 和代码优化，就是插在生成 Machine Code 之前的这一步，并且是<strong>完全基于 IR 进行的</strong> 。</p>
+</li>
+</ul>
+<h4 id="5-ast-vs-ir-的终极对决-核心考点"><a class="header" href="#5-ast-vs-ir-的终极对决-核心考点">5. AST vs. IR 的终极对决 (核心考点)</a></h4>
+<p>这张图下半部分列出了 AST 和 IR 的区别，这是闭卷考<strong>非常容易出判断题/选择题</strong>的地方。把下面这几个对比死死记住 ：</p>
+<p><strong>AST (Abstract Syntax Tree / 抽象语法树)：</strong></p>
+<ul>
+<li>
+<p><strong>层级：</strong> High-level (高级)，非常接近你写的源代码语法结构 。</p>
+</li>
+<li>
+<p><strong>依赖性：</strong> Usually language dependent (通常<strong>依赖于</strong>具体的编程语言)。比如 Java 的 AST 和 Python 的 AST 长得完全不一样 。</p>
+</li>
+<li>
+<p><strong>强项：</strong> 适合做快速的类型检查 (fast type checking) 。</p>
+</li>
+<li>
+<p><strong>致命弱点 (必考)：</strong> <strong>Lack of control flow information (缺乏控制流信息)</strong> 。它只是一棵静态的语法树，你很难直观看出程序是怎么“跳转”的。
+<strong>IR (Intermediate Representation / 中间表示)：</strong></p>
+</li>
+<li>
+<p><strong>层级：</strong> Low-level (低级)，非常接近底层的机器码 。</p>
+</li>
+<li>
+<p><strong>依赖性：</strong> Usually language independent (通常<strong>独立于</strong>具体的编程语言)。不管是 C++ 还是 Java，最后都可以翻译成统一风格的 IR 。</p>
+</li>
+<li>
+<p><strong>结构：</strong> Compact and uniform (紧凑且统一) 。最常见的形式就是图里展示的 <strong>"3-address" form (三地址码)</strong>，即一行代码最多只有三个变量参与运算，比如 <code>t1 = a [ i ]</code> 。</p>
+</li>
+<li>
+<p><strong>最强优势 (必考)：</strong> <strong>Contains control flow information (包含控制流信息)</strong> 。因为 IR 里有大量的 <code>goto</code> 和 <code>if goto</code> 语句（比如图里的 <code>if t1 &lt; v goto 1</code>），程序的跳转逻辑一目了然 。</p>
+</li>
+<li>
+<p><strong>终极结论：</strong> 因为 IR 有明确的跳转信息，所以 <strong>IR 通常被认为是进行静态分析的基础 (the basis for static analysis)</strong> 。你画控制流图 (CFG)、切分基本块 (Basic Blocks)，全都是基于 IR 来做的。</p>
+</li>
+</ul>
+<p><strong>总结一下：</strong> 看到 AST 就联想“树形结构、方便查类型、没法看跳转”；看到 IR（尤其是三地址码）就联想“一行行代码、带有 <code>goto</code> 跳转、是静态分析和画 CFG 的地基”。</p>
+<hr />
+<h3 id="模块三不同测试类型"><a class="header" href="#模块三不同测试类型">模块三：不同测试类型</a></h3>
+<p>这五种测试方法中，<strong>Mutation Testing (变异测试)</strong> 是用来评估测试用例质量的，而后面四种（<strong>Differential, Metamorphic, Intramorphic, Retromorphic</strong>）全都是为了解决同一个痛点：<strong>Test Oracle 问题（即当你不知道绝对正确的输出应该是什么时，如何判断程序算得对不对）</strong>。</p>
+<p>下面为你详细拆解这五种测试的核心逻辑和区别：</p>
+<h4 id="1-mutation-testing-变异测试"><a class="header" href="#1-mutation-testing-变异测试">1. Mutation Testing (变异测试)</a></h4>
+<ul>
+<li><strong>核心目标：</strong> 评估你写的测试用例集（Test Suite）到底有多强、够不够彻底 。它的目标不是找代码的 Bug，而是找“测试用例的漏洞”。</li>
+<li><strong>怎么做：</strong>
+<ol>
+<li>在原程序 (Original Program) 中故意引入一个微小的错误（Fault Introduction），生成一个<strong>变异体 (Mutant Program)</strong> 。</li>
+<li>把你的测试用例同时跑在原程序和变异体上 。</li>
+<li>如果测试用例在这两个程序上跑出的结果不一样（即测试用例报错了），说明测试用例成功<strong>杀死 (KILLED)</strong> 了这个变异体 。</li>
+</ol>
+</li>
+<li><strong>核心假设 (Coupling Effect)：</strong> 如果一个测试用例极其敏锐，能发现那些非常简单的错误，那么它也一定能发现由这些简单错误组合而成的复杂大 Bug 。</li>
+<li><strong>强弱之分：</strong>
+<ul>
+<li><strong>弱杀死 (Weakly killing)：</strong> 测试用例跑完变异的那行代码后，程序的<strong>内部状态</strong>和原版不一样了（满足 Reachability 和 Infection） 。</li>
+<li><strong>强杀死 (Strongly killing)：</strong> 这个错误的内部状态必须一路传播下去，导致<strong>最终的输出结果</strong>和原版不一样（即 $P(t) != m(t)$） 。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-differential-testing-差异测试"><a class="header" href="#2-differential-testing-差异测试">2. Differential Testing (差异测试)</a></h4>
+<ul>
+<li><strong>应用场景：</strong> 当你不知道正确答案是什么，但你手头有好几个功能相同的不同软件/不同实现版本时。</li>
+<li><strong>怎么做：</strong> 给这些可以互相替换的程序（比如 $P_1, P_2, P_3$）喂入<strong>完全相同的输入 $I$</strong> 。</li>
+<li><strong>怎么判断对错：</strong> 观察它们的输出（$O_1, O_2, O_3$） 。如果大家都输出一样的结果，大概率是对的；如果其中一个输出与众不同，那这个程序大概率有 Bug。它们<strong>互为对方的裁判 (Oracle for each other)</strong> 。</li>
+<li><em>例子：</em> 测试一个新的 C++ 编译器，就给它和 GCC、Clang 喂同一段 C++ 代码，看编译出来的行为是否一致。</li>
+</ul>
+<h4 id="3-metamorphic-testing-蜕变测试"><a class="header" href="#3-metamorphic-testing-蜕变测试">3. Metamorphic Testing (蜕变测试)</a></h4>
+<ul>
+<li><strong>应用场景：</strong> 针对单个程序，你不知道单一输入的正确答案，但你知道<strong>输入之间如果发生某种变化，输出也应该发生相应的变化</strong>（这叫蜕变关系）。</li>
+<li><strong>怎么做：</strong>
+<ol>
+<li>给程序 $P$ 一个初始输入 $I$，得到输出 $O$ 。</li>
+<li>根据已知的数学/逻辑关系，把输入 $I$ 修改成衍生输入 $I'$ (Derived follow-up input) 。</li>
+<li>将 $I'$ 喂给同一个程序 $P$，得到输出 $O'$ 。</li>
+</ol>
+</li>
+<li><strong>怎么判断对错：</strong> 检查 $O$ 和 $O'$ 之间的关系是否符合预期（它们互为对方的 Oracle） 。</li>
+<li><em>例子：</em> 测试计算 $\sin(x)$ 的函数。你不知道 $\sin(1.23)$ 是多少，但你知道 $\sin(x) = \sin(x + 2\pi)$。所以 $I=1.23$，$I' = 1.23 + 2\pi$，如果两次输出结果不一样，函数就写错了。</li>
+</ul>
+<h4 id="4-intramorphic-testing-同构测试--内变异测试"><a class="header" href="#4-intramorphic-testing-同构测试--内变异测试">4. Intramorphic Testing (同构测试 / 内变异测试)</a></h4>
+<ul>
+<li><strong>核心逻辑：</strong> 它是变异测试和蜕变测试思想的一种结合。它控制变量的方法是<strong>改变程序本身，而不改变输入</strong>。</li>
+<li><strong>怎么做：</strong>
+<ol>
+<li>准备一个输入 $I$ 。</li>
+<li>将输入 $I$ 喂给原程序 $P$，得到输出 $O$ 。</li>
+<li>对原程序进行某种等价修改（比如代码重构、或者开启了某种编译器优化），得到修改后的程序 $P'$ (Modified program) 。</li>
+<li>将同一个输入 $I$ 喂给修改后的程序 $P'$，得到输出 $O''$ 。</li>
+</ol>
+</li>
+<li><strong>怎么判断对错：</strong> 如果程序修改（$P \to P'$）在逻辑上是等价的，那么输出 $O$ 和 $O''$ 必须完全一致（互为 Oracle） 。</li>
+</ul>
+<h4 id="5-retromorphic-testing-逆向变形测试--反向测试"><a class="header" href="#5-retromorphic-testing-逆向变形测试--反向测试">5. Retromorphic Testing (逆向变形测试 / 反向测试)</a></h4>
+<ul>
+<li><strong>应用场景：</strong> 适用于那些有着明确“正向”和“逆向”处理流程的系统，比如加密/解密、压缩/解压、数据序列化/反序列化。</li>
+<li><strong>怎么做：</strong> 涉及两个相反的程序 $P$ 和 $Q$。其中 $P$ 将数据从 $M_1$ 转换为 $M_2$，$Q$ 将数据从 $M_2'$ 转换回 $M_1'$ 。
+<ol>
+<li>将初始数据 $M_1$ 输入给程序 $P$，得到输出 $M_2$ 。</li>
+<li>在中间环节，对 $M_2$ 进行合法的修改 (Modify $M_2$ to $M_2'$) 。</li>
+<li>将修改后的 $M_2'$ 输入给逆向程序 $Q$，得到输出 $M_1'$ 。</li>
+</ol>
+</li>
+<li><strong>怎么判断对错：</strong> 我们把最初的输入 $M_1$ 和经过一正一反处理后的结果 $M_1'$ 放在一起对比 (Oracle between $M_1$ and $M_1'$) 。如果它们符合预期的对应关系，说明正反向程序协同工作正常。</li>
+</ul>
+<p><strong>考前速记防混淆口诀：</strong></p>
+<ul>
+<li><strong>Mutation:</strong> 改<strong>代码</strong>，看<strong>测试用例</strong>能不能报错（测“测试”）。</li>
+<li><strong>Differential:</strong> <strong>同一个输入</strong>喂给<strong>多个程序</strong>，对比大家的结果（找不同）。</li>
+<li><strong>Metamorphic:</strong> <strong>一个程序</strong>喂入<strong>两个相关的输入</strong>，对比输出的关系（抓规律）。</li>
+<li><strong>Intramorphic:</strong> <strong>同一个输入</strong>喂给<strong>原程序和重构后的程序</strong>，对比结果（查等价）。</li>
+<li><strong>Retromorphic:</strong> 经过<strong>正向程序加工</strong>再经过<strong>反向程序还原</strong>，对比源头和结果（测可逆）。</li>
 </ul>
 <hr />
-<h3 id="模块三进阶测试与符号执行-ppt-p34-44-p8-10-往年卷"><a class="header" href="#模块三进阶测试与符号执行-ppt-p34-44-p8-10-往年卷">模块三：进阶测试与符号执行 (PPT P34-44, P8-10 往年卷)</a></h3>
-<h4 id="1-解决-test-oracle-难题的花式测试"><a class="header" href="#1-解决-test-oracle-难题的花式测试">1. 解决 Test Oracle 难题的花式测试</a></h4>
-<p>前面说过，Test Oracle（测试预言）是判断对错的标准。但有些软件（比如机器学习、机器翻译、搜索引擎），你输入一个东西，根本不知道绝对正确的输出该长啥样。何教授非常喜欢考这几种“没有绝对标准”时的测试方法：</p>
-<ul>
-<li>
-<p><strong>差异测试 (Differential Testing)：</strong></p>
-<ul>
-<li>
-<p><strong>怎么做：</strong> 找几个功能相同的不同软件版本（比如 $P_1, P_2, P_3$），给它们喂同一个输入 $I$，看它们的输出 $O_1, O_2, O_3$ 是不是一样 。</p>
-</li>
-<li>
-<p><strong>考点：</strong> 互相作为对方的 Oracle。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>蜕变测试 (Metamorphic Testing) —— 极高频考点！</strong></p>
-<ul>
-<li>
-<p><strong>怎么做：</strong> 关注<strong>输入和输入之间的关系</strong>，看输出是否满足对应的关系 。</p>
-</li>
-<li>
-<p><strong>举个栗子 (闭卷考常考场景)：</strong> 测试一个“求最短路径”的算法。输入图 A，得到路径长度 $L$。如果你把图 A 里所有的边权重都乘以 2 得到图 B（这是 Derived follow-up input），那你不需要知道具体的答案，你也知道图 B 的最短路径长度一定是 $2L$。这就叫<strong>蜕变关系 (Metamorphic Relations)</strong> 。</p>
-</li>
-<li>
-<p><strong>哪些系统适用：</strong> 机器翻译 (Machine translation service)、机器学习模型等 。</p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>增量调试 / 最小化调试 (Delta Debugging)：</strong></p>
-<ul>
-<li><strong>怎么做：</strong> 当你发现一个巨大的输入（比如一万行的文件）会导致程序崩溃时，你怎么找出到底是哪一行导致的？这就用 Delta Debugging。</li>
-<li><strong>核心逻辑 (必背选择题考点)：</strong> 它的底层逻辑<strong>类似于二分查找 (Binary search)</strong> 。把输入集切成两半，看看哪一半会触发 bug，不断缩小范围，最终得到一个引发崩溃的“最小输入集合” 。</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-符号执行-symbolic-execution--10分必考大题"><a class="header" href="#2-符号执行-symbolic-execution--10分必考大题">2. 符号执行 (Symbolic Execution) —— 10分必考大题！</a></h4>
+<h3 id="模块四符号执行-ppt-p34-44-p8-10-往年卷"><a class="header" href="#模块四符号执行-ppt-p34-44-p8-10-往年卷">模块四：符号执行 (PPT P34-44, P8-10 往年卷)</a></h3>
+<h4 id="1-符号执行-symbolic-execution--10分必考大题"><a class="header" href="#1-符号执行-symbolic-execution--10分必考大题">1. 符号执行 (Symbolic Execution) —— 10分必考大题！</a></h4>
 <p>传统测试是给变量赋具体的值（如 $x=1$），而符号执行是把变量变成<strong>代数符号</strong>（如 $x=\alpha$），让程序去推导数学表达式 。这道 10 分大题的套路非常死，严格按以下三步走：</p>
 <ul>
 <li>
@@ -454,7 +539,7 @@
 </ul>
 <p>符号执行的逻辑推导是软件分析里最经典的题型。到了考场上，遇到这种题千万别慌，拿笔在草稿纸上把变量 $x, y, z$ 的代数式一步步列出来，最后把 <code>if</code> 里的变量替换掉，稳拿 10 分。</p>
 <hr />
-<h3 id="模块四建模uml-与有限状态机-ppt-p48-p55"><a class="header" href="#模块四建模uml-与有限状态机-ppt-p48-p55">模块四：建模、UML 与有限状态机 (PPT P48-P55)</a></h3>
+<h3 id="模块五建模uml-与有限状态机-ppt-p48-p55"><a class="header" href="#模块五建模uml-与有限状态机-ppt-p48-p55">模块五：建模、UML 与有限状态机 (PPT P48-P55)</a></h3>
 <p>这部分的本质是<strong>建模 (Modeling)</strong>。闭卷考选择题喜欢考建模的目的：建模是建立现实的抽象 (Abstraction of reality)，为了应对复杂性 (dealing with complexity) 而忽略无关细节 (ignore irrelevant details) 。</p>
 <h4 id="1-uml-的两大阵营-选择题必考"><a class="header" href="#1-uml-的两大阵营-选择题必考">1. UML 的两大阵营 (选择题必考)</a></h4>
 <p>UML 图分为两派，选择题极大概率会给你几个图的名字，问你哪个是静态的，哪个是动态的 ：</p>
@@ -517,7 +602,7 @@
 </li>
 </ul>
 <hr />
-<h3 id="模块五静态分析数据流与格理论-ppt-p56-p83"><a class="header" href="#模块五静态分析数据流与格理论-ppt-p56-p83">模块五：静态分析、数据流与格理论 (PPT P56-P83)</a></h3>
+<h3 id="模块六静态分析数据流与格理论-ppt-p56-p83"><a class="header" href="#模块六静态分析数据流与格理论-ppt-p56-p83">模块六：静态分析、数据流与格理论 (PPT P56-P83)</a></h3>
 <h4 id="一-静态分析的极限与妥协-static-analysis-limits"><a class="header" href="#一-静态分析的极限与妥协-static-analysis-limits">一、 静态分析的极限与妥协 (Static Analysis Limits)</a></h4>
 <p>静态分析是在不运行程序的情况下推断其行为。为什么我们不能做一个完美的静态分析工具？</p>
 <p>核心在于 <strong>Rice's Theorem (莱斯定理)</strong>：任何关于图灵完备语言的非平凡属性（比如有没有除零错误、会不会死循环），都是<strong>不可判定 (Undecidable)</strong> 的 。</p>
