@@ -817,7 +817,7 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <p><strong>考场防坑逻辑：</strong> 在现实世界的分布式系统中，<strong>P（网络故障）是必然会发生的</strong> 。一旦发生网络分区，你要么为了保证 C（一致性）而拒绝服务（此时失去 A），要么为了保证 A（可用性）而返回各节点的旧数据（此时失去 C）。所以现实中往往采用<strong>最终一致性 (Eventual Consistency)</strong> 来保 A 和 P 。</p>
 </li>
 </ul>
-<h3 id="-核心拿分点-2hbase-数据模型极其容易考填空--对比题"><a class="header" href="#-核心拿分点-2hbase-数据模型极其容易考填空--对比题">🔴 核心拿分点 2：HBase 数据模型（极其容易考填空 / 对比题）</a></h3>
+<h3 id="核心拿分点-2hbase-数据模型极其容易考填空--对比题"><a class="header" href="#核心拿分点-2hbase-数据模型极其容易考填空--对比题">核心拿分点 2：HBase 数据模型（极其容易考填空 / 对比题）</a></h3>
 <p>教授上一份透题里明确提到了 <code>H base</code>，这绝对是重头戏。你要抛弃 MySQL 那种固定的二维表思维。HBase 底层就是一个<strong>巨大的、稀疏的、多维的、嵌套的 Map (字典)</strong> 。</p>
 <ul>
 <li>
@@ -835,7 +835,7 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <p><strong>Row Key (行键)：</strong> HBase 里的数据是严格按照 Row Key 的<strong>字典序 (lexicographically)</strong> 排列的 。</p>
 </li>
 </ul>
-<h3 id="-核心拿分点-3mapreduce-执行流程大题预警"><a class="header" href="#-核心拿分点-3mapreduce-执行流程大题预警">🔴 核心拿分点 3：MapReduce 执行流程（大题预警）</a></h3>
+<h3 id="核心拿分点-3mapreduce-执行流程大题预警"><a class="header" href="#核心拿分点-3mapreduce-执行流程大题预警">核心拿分点 3：MapReduce 执行流程（大题预警）</a></h3>
 <p>如果教授要考 Big Data 的计算题，90% 的概率是让你手写或推导 MapReduce 的 <code>Word Count</code>（词频统计）流程 。只要记住这三个核心阶段的输入输出长什么样就行。</p>
 <p>假设输入文件有两行：<code>Deer Bear River</code> 和 <code>Car Car River</code> 。</p>
 <ol>
@@ -981,17 +981,28 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <p>如果考简答题，问你插入和删除的流程，记住这几句大白话：</p>
 <ul>
 <li>
-<p><strong>插入 (Insertion) -&gt; 满了就“分裂” (Split)：</strong>     * 找到该去哪个叶子节点，如果节点里键值数量还没达到 $n-1$，直接塞进去 。</p>
+<p><strong>插入 (Insertion) -&gt; 满了就“分裂” (Split)：</strong></p>
 <ul>
-<li>如果塞满了（变成 $n$ 个了），直接<strong>劈成两半 (Split)</strong> 。前 $n/2$ 个留在老节点，后面的去新节点 。然后把新节点里的最小值<strong>复制/提拔 (Promote)</strong> 到父节点里当向导 。</li>
+<li>
+<p>找到该去哪个叶子节点，如果节点里键值数量还没达到 $n-1$，直接塞进去 。</p>
+</li>
+<li>
+<p>如果塞满了（变成 $n$ 个了），直接<strong>劈成两半 (Split)</strong> 。前 $n/2$ 个留在老节点，后面的去新节点 。然后把新节点里的最小值<strong>复制/提拔 (Promote)</strong> 到父节点里当向导 。</p>
+</li>
 </ul>
 </li>
 <li>
 <p><strong>删除 (Deletion) -&gt; 穷了就“借”或“合并” (Borrow / Merge)：</strong></p>
 <ul>
-<li>删掉一个值后，如果节点里的键值数量少于最低低保线（Under-full），怎么办？</li>
-<li><strong>先找亲戚借 (Redistribute pointers)：</strong> 看看左边或右边的亲兄弟节点是不是富裕（比低保线多）。如果富裕，就匀一个过来，同时修改父节点里的向导值 。</li>
-<li><strong>亲戚也穷，只能一家人搭伙过日子 (Merge)：</strong> 如果兄弟节点也刚好在低保线上，借不出来，那就直接把两个节点<strong>合并 (Merge)</strong> 成一个节点，同时把父节点里对应的向导值也删掉 。</li>
+<li>
+<p>删掉一个值后，如果节点里的键值数量少于最低低保线（Under-full），怎么办？</p>
+</li>
+<li>
+<p><strong>先找亲戚借 (Redistribute pointers)：</strong> 看看左边或右边的亲兄弟节点是不是富裕（比低保线多）。如果富裕，就匀一个过来，同时修改父节点里的向导值 。</p>
+</li>
+<li>
+<p><strong>亲戚也穷，只能一家人搭伙过日子 (Merge)：</strong> 如果兄弟节点也刚好在低保线上，借不出来，那就直接把两个节点<strong>合并 (Merge)</strong> 成一个节点，同时把父节点里对应的向导值也删掉 。</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1061,7 +1072,8 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <p><strong>RAID 4 vs RAID 5 (奇偶校验分布)：</strong></p>
 <ul>
 <li><strong>RAID 4：</strong> 有一块<strong>专门</strong>的盘用来存校验码 (Parity)。缺点是每次写任何数据，都要去改这块校验盘，这块盘会变成<strong>性能瓶颈</strong>。</li>
-<li><strong>RAID 5：</strong> <strong>工业界最常用。</strong> 把校验码 (Parity blocks) 均匀地<strong>打散 (Distributed)</strong> 存在所有盘上。    * <strong>特点：</strong> 允许坏任意一块盘。空间利用率是 $(N-1)/N$。解决了 RAID 4 的瓶颈。</li>
+<li><strong>RAID 5：</strong> <strong>工业界最常用。</strong> 把校验码 (Parity blocks) 均匀地<strong>打散 (Distributed)</strong> 存在所有盘上。</li>
+<li><strong>特点：</strong> 允许坏任意一块盘。空间利用率是 $(N-1)/N$。解决了 RAID 4 的瓶颈。</li>
 </ul>
 </li>
 <li>
@@ -1081,7 +1093,7 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <li><strong>I (Isolation 隔离性)：</strong> 多个并发事务看起来就像是<strong>串行（排队一个一个）执行</strong>的。一个事务没提交之前，它修改的中间结果对别人是不可见的。</li>
 <li><strong>D (Durability 持久性)：</strong> 一旦你点击了 <code>COMMIT</code>（提交），数据就永远写死在硬盘里了。哪怕下一秒机房断电被陨石砸了，重启后数据也不能丢。</li>
 </ul>
-<h3 id="-核心拿分点-2冲突可串行化-conflict-serializability必考判断推导"><a class="header" href="#-核心拿分点-2冲突可串行化-conflict-serializability必考判断推导">🔴 核心拿分点 2：冲突可串行化 (Conflict Serializability)（必考判断/推导）</a></h3>
+<h3 id="核心拿分点-2冲突可串行化-conflict-serializability必考判断推导"><a class="header" href="#核心拿分点-2冲突可串行化-conflict-serializability必考判断推导">核心拿分点 2：冲突可串行化 (Conflict Serializability)（必考判断/推导）</a></h3>
 <p>这是判断一个并发时间表 (Schedule) 对不对的核心标准。在同一时间段内并发执行两个事务，如果可以通过<strong>交换“没有冲突”的指令</strong>，把它还原成<strong>串行排队</strong>的顺序，那它就是合法的。</p>
 <p><strong>什么是冲突 (Conflicting Instructions)？</strong>
 当事务 $T_1$ 和 $T_2$ 同时去碰<strong>同一个变量 $Q$</strong> 时，只要<strong>有一个人在做写操作 (Write)</strong>，就叫冲突 ！</p>
@@ -1103,7 +1115,7 @@ StudentSkill(student, skill) 与 StudentLanguage(student, language)。</p>
 <p><em>反面教材（PPT 第 16 页的那个叉叉图）：</em> 如果 $T_1$ 读了 $Q$，$T_2$ 紧接着写了 $Q$（形成读写冲突，顺序锁死 $T_1 \rightarrow T_2$），然后 $T_1$ 后来又写了 $Q$（形成写写冲突，顺序锁死 $T_2 \rightarrow T_1$）。出现了互相锁死的死循环，这就叫 <strong>Not conflict serializable</strong> 。</p>
 </li>
 </ul>
-<h3 id="-核心概念与防坑指南应对选择题"><a class="header" href="#-核心概念与防坑指南应对选择题">🟡 核心概念与防坑指南（应对选择题）</a></h3>
+<h3 id="核心概念与防坑指南应对选择题"><a class="header" href="#核心概念与防坑指南应对选择题">核心概念与防坑指南（应对选择题）</a></h3>
 <ol>
 <li>
 <p>级联回滚 (Cascading Rollbacks) 和 脏读 (Dirty Read)</p>
@@ -1422,6 +1434,34 @@ $(\sum_{i=1}^{c} p_i^2) \times c \ge 1^2 \Rightarrow \sum_{i=1}^{c} p_i^2 \ge \f
 <li><strong>CUBE 和 ROLLUP 的行列计算公式</strong>。</li>
 <li><strong>决策树 Entropy 与 Gini Index 证明</strong>。</li>
 </ol>
+<h2 id="final-exam"><a class="header" href="#final-exam">Final Exam</a></h2>
+<p>判断题，单选题，填空题，大题</p>
+<ul>
+<li>
+<p>multivalue/function dependency</p>
+</li>
+<li>
+<p>lossless decomposition (NF)</p>
+</li>
+<li>
+<p>4nf/bcnf</p>
+</li>
+<li>
+<p>file processing &amp; indexing</p>
+</li>
+<li>
+<p>b tree</p>
+</li>
+<li>
+<p>cap theorem（no sql）</p>
+</li>
+<li>
+<p>H base data model and relational data model comparison</p>
+</li>
+<li>
+<p>recovery track（undo...）</p>
+</li>
+</ul>
 
                     </main>
 
