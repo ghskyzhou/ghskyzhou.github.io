@@ -1,0 +1,993 @@
+
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark">
+
+<head>
+  <meta name="baidu-site-verification" content="codeva-S83EM6yG58" />
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>X250 Arch Linux 装机实录 - SkyBlog</title>
+
+  
+    <meta name="description" content="CS Play  搞了半天还得自己拼  前言刚开学两周，闲的没事，看到有两个同学开始自己拼装 Linux 实体机，尤其是一个同学直接在英语课上掏出神秘重装 Arch Linux 后的 Thinkpad 在我面前像个黑调的低客，看的急眼了手也痒痒的，当场闲鱼花 450 元下单二手 Thinkpad X250，甚至发货地离学校只有三个地铁站。 笔记本以及重装 Arch Linux     第二天，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="X250 Arch Linux 装机实录">
+<meta property="og:url" content="http://skyzhou.top/2026/01/18/Software/Linux_Computer/index.html">
+<meta property="og:site_name" content="SkyBlog">
+<meta property="og:description" content="CS Play  搞了半天还得自己拼  前言刚开学两周，闲的没事，看到有两个同学开始自己拼装 Linux 实体机，尤其是一个同学直接在英语课上掏出神秘重装 Arch Linux 后的 Thinkpad 在我面前像个黑调的低客，看的急眼了手也痒痒的，当场闲鱼花 450 元下单二手 Thinkpad X250，甚至发货地离学校只有三个地铁站。 笔记本以及重装 Arch Linux     第二天，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971da6b06811.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971d958a6575.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971d977c7cb9.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971d96cc7be3.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971e7cdf3531.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971ec86e85be.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6971ec93609c5.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/6972494d31926.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/697249a9bb3d9.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/697249b46fa8b.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/697249bcd97f3.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/697259d165ea6.jpg">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/69725fc202f02.png">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/69724491c943b.png">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/22/69724458d0cc4.png">
+<meta property="og:image" content="https://img.skyzhou.top/i/2026/01/23/697265180fa9d.jpg">
+<meta property="article:published_time" content="2026-01-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-07T05:22:03.789Z">
+<meta property="article:author" content="Sky Zhou">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="Play">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img.skyzhou.top/i/2026/01/22/6971da6b06811.jpg">
+  
+
+  <meta property="og:image" content="https://img.z4a.net/images/2025/01/16/Lika.gif">
+
+  
+  
+  <meta name="keywords" content="CS,Play">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://img.skyzhou.top/i/2025/04/19/6803a397e9de1.gif" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">SkyBlog</div><div class="sub normal cap">頑張って！</div><div class="sub hover cap" style="opacity:0"> Designed by Sky</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="Blog" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="Favorite Sites" href="/favsites/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="widget-wrapper post-list" id="">
+  <div class="widget-header">
+    <span class="title">全部分类</span>
+  </div>
+  <div class="widget-body">
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Algorithm</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2025/10/25/Algorithm/ACM_XCPC/">
+              <span class="title">2025 ACM XCPC</span>
+            </a>
+          
+            <a href="/2025/10/09/Algorithm/Middle_OI/">
+              <span class="title">OI中的基础模拟、数学、STL</span>
+            </a>
+          
+            <a href="/2025/09/24/Algorithm/FFT_and_NTT/">
+              <span class="title">FFT and NTT</span>
+            </a>
+          
+            <a href="/2025/08/11/Algorithm/DP_and_Matrix/">
+              <span class="title">DP与矩阵</span>
+            </a>
+          
+            <a href="/2025/04/30/Algorithm/ACM_Templates/">
+              <span class="title">ACM模板</span>
+            </a>
+          
+            <a href="/2025/03/20/Algorithm/LaTeX_Mathematics/">
+              <span class="title">$\LaTeX$数学公式</span>
+            </a>
+          
+            <a href="/2025/02/23/Algorithm/Dynamic_Programming_Deepseek/">
+              <span class="title">DP by Deepseek</span>
+            </a>
+          
+            <a href="/2025/02/10/Algorithm/Dynamic_Programming/">
+              <span class="title">Dynamic Programming</span>
+            </a>
+          
+            <a href="/2025/01/15/Algorithm/Skyzhou_Luogu_Blog/">
+              <span class="title">Skyzhou&#39;s Luogu Blog</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">CUHKSZ</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/03/05/CUHKSZ/APA_Cite/">
+              <span class="title">APA Cite by ChatGPT</span>
+            </a>
+          
+            <a href="/2025/04/13/CUHKSZ/CUHKSZ_Notes/">
+              <span class="title">CUHKSZ Notes</span>
+            </a>
+          
+            <a href="/2025/03/19/CUHKSZ/CUHKSZ_CS/">
+              <span class="title">CUHKSZ-CS修读计划</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Japanese</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2025/06/23/Japanese/JPN_N5/">
+              <span class="title">日本語文法 N5</span>
+            </a>
+          
+            <a href="/2025/01/22/Japanese/JPN_UTokyo/">
+              <span class="title">东京大学CS修考</span>
+            </a>
+          
+            <a href="/2025/01/19/Japanese/JPN_Main/">
+              <span class="title">日本語の勉強</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Life</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2025/12/31/Life/2025_Year_Conclusion/">
+              <span class="title">2025 年度总结</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Research</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/05/17/Research/MDS/">
+              <span class="title">Motif Densest Subgraph Discovery</span>
+            </a>
+          
+            <a href="/2025/06/08/Research/Frank-Wolfe/">
+              <span class="title">Frank-Wolfe Algorithm</span>
+            </a>
+          
+            <a href="/2025/06/02/Research/Densest_Subgraph_Discovery/">
+              <span class="title">DSD &amp; CSD 密集子图挖掘</span>
+            </a>
+          
+            <a href="/2025/04/22/Research/Clique/">
+              <span class="title">Clique and S-Bundle</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Software</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/04/09/Software/Web_Experience/">
+              <span class="title">如何搭建一个网站？</span>
+            </a>
+          
+            <a href="/2026/01/18/Software/Linux_Computer/">
+              <span class="title">X250 Arch Linux 装机实录</span>
+            </a>
+          
+            <a href="/2025/07/12/Software/RealCPP/">
+              <span class="title">Real C++</span>
+            </a>
+          
+            <a href="/2025/05/15/Software/Python_Snake_Game/">
+              <span class="title">Python Snake Game</span>
+            </a>
+          
+            <a href="/2025/05/01/Software/CFAt_Tg_Bot/">
+              <span class="title">CF/At Notification TG Bot</span>
+            </a>
+          
+            <a href="/2025/02/22/Software/Java_Gomoku/">
+              <span class="title">Java Gomoku Game</span>
+            </a>
+          
+            <a href="/2025/01/16/Software/Java_Chat_Room/">
+              <span class="title">Java Chat Room</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Travel</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/02/21/Travel/Hokkaido/">
+              <span class="title">春节北海道之旅</span>
+            </a>
+          
+            <a href="/2025/06/13/Travel/Waseda_Summer/">
+              <span class="title">Waseda Summer留学游记</span>
+            </a>
+          
+        </div>
+      </details>
+    
+  </div>
+</div>
+
+<widget class="widget-wrapper slide-up tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/C/" style="font-size: 21px; color: #7ec0f7" class="tag -8">C++</a> <a href="/tags/ACM/" style="font-size: 20.5px; color: #7ab9f5" class="tag -6">ACM</a> <a href="/tags/Code/" style="font-size: 21.5px; color: #83c7f8" class="tag -9">Code</a> <a href="/tags/CS/" style="font-size: 22px; color: #87cefa" class="tag -10">CS</a> <a href="/tags/AI/" style="font-size: 18.5px; color: #689cef" class="tag -1">AI</a> <a href="/tags/Play/" style="font-size: 19.5px; color: #71aaf2" class="tag -4">Play</a> <a href="/tags/ENG/" style="font-size: 18px; color: #6495ed" class="tag -0">ENG</a> <a href="/tags/Tools/" style="font-size: 18px; color: #6495ed" class="tag -0">Tools</a> <a href="/tags/Java/" style="font-size: 18.5px; color: #689cef" class="tag -1">Java</a> <a href="/tags/Python/" style="font-size: 18px; color: #6495ed" class="tag -0">Python</a> <a href="/tags/Graph/" style="font-size: 19px; color: #6da3f0" class="tag -3">Graph</a> <a href="/tags/JPN/" style="font-size: 20px; color: #76b2f4" class="tag -5">JPN</a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/18/696bb31e335ac.png">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Software/">Software</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-01-17T16:00:00.000Z">2026-01-18</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-03-07T05:22:03.789Z">2026-03-07</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>X250 Arch Linux 装机实录</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content slide-up"><br>
+
+<a class="tag-plugin colorful hashtag" color="green" href="https://skyzhou.top/tags/CS/"><svg t="1701408144765" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4228" width="200" height="200"><path d="M426.6 64.8c34.8 5.8 58.4 38.8 52.6 73.6l-19.6 117.6h190.2l23-138.6c5.8-34.8 38.8-58.4 73.6-52.6s58.4 38.8 52.6 73.6l-19.4 117.6H896c35.4 0 64 28.6 64 64s-28.6 64-64 64h-137.8l-42.6 256H832c35.4 0 64 28.6 64 64s-28.6 64-64 64h-137.8l-23 138.6c-5.8 34.8-38.8 58.4-73.6 52.6s-58.4-38.8-52.6-73.6l19.6-117.4h-190.4l-23 138.6c-5.8 34.8-38.8 58.4-73.6 52.6s-58.4-38.8-52.6-73.6l19.4-117.8H128c-35.4 0-64-28.6-64-64s28.6-64 64-64h137.8l42.6-256H192c-35.4 0-64-28.6-64-64s28.6-64 64-64h137.8l23-138.6c5.8-34.8 38.8-58.4 73.6-52.6z m11.6 319.2l-42.6 256h190.2l42.6-256h-190.2z" p-id="4229"></path></svg><span>CS</span></a>
+<a class="tag-plugin colorful hashtag" color="cyan" href="https://skyzhou.top/tags/Play/"><svg t="1701408144765" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4228" width="200" height="200"><path d="M426.6 64.8c34.8 5.8 58.4 38.8 52.6 73.6l-19.6 117.6h190.2l23-138.6c5.8-34.8 38.8-58.4 73.6-52.6s58.4 38.8 52.6 73.6l-19.4 117.6H896c35.4 0 64 28.6 64 64s-28.6 64-64 64h-137.8l-42.6 256H832c35.4 0 64 28.6 64 64s-28.6 64-64 64h-137.8l-23 138.6c-5.8 34.8-38.8 58.4-73.6 52.6s-58.4-38.8-52.6-73.6l19.6-117.4h-190.4l-23 138.6c-5.8 34.8-38.8 58.4-73.6 52.6s-58.4-38.8-52.6-73.6l19.4-117.8H128c-35.4 0-64-28.6-64-64s28.6-64 64-64h137.8l42.6-256H192c-35.4 0-64-28.6-64-64s28.6-64 64-64h137.8l23-138.6c5.8-34.8 38.8-58.4 73.6-52.6z m11.6 319.2l-42.6 256h190.2l42.6-256h-190.2z" p-id="4229"></path></svg><span>Play</span></a>
+
+<div class="tag-plugin quot"><h1 class="content" id="搞了半天还得自己拼" type="text"><span class="empty"></span><span class="text">搞了半天还得自己拼</span><span class="empty"></span></h1></div>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>刚开学两周，闲的没事，看到有两个同学开始自己拼装 Linux 实体机，尤其是一个同学直接在英语课上掏出神秘重装 Arch Linux 后的 Thinkpad 在我面前像个黑调的低客，看的急眼了手也痒痒的，当场闲鱼花 450 元下单二手 <strong>Thinkpad X250</strong>，甚至发货地离学校只有三个地铁站。</p>
+<h2 id="笔记本以及重装-Arch-Linux"><a href="#笔记本以及重装-Arch-Linux" class="headerlink" title="笔记本以及重装 Arch Linux"></a>笔记本以及重装 Arch Linux</h2><div class="tag-plugin grid"  style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"><div class="cell" style="">
+    <p>第二天，笔记本就到货了，刚拿到的时候是兴奋激动的，打开层层包装的盒子和塑料袋，拿出十年前生产的联想老东西。感觉大小不错，在手上掂量了一下，重量也合适，是可以装进我的小背包的，电源也不大，就一根小棒子。卖家甚至送了一个公文收纳包，真的是班味儿拉满了。</p><div style="text-align:center;">    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971da6b06811.jpg" height="150px">    <p style="text-align:center;">然后还有老登感慨</p></div>
+    </div>
+    <div class="cell" style="">
+    <p align="center">  <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971d958a6575.jpg"       style="height:400px;"></p>
+    </div>
+    </div>
+
+<p>简单检查了下各个硬件，除了键盘和屏幕有点脏之外，没啥大问题，我就点确认收获了，然后开始折腾系统。这个原本居然装的是 Win10 系统，感觉微软垃圾的负优化 + 糟糕的触摸板体验让这个电脑使用起来极其困难，都不知道原来的使用者是怎么忍住的，对我来说那必然是要光速铲掉的。</p>
+<p>然后问题来了，我宿舍里他妈没有 U 盘😭</p>
+<p>当时这个问题真的，让我愣住了。因为在 2026 年的今天，我早就脱离了实体 U 盘，转向更权威的线上云盘存储，甚至微信都可以当云盘。但是，重装系统它真的需要一个实体 U 盘。我查了下，其实也有不需要 U 盘的网线解决方案，但我看了下我宿舍桌子底下那个水晶头都断掉的网线……还是算了。</p>
+<p>然后我问了下室友，结果有个室友哥们还真有 U 盘，但是他说这个只有 2GB 而且可能有点烂，我看了下，安装包 1.4GB 左右，问题不大，就拿来用了。</p>
+<p>结果，这个 U 盘它好像。。是企业用的那种一次性 U 盘，寿命极短，可能最多支持读写几次，然后我用 Rufus 一下子写入 1.4GB 的文件，把它干废了。。（下左图 <em>错误：由于 I&#x2F;O 设备错误，无法运行此项要求</em>）每次读入都会报错。</p>
+<p>我当和 AI 互骂了快一个小时，又看了半天 Wiki，都没有找到问题根源，一直以为是文件损坏、接口损坏或者软件不行没法往里面写系统，在用 DiskGenius 查看后，最后一个高中的老哥告诉我可能 U 盘坏了，我一看好像这玩意好像真是网上 10 块钱那种企业用一次性 U 盘，破案了。搞了半天我不仅要向室友道歉搞坏了 U 盘，还要再找一个能用的 U 盘。</p>
+<p>然后另一个神秘老哥说他宿舍有一个貌似能用的 U 盘，我说行，拿来试试吧。然后拿到手之后真没绷住（下右图），很符合这位老哥的气质。你说这 U 盘它虽然没有壳，但还是挺好用的，接下来几天我都有在用，而且居然有 128 GB，就是每次拔插手都有点疼，还能直接感受到 U 盘的体温。</p>
+<div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px;">
+  <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971d977c7cb9.jpg" style="height:300px;">
+  <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971d96cc7be3.jpg" style="height:300px;">
+</div>
+
+<p>前期的重装系统工作基本是看 Linux Arch 中文维基的。系统盘终于写好了之后，将其插入笔记本，重启并狂按 F12，进入了选盘启动界面，然后就可以选择我们这个 U 盘，启动到 live 环境。</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="Linux Arch 中文维基" href="https://wiki.archlinuxcn.org/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill=""><div class="left"><span class="title">Linux Arch 中文维基</span><span class="cap link footnote">https://wiki.archlinuxcn.org/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97</span></div><div class="right"><div class="lazy img" data-bg="https://img.skyzhou.top/i/2026/01/22/6971e0d48b42a.png"></div></div></a></div>
+
+<h2 id="第零次装-Arch-Linux"><a href="#第零次装-Arch-Linux" class="headerlink" title="第零次装 Arch Linux"></a>第零次装 Arch Linux</h2><p>为什么是第零次呢？因为我比较急，在进入了 live 环境之后，照着维基的教程，选择直接 <code>archinstall</code>，当时还心想，这玩意挺好用啊，然后急着装系统，那一堆选项一个都没看，直接安装！</p>
+<p>唉怎么报错了，哦还要设置 root 密码和管理员账号，那就搞一下，然后安装！</p>
+<p>很快啊，兴奋的看着它装了一小会，就已经装好了，然后 reboot 进入系统。</p>
+<p>我在这个<em>原生</em> Arch Linux 系统下面看了下，确实是非常好的 Arch Linux 系统，然后我开始照着教程的 <code>pacman</code> 试图安装各种库。但是我发现，好像这玩意没有连上网？？然后想了想，确实有可能，然后就去搜了下怎么给这个装上 WiFi 驱动，这时候我发现我连最基础的 <code>iw</code> 都没有，就用传统 Linux 思维，用另一个电脑去网上下了几个WiFi 驱动库的压缩包，将它们用那个裸奔 U 盘传到了这个笔记本上，再去手动安装，装的时候还有一堆库的前置依赖库又没装。</p>
+<p>ちょっと待って……？</p>
+<p>我怎么感觉这样一个一个装库有点太慢了呢，而且一个 <code>archinstall</code> 下来怎么会连网络驱动都没有呢？？这时候，我突然悟了，我是唐逼。</p>
+<details class="tag-plugin colorful folding" ><summary><span>找不到原生 Arch Linux 图片了，但有当时跟 AI 急的截图</span></summary><div class="body"><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971e7cdf3531.jpg" alt="SBDeepSeek"></p></div></details>
+
+<p>当时的我在宿舍不大的桌子上，还堆了一坨东西，一边对着这个原生 Linux 控制台敲神秘命令，一边把裸奔 U 盘在两个电脑之间来回切换，一边在自己的电脑上找神秘网站下载神秘安装包，一边用手机和 DeepSeek 进行激情对话。</p>
+<p>我在用 <code>archinstall</code> 的时候用了传统 Windows 思维，想着安装包就应该全部点 <code>Yes</code>，然后一键 <code>Install</code>，但我急了，而且在这里错大了。</p>
+<p>这所谓的 <code>archinstall</code> 实际上有一堆配置，但是默认都是空的，或者说<strong>默认什么都不装</strong>，当时的我很急，还真的就什么都没装。</p>
+<h2 id="第一次装的桌面环境-Xfce"><a href="#第一次装的桌面环境-Xfce" class="headerlink" title="第一次装的桌面环境 Xfce"></a>第一次装的桌面环境 Xfce</h2><p>好的，我可以重装了。</p>
+<p>当时想了下，其实我也可以选择真的从头开始拼一个，但是既然有这么好用且现成的为什么不用呢？</p>
+<p>在简单看了下 B 站的 Arch Linux 安装教程，我终于明白 <code>archinstall</code> 是干什么的了，然后，重启，狂按 F12，进入 live 环境，重装系统。</p>
+<p>看着 <code>archinstall</code> 这一堆不知道干什么的选项，对着维基和视频教程一个一个配置，但是在选桌面环境的时候，我看着一堆不知道什么东西选择困难，然后听了逆天 AI 的，随便选了一个 <code>xfce</code> 就装上了。</p>
+<div class="tag-plugin grid"  style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"><div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971ec86e85be.jpg" style="height:420px; display: block;">
+    </div>
+    <div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6971ec93609c5.jpg" style="height:420px; display: block;">
+    </div>
+    </div>
+
+<p>装好之后 reboot，然后我的第一反应是：</p>
+<p style="font-size: 30px;">“这玩意好丑啊”</p>
+
+<p>不是那种某一个细节丑，而是包括背景图片这个小老鼠，上面的任务栏，左边的桌面图标，一切都好丑的感觉。再加上这个老旧的 TN 屏那种灰暗而且像素感拉满，我当时感觉这个笔记本又倒退了十年。</p>
+<p>简单试了下，感觉确实也能用，然后我就跟 AI 吐槽说这玩意真他妈难看，AI 给我的回答是：“哈哈哈，这个 xfce4 确实刚装上有点难看，但是别灰心，我们还可以装美化包😄”</p>
+<p>然后我捣鼓了半天，从美化包开始 <code>pacman -S</code>，然后一路配置中文语言字体，Emoji 显示，中文输入法，安装 chromium 浏览器，安装 clash-verge……等等，而且大部分操作还要用 <code>nano</code> 进 <code>.config</code> 里面改配置文件，说实话，确实有点麻烦。</p>
+<blockquote>
+<p>这个时候其实我应该意识到，这种桌面环境光靠问 AI，而不查实机图片是非常错误的，AI 不仅感受不到美感，而且 Arch Linux 这种光速迭代的社区，很多回答的信息是过时的。</p>
+</blockquote>
+<p>第二天，我在英语课上掏出我重装完的 X250，给旁边的老哥展示搞了大半天的成果。但当我看到他的几乎全新 Thinkpad X390，高清 1080P IPS 屏幕，干净整洁的键盘，还有清新好用丝滑顺手的 Hyprland 的时候，我就知道，我输了。</p>
+<p>然后英语课需要用 Blackboard 下载 PPT，我看着十几 KB&#x2F;s 的网速又陷入了沉思，他指了指他的笔记本，网速是正常的，我就知道，我又输了。这个网卡只支持 2.4GHz，我在用宿舍局域网路由器的时候就发现了，但是我没有想到尼龙的校园网 2.4GHz 居然这么垃圾。</p>
+<p>这能忍？😭😭</p>
+<h2 id="全面升级"><a href="#全面升级" class="headerlink" title="全面升级"></a>全面升级</h2><h3 id="硬件升级"><a href="#硬件升级" class="headerlink" title="硬件升级"></a>硬件升级</h3><p>英语课下课后，这位老哥跟我说，唉你要不试试 <strong>niri</strong>，这玩意的窗口管理逻辑是我见过最牛逼的，而且使用起来特别丝滑。再经过 B 站视频大学习之后，我决定将现在这个 xfce 铲掉。而且，不仅是桌面环境，这个上古 TN 屏和逆天只支持 2.4GHz 的网卡，都需要更换😡</p>
+<p>经过了一天的思考，还有查各种资料，我在淘宝下单了 Intel 8260 AC 网卡模块（20元）和联想 LP125WH2-SLB3 IPS 1080p 高分屏（237元）。屏幕是从广州发货的，隔天就送达了，网卡居然是从北京中关村发货的，值得信赖的发货地，等了两天送达。</p>
+<p>等货都到齐之后，首先是要更换网卡，因为显然更简单一点，我也没有怎么查资料，将电池拆下来后，就直接拧了后盖几个小螺丝，将其掀开，看到了赤裸裸暴露在我面前的联想 Thinkpad X250 笔记本主板，如下图所示。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/6972494d31926.jpg" style="height:450px; display: block;">
+
+<p>从图中我们可以看到，左下角的 Kim Midi 240GB SSD 固态硬盘，还有我当时拆下来放在上面的原装网卡（垃圾），右边蓝底的是 SK Hynix 8GB DDR3L 内存条，右上角一个小风扇散热连接铜管下的 CPU。虽然看起来有点乱而且还有神秘绝缘胶和飞线，但几个关键部件还是挺清晰的。</p>
+<p>注意到下方一个巨大的 L型（？）空位，实际上是一个内置电池的位置，但我现在还没装（近期也没有打算买），还有左上角网卡的 M.2 插槽旁边，还有一个 M.2（2442规格）插槽，这里疑似可以再加装一块小 SSD，不过这个 240GB 的空间对我来说绰绰有余啦。</p>
+<p>我将这个网卡取下来后，就把新买的支持 5GHz 的网卡直接装上，卡进去之后拧好螺丝，然后这个主板部分就没什么事了，盖上后盖，整个过程就几分钟。</p>
+<p>比较麻烦的是这个屏幕，其实步骤也很简单，但中间很容易操作失误。看了下换屏幕教程视频，就是直接把这个屏幕旁边的那一圈壳扣下来，注意用工具简单翘一下卡扣，然后里面的屏幕就可以分离开来了（下面左图所示）。其实这个时候我才注意到，原来连接屏幕，传送这么多图形信号的线，也不过就一个非常小的口，不仅线很细，里面的针管更是很小，查了下这个东西好像叫 eDP 接口（下面右上图所示）。这么小一个东西居然能传输 1080P 60Hz 的信号😰</p>
+<p>然后就是将我们的最新最热 IPS 装上去，接上接口后，将周围这一全壳给它扣回去，这里费了我很多时间，因为不知道什么原因，这个左上右的卡扣扣上之后，下面的那一条总是会稍微翘起来，即使全部盖上也会翘起来，找了半天才发现下面这个边还有几个非常小的卡扣。。最后还不小心把右边的两个卡扣搞断了，再也不能完全合上了😭，但是盖好之后发现这些细节完全不影响性感 1080P 高清 IPS 大屏所带来的震撼（下面右下图所示）。</p>
+<div class="tag-plugin grid"  style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"><div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/697249a9bb3d9.jpg" style="height:450px; display: block;">
+    </div>
+    <div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/697249b46fa8b.jpg" style="height:210px; display: block;"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/697249bcd97f3.jpg" style="height:210px; display: block;">
+    </div>
+    </div>
+
+<h3 id="软件升级"><a href="#软件升级" class="headerlink" title="软件升级"></a>软件升级</h3><p>在升级完硬件，网卡和屏幕，之后，我将升级我的桌面环境。说是升级，实际上应该是换一个更好看更好用的。</p>
+<p>在同学推荐，以及 B 站冲浪刷了几个视频之后，我将严肃选择 niri 桌面环境 + dank 美化包。</p>
+<div class="tag-plugin grid"  style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"><div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/697259d165ea6.jpg" style="height:250px; display: block;">
+    </div>
+    <div class="cell" style="">
+    <p>但是这个选择也不是一下子就完成的，实际上，我在装好屏幕之后，掏出裸奔 U 盘进行冲转，快速设置，桌面环境选择 niri，安装之后，我发现这个所谓的“极优秀”的窗口管理桌面环境，最原生的桌面甚至比 xfce 还要丑❓</p><p>怎么就他妈一个纯灰色的桌面然后甚至右上角的图标都显示不出来？？</p>
+    </div>
+    </div>
+
+<p>我发现我根本就不会用这个新的 niri 桌面，然后看着它的快捷键提示弹窗试了好几个快捷键，才慢慢熟悉这个窗口逻辑。</p>
+<p>然后我就想着开始配置这个东西，整个过程就像搭乐高积木一样，一个软件一个软件的装，还要时不时去调一下 <code>.config</code>，然后搞到一半我又有点急了（懒了），看着 B 站那些大佬搞的好看的一逼的桌面和简单美观的小组件，我有点难受。</p>
+<p>这个时候，我看到了一个 UP 主 Shorin 的视频，关键是他在视频里说，他自己写了批处理可以一键配置桌面环境，我当时就心动了，点开了他给的 github 链接 <a target="_blank" rel="noopener" href="https://github.com/SHORiN-KiWATA/ShorinArchExperience-ArchlinuxGuide/wiki/%E4%B8%80%E9%94%AE%E9%85%8D%E7%BD%AE%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">一键配置桌面环境</a>，并按照上面的指引安装，当时心想这下就不用折腾了😋</p>
+<p>不用折腾……了吗？</p>
+<p>我看着命令行快速地闪着安装批处理和指令，还有看着一堆文件一个一个的被下下来，里面甚至包括了微信、QQ、Steam？？等等啊啊啊啊唉唉，我好像并不需要这些东西来着？</p>
+<p>他的批处理装这些东西就算了，在经过了长达 30 分钟的等待之后，我发现他卡死在了一个神秘包的安装上，而且是一直连不上包服务器，不管我怎么 <code>Ctrl C</code> 来终止也没用，我就已经有点后悔了。我感觉这一坨东西装下来我这个小笔记本也有点吃不消，而且还装了这么多我不想要的东西，最需要的核心包又因为没挂梯子没装上。</p>
+<p>没办法了，重装吧，一切都还来得及。</p>
+<p>然后就是我第四次填那个 <code>archinstall</code> 的配置，选择安装。但这一次，我已经相对熟悉了最基础的 terminal 配置，中文语言包配置和 chromium 浏览器安装。在快速进行完前置配置后，我将目光放到了直接安装这个 UP 主所用的 <strong>Dank Linux</strong> 桌面美化包，与其说是美化包，不如说就是一个全新的桌面环境，只不过基于 niri。而且这一次我大部分步骤都是跟着下面这个视频教程来的，非常感谢这个教程提供的内容😭</p>
+<div class="tag-plugin link dis-select"><a class="link-card plain" title="Arch+Niri安装配置全过程" href="https://www.bilibili.com/video/BV124x1zQEka" target="_blank" rel="external nofollow noopener noreferrer" cardlink autofill=""><div class="left"><span class="title">Arch+Niri安装配置全过程</span><span class="cap link footnote">https://www.bilibili.com/video/BV124x1zQEka</span></div><div class="right"><div class="lazy img" data-bg="https://img.skyzhou.top/i/2026/01/23/69725e707ae69.png"></div></div></a></div>
+
+<p>这个时候，吸取刚才安装过程的教训，我知道了装这些东西前一定要先挂上梯子，我和之前一样下载了一个 clash-verge，但是它在 niri 下好像变得很奇怪。这个 clash-verge 的代理是一定要打开 TUN 模式才能对 terminal 和 chromium 等应用生效的，但是我用管理员模式又打不开这个 clash-verge，用普通模式打开之后，又因为不知道什么原因没办法安装服务并打开 TUN 模式，一直在报错。</p>
+<p>我当时因为这个 TUN 模式搞了一个多小时，因为我记得我在 xfce 下是直接管理员模式打开就能用的，但是这个 niri 不知道为什么不行，而且看这个视频教程一下载就安装好服务然后打开 TUN 模式了，急死我了。最后翻了下评论区发现也有小伙伴跟我遇到同一个问题，而且这个 UP 主还给了回复！</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/69725fc202f02.png"></p>
+<p>看到这个回复我想都没想就直接照着做了，果然，将我的 clash-verge 2.4.4 退回到 UP 主给的 2.4.1 之后，一切都成功了。这个普通模式打开也能正常下载服务并打开 TUN 模式，再次感谢😭</p>
+<p>简单 ping 了一下 google.com 之后，我就跟着 Dank Linux 的官方教程开始安装，其实也很简单，几个批处理语句就搞定了，而且时间也不长，我记得几分钟就装完了。</p>
+<p>再次重启，印入我眼帘的是全新升级版桌面环境，他这个自己的小组件确实很好看而且比较实用，关键是还装了一些本来需要手动装的依赖库，也没有装很多乱七八糟的东西，体验感真拉满了，焕然一新。</p>
+<p>换了下壁纸，装了个 VSCode 和 Obsidian，然后对设置进行了简单的调整，基本上就算是彻底搞完了。下面给两个使用的图吧，窗口滑动逻辑真的很丝滑，主要是 niri 它这个横向无限展开，还有竖着可以随意上下切换桌面（工坊），这个看似无限延申的 2D 对于单屏幕开发来说真的是无敌。还有各种管理窗口大小和位置的快捷键，简单用几次就可以上手，真的很爽😭😋🥵</p>
+<div style="text-align:center;">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/69724491c943b.png" height="400px">
+    <p style="text-align:center;">左右窗口以及透明化 terminal</p>
+</div>
+
+<p>说真的，从来没有用过这么丝滑的电脑，加上一些简单的美化，搭配 1080P IPS 屏幕，比前几天刚到货那个逆天液晶屏搞搭配神秘 Win10，真的是全方位碾压。而且非常轻便，可以带出去随时打开使用，Arch Linux 耗电和内存也很少，他妈的无敌了。</p>
+<div style="text-align:center;">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/22/69724458d0cc4.png" height="400px">
+    <p style="text-align:center;">超级窗口管理</p>
+</div>
+
+<p>简单使用了两天后，感觉这个键盘手感也不赖，作为笔记本薄键盘打字敲代码都还可以，以后可能在外面用这个电脑会更多一点了。因为原本的华硕天选 Pro 游戏本真的很重，而且还有巨大电源，再加上电池续航短，带出宿舍都很不方便。现在有了一个廉价且自己拼装调教的小笔记本，还是很有用的。</p>
+<h2 id="换电池以及后日谈"><a href="#换电池以及后日谈" class="headerlink" title="换电池以及后日谈"></a>换电池以及后日谈</h2><p>这几天使用最大的感受就是，原装 48Wh 电池，64% 的健康度（换算下来只有大概 31 Wh）确实不太够用，简单使用浏览器和 VSCode 写代码最多撑三个多小时，于是又斥巨资（120元）购入淘宝神秘商家魔改的 72Wh 电池，这玩意似乎联想 Thinkpad 原装是没有的，也不知道怎么改的。</p>
+<div class="tag-plugin grid"  style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));"><div class="cell" style="">
+    <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.skyzhou.top/i/2026/01/23/697265180fa9d.jpg" style="height:250px; display: block;">
+    </div>
+    <div class="cell" style="">
+    <p>上面这个是原装 48Wh 电池，能看到有 lenovo 联想的标志和序列号什么的。</p><p>下面的是淘宝神秘商家魔改的 72Wh 电池，看上去也没啥问题，而且该有的标都是有的（当然可能也是随便画上去的）</p>
+    </div>
+    </div>
+
+<p>装上之后，哇一下子续航直接翻了一倍多，电池健康 100% 的 72Wh，拿下😋</p>
+<p>整个装机过程大概是一周左右，这也是我第一次拆开笔记本电脑，期间不仅有对未知事物的学习探索，还有对成功打造出心目中的便携式 Linux 电脑的喜悦与激动，最后有感而发，一气呵成写成这篇纪实录。</p>
+
+
+</article>
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/02/21/Travel/Hokkaido/">春节北海道之旅</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/12/31/Life/2025_Year_Conclusion/">2025 年度总结</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ghskyzhou/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">Sky Zhou</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br>© Copyright skyzhou.top<br>All Rights Reserved<br><a href="https://icp.gov.moe/?keyword=20262006" target="_blank">萌ICP备20262006号</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+<widget class="widget-wrapper user-card ghuser"><div class="widget-body"><div class="avatar" ><img no-lazy src="https://avatars.githubusercontent.com/u/62292370" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><p class="username" ff="title">Skyzhou</p><p class="bio">Learning CS & JPN <br> Email: <a href='mailto:i@skyzhou.top' style='color: #66CCFF; font-weight: bold; text-decoration: none;'>i@skyzhou.top</a></p><div class="buttons"><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=followers"><span class="title">36</span><span class="desc">followers</span></a><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=following"><span class="title">53</span><span class="desc">following</span></a><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=repositories"><span class="title">12</span><span class="desc">repos</span></a></div><a class="follow" target="_blank" rel="noopener" href="https://github.com/ghskyzhou"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="display:inline-block;user-select:none;vertical-align:text-bottom;overflow:visible"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>Follow</a></div></widget>
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9E%E4%BA%86%E5%8D%8A%E5%A4%A9%E8%BF%98%E5%BE%97%E8%87%AA%E5%B7%B1%E6%8B%BC"><span class="toc-text">搞了半天还得自己拼</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%94%E8%AE%B0%E6%9C%AC%E4%BB%A5%E5%8F%8A%E9%87%8D%E8%A3%85-Arch-Linux"><span class="toc-text">笔记本以及重装 Arch Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E9%9B%B6%E6%AC%A1%E8%A3%85-Arch-Linux"><span class="toc-text">第零次装 Arch Linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%A3%85%E7%9A%84%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83-Xfce"><span class="toc-text">第一次装的桌面环境 Xfce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7"><span class="toc-text">全面升级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%8D%87%E7%BA%A7"><span class="toc-text">硬件升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8D%87%E7%BA%A7"><span class="toc-text">软件升级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%A2%E7%94%B5%E6%B1%A0%E4%BB%A5%E5%8F%8A%E5%90%8E%E6%97%A5%E8%B0%88"><span class="toc-text">换电池以及后日谈</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://skycdn.bilibiili.com/js/jquery.min.js`,
+    marked: `https://skycdn.bilibiili.com/js/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, true);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://skycdn.bilibiili.com/js/flying-pages.min.js"></script><script defer src="https://skycdn.bilibiili.com/js/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://skycdn.bilibiili.com/css/jquery.fancybox.min.css`,
+    js: `https://skycdn.bilibiili.com/js/jquery.fancybox.min.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://skycdn.bilibiili.com/css/swiper-bundle.min.css`);
+      utils.js(`https://skycdn.bilibiili.com/js/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script defer src="https://skycdn.bilibiili.com/js/scrollreveal.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const slideUp = {
+      distance: `16px`,
+      duration: `400`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+    ScrollReveal().reveal('.l_left .slide-up', slideUp);
+    ScrollReveal().reveal('.l_main .slide-up', slideUp);
+    ScrollReveal().reveal('.l_right .slide-up', slideUp);
+  });
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    processEscapes: true
+  }
+});
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
