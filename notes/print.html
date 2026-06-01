@@ -5917,6 +5917,250 @@ $$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
 <li>解释 Ring AllReduce 相比 Parameter Server 为什么好。</li>
 <li>阐述为什么 LLM 推理要把 Prefill 和 Decoding 拆开。</li>
 </ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-to-information-theory"><a class="header" href="#introduction-to-information-theory">Introduction to Information Theory</a></h1>
+<p>Prof. Kaiming SHEN @ SSE</p>
+<p>Grades:</p>
+<ul>
+<li>Assignments / Quiz (20%)</li>
+<li>Midterm Exam (40%)</li>
+<li>Final Exam (40%)</li>
+</ul>
+<p>Reference Book: T. Cover &amp; J. Thomas: Elements of Information Theory 2nd Ed.</p>
+<h2 id="chapter-1-introduction-简介"><a class="header" href="#chapter-1-introduction-简介">Chapter 1: Introduction 简介</a></h2>
+<h3 id="11-intergration-of-information"><a class="header" href="#11-intergration-of-information">1.1 Intergration of Information</a></h3>
+<p><strong>Bit</strong>: $\{0, 1\}$</p>
+<p><strong>Information</strong> is the <em>minimum</em> number of bits ($0$ or $1$) to describe a random variable.</p>
+<p><strong>信息</strong>即用描述一个随机变量所使用 bits 的最小数量。</p>
+<p>e.g. Weather Forecast</p>
+<p>$$
+X =
+\begin{cases}
+\text{rain}\ &amp;50\% \ &amp;0 , \\
+\text{shine}\ &amp;50\% \ &amp;1
+\end{cases}
+$$</p>
+<p>From weatherman, we can learn value of $X$. And $X$ contains $1$ bit of information.</p>
+<p>我们认为这个随机变量 $X$ 包含 $1$ bit 的信息。</p>
+<p>假设我们现在有 $8$ 种不同的天气，每个概率相同，我们可以用 $X = \{000, 001, \cdots, 111\}$ 来表示天气。那么我们认为 $X$ 包含 $3$ bit 的信息，因为其最少可以用 $3$ 位 bit 来表示。</p>
+<p>e.g. Horse Race (sp.)</p>
+<p>$$
+X =
+\begin{cases}
+A &amp;\frac{1}{2} &amp;000     &amp;0 \\
+B &amp;\frac{1}{4} &amp;001     &amp;10 \\
+C &amp;\frac{1}{8} &amp;010     &amp;110 \\
+D &amp;\frac{1}{16} &amp;\cdots &amp;1110 \\
+E &amp;\frac{1}{64} &amp;\cdots &amp;111100 \\
+F &amp;\frac{1}{64} &amp;\cdots &amp;111101 \\
+G &amp;\frac{1}{64} &amp;\cdots &amp;111110 \\
+H &amp;\frac{1}{64} &amp;\cdots &amp;111111 \\
+\end{cases}
+$$</p>
+<p>Information of $X=1 \times \frac{1}{2} + 2 \times \frac{1}{4} + 3 \times \frac{1}{8} + 4 \times \frac{1}{16} + 6 \times \frac{1}{64} \times 4 = 2 $ bits</p>
+<h3 id="12-information-transmission-over-channel"><a class="header" href="#12-information-transmission-over-channel">1.2 Information Transmission over Channel</a></h3>
+<p>$$
+X \rightarrow \text{Channel} \rightarrow Y
+$$</p>
+<p><strong>Channel</strong>: $P(y|x)$，就是一个条件概率，用来描述 $Y$ 是如何随着 $X$ 变化的。</p>
+<p><strong>Channel Capacity</strong>($C$) is the maximum number of bits that can be "reliably" transimitted from X to Y.</p>
+<p><strong>通道容量</strong>表示一个通信信道每次使用最多能够稳定传输多少信息。</p>
+<h3 id="13-information-theory"><a class="header" href="#13-information-theory">1.3 Information Theory</a></h3>
+<p>Information Theory answers and questions:</p>
+<ol>
+<li>
+<p>What is the minimum number of bits to describe $X$?</p>
+<p>Ans: Entropy $H(X)$ ... Data congression.</p>
+</li>
+<li>
+<p>What is the maximum numberof bits that can be reliably transmitted over channel?</p>
+<p>Ans: Mutual info $I(X;Y)$ ... Channel Capacity.</p>
+</li>
+</ol>
+<h2 id="chapter-2-entropy-熵"><a class="header" href="#chapter-2-entropy-熵">Chapter 2: Entropy 熵</a></h2>
+<p>Def. Let $X$ be a <em>discrete random variable</em>, e.g. $X = \{a, b, c\}$, then:
+$$
+X =
+\begin{cases}
+a, &amp; p_1\\
+b, &amp; p_2\\
+c, &amp; p_3\\
+\end{cases}
+$$
+Which is easy to describe using probability mass function (PMF).</p>
+<p>Def. The <strong>entropy</strong> of $X$ is
+$$
+H(X) = \sum_x p(x) \log \frac{1}{p(x)}
+$$</p>
+<blockquote>
+<p>When $\log$ is in base $2$, $H(X)$ is in "bit". <br />
+When $\log$ is in base $e$, $H(X)$ is in "nat".</p>
+</blockquote>
+<p>$$
+\log_e a = \ln a = \frac{\log_2 a}{\log_2 e}
+$$</p>
+<p>$H(X)$ in nats $= \sum p(x) \log_e \frac{1}{p(x)} = \sum p(x) \left(\log_2 \frac{1}{p(x)}\right) \frac{1}{\log_2 e} = \frac{1}{\log_2 e} H(X)$ in bits.</p>
+<p>Recall: $E[f(x)] = \sum_x p(x) f(x)$ (数学期望)</p>
+<p>Note: $H(X) = E[\log{\frac{1}{p(x)}}] = -E[\log{p(x)}] $</p>
+<p>Theorem: $H(X) \geq 0$ <br />
+Proof: $0 \leq p(x) \leq 1 \Rightarrow \frac{1}{p(x)} \geq 1 \Rightarrow \log{\frac{1}{p(x)}} \geq 0 \Rightarrow H(X) \geq 0$</p>
+<p>Theorem: Jensen's Inequality. For a $X = \{1, 2, \cdots, m\}$
+$$
+X =
+\begin{cases}
+1, &amp;p_1 \\
+2, &amp;p_2 \\
+\ \vdots \\
+m, &amp;p_m
+\end{cases}
+$$
+We have
+$$
+H(X) \leq \log m
+$$
+Where "$=$" hold iff $X \sim \text{Uniform}$</p>
+<p>And now we established the lower bound and upper bound of entropy:
+$$
+0 \leq H(X) \leq \log m
+$$</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="optimization"><a class="header" href="#optimization">Optimization</a></h1>
+<p>Prof. Yongchun Li</p>
+<p>Three main subjects:</p>
+<ol>
+<li>Linear Optimization
+<ul>
+<li>Disciplined linear programming</li>
+<li>Algorithms</li>
+<li>Duality</li>
+</ul>
+</li>
+<li>Nonlinear Optimization
+<ul>
+<li>Optimally condition</li>
+<li>Nonlinear optimization alorigthms</li>
+</ul>
+</li>
+<li>Integer Optimization
+<ul>
+<li>Baisc algorithms</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>Assignments: 30%</li>
+<li>Midterm Exam(24 June): 30%</li>
+<li>Final Exam(18 July): 40%</li>
+</ul>
+<h2 id="lecture-1"><a class="header" href="#lecture-1">Lecture 1</a></h2>
+<h3 id="brief-introduction"><a class="header" href="#brief-introduction">Brief Introduction</a></h3>
+<p>Common components of optimization problems:</p>
+<ul>
+<li><strong>Decision</strong> 决策</li>
+<li><strong>Objective</strong> 目标</li>
+<li><strong>Constraints</strong> 限制条件</li>
+</ul>
+<p><strong>Optimization</strong> concerns choosing a decision(or decisions) to optimize certain objectives while subject to certain constraints. <br />
+<strong>最优化</strong>即选择一个决策（或一些决策）去最优化一些目标，在某些限制条件下。</p>
+<p>Optimize could mean <strong>maximize</strong> or <strong>minimize</strong> depending on the problem contxt. 最大化 / 最小化</p>
+<h3 id="optimization-problems"><a class="header" href="#optimization-problems">Optimization Problems</a></h3>
+<p>Mathematically, an optimization problem is usually represented as:
+$$
+\begin{aligned}
+\min_{x} \quad &amp; f(x) \\
+\text{subject to} \quad &amp; x \in \Omega
+\end{aligned}
+$$
+where we have $x$ for Decision, $f$ for Objective funtion and $\Omega$ for Constraints.</p>
+<p>In practice, we often consider a slightly more restrictive form:
+$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; f(x) \\
+\text{subject to } \quad &amp; g_i(x) \leq 0, \quad \forall i = 1, \cdots, m \\
+\text{subject to } \quad &amp; h_j(x) = 0, \quad \forall i = 1, \cdots, p.
+\end{aligned}
+$$
+where $x \in R^n$ is Decision variables(a vector), $f(x)$ is Objecive funtion and $g(x) \leq 0, h(x) = 0$ is Inequality and equality constraints.
+$$
+g(x) =
+\begin{bmatrix}
+g_1(x) \\
+\vdots \\
+g_m(x)
+\end{bmatrix}
+\in R^m
+\text{ and }
+h(x) =
+\begin{bmatrix}
+h_1(x) \\
+\vdots \\
+h_p(x)
+\end{bmatrix}
+\in R^p
+$$
+We can also express the constraints using the abstarct format:
+$$
+\begin{aligned}
+\Omega &amp;:= \{x \in R^n: g_i(x) \leq 0, i = 1, \dots, m, h_j(x) = 0, j = 1, \dots, p \} \\
+&amp;= \{x \in R^n: g(x) \leq 0, h(x) = 0 \}
+\end{aligned}
+$$</p>
+<p><strong>Feasible point</strong>: A decition that satisfies all constraints. 可行点</p>
+<p><strong>Feasible region(set) $\Omega$</strong>: The set of all feasible points.</p>
+<p><strong>Optimal solution</strong>:</p>
+<p><strong>Optimal value</strong></p>
+<h3 id="minimizer-最优解"><a class="header" href="#minimizer-最优解">Minimizer 最优解</a></h3>
+<p>Let $\Omega \subseteq R^n$ be a nonempty set and let $f : \Omega \to R$ be given. We define
+$$
+B_{\epsilon(y)} := \{x \in R^n: \Vert x-y \Vert &lt; \epsilon \}
+$$
+to be the <strong>open ball</strong>(开球) in $R^n$ with center $y$ and radius $\epsilon &gt; 0$</p>
+<p>The point $x^* \in R^n$ is said to be a:</p>
+<ul>
+<li><em>Local minimizer</em>(局部最优解)</li>
+<li><em>Strict local minimizer</em>(严格局部最优解)</li>
+<li><em>Global minizer</em>(全局最优解)</li>
+<li><em>Strict global minimzer</em>(严格全局最优解)</li>
+</ul>
+<p>Remark: global minimizer = global solution = optimal solution</p>
+<h3 id="properties-of-optimization-problems"><a class="header" href="#properties-of-optimization-problems">Properties of Optimization Problems</a></h3>
+<p>Some facts:</p>
+<ul>
+<li>The feasible set can be empty(<strong>infeasible</strong>).</li>
+<li>An optimization problem may <em>not</em> always have an optimal solution.</li>
+<li>The optimal value can be <em>unbounded</em>.</li>
+<li>Even if an opt. problem is feasible, finite, and can attain its optimal value, the optimal solution may <em>not</em> be unique.</li>
+</ul>
+<p>By classifying the different outcomes, an opt. problem may have the following stats:</p>
+<ol>
+<li>Infeasible</li>
+<li>Feasible, optimal value finite but not attainble.</li>
+<li>Feasible, optimal value finite and attainable.</li>
+<li>Feasible, but optimal value is unbounded.</li>
+</ol>
+<h3 id="classifications-of-optimization"><a class="header" href="#classifications-of-optimization">Classifications of Optimization</a></h3>
+<p><strong>Unconstrained optimization</strong>: If $m = p = 0$. Otherwise constrained optimization.</p>
+<p><strong>Linear Programming(LP)</strong>: Constraints and objective function are linear in the decision variables.</p>
+<p><strong>Nonlinear Programming(NLP)</strong>: Either some of the constraints or the objective funtion if nonlinear.</p>
+<p><strong>Convex Optimization</strong>: If $f(x)$ and all $g_i(x)$ and convex, and $h_j(x)$ are linear (i.e. the feasible set is convex).</p>
+<p><strong>Integer Programming(IP)</strong>: Some of the decision variables have to be integers.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/01/6a1d01d0402b5.png" height="300px">
+</p>
+<h3 id="modeling-建模"><a class="header" href="#modeling-建模">Modeling 建模</a></h3>
+<p>e.g. Maximum Area Problem.</p>
+<p>You have 80 meters of fencing and want to enclose a rectangular area - as large as possible.</p>
+<ul>
+<li>Decision variable: the length $l$ and width $w$ of the area.</li>
+<li>Objective: maximize the area: $lw$</li>
+<li>Constraints: the total length of the fence: $2l + 2w \leq 80$</li>
+</ul>
+<p>Therefore, the optimization problem can be written as
+$$
+\begin{aligned}
+\max_{l, w} \quad &amp; lw \\
+\text{subject to} \quad &amp; 2l+2w \leq 80 \
+&amp; l, w \geq 0
+\end{aligned}
+$$</p>
 
                     </main>
 
