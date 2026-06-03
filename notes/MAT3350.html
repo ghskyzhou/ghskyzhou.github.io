@@ -212,7 +212,7 @@ D &amp;\frac{1}{16} &amp;\cdots &amp;1110 \\
 E &amp;\frac{1}{64} &amp;\cdots &amp;111100 \\
 F &amp;\frac{1}{64} &amp;\cdots &amp;111101 \\
 G &amp;\frac{1}{64} &amp;\cdots &amp;111110 \\
-H &amp;\frac{1}{64} &amp;\cdots &amp;111111 \\
+H &amp;\frac{1}{64} &amp;\cdots &amp;111111
 \end{cases}
 $$</p>
 <p>Information of $X=1 \times \frac{1}{2} + 2 \times \frac{1}{4} + 3 \times \frac{1}{8} + 4 \times \frac{1}{16} + 6 \times \frac{1}{64} \times 4 = 2 $ bits</p>
@@ -228,7 +228,7 @@ $$</p>
 <ol>
 <li>
 <p>What is the minimum number of bits to describe $X$?</p>
-<p>Ans: Entropy $H(X)$ ... Data congression.</p>
+<p>Ans: Entropy $H(X)$ ... Data compression</p>
 </li>
 <li>
 <p>What is the maximum numberof bits that can be reliably transmitted over channel?</p>
@@ -236,13 +236,14 @@ $$</p>
 </li>
 </ol>
 <h2 id="chapter-2-entropy-熵"><a class="header" href="#chapter-2-entropy-熵">Chapter 2: Entropy 熵</a></h2>
+<h3 id="21-basics"><a class="header" href="#21-basics">2.1 Basics</a></h3>
 <p>Def. Let $X$ be a <em>discrete random variable</em>, e.g. $X = \{a, b, c\}$, then:
 $$
 X =
 \begin{cases}
 a, &amp; p_1\\
 b, &amp; p_2\\
-c, &amp; p_3\\
+c, &amp; p_3
 \end{cases}
 $$
 Which is easy to describe using probability mass function (PMF).</p>
@@ -280,6 +281,161 @@ Where "$=$" hold iff $X \sim \text{Uniform}$</p>
 <p>And now we established the lower bound and upper bound of entropy:
 $$
 0 \leq H(X) \leq \log m
+$$</p>
+<h3 id="22-connection-to-data-compression"><a class="header" href="#22-connection-to-data-compression">2.2 Connection to Data Compression</a></h3>
+<p>Shannon showed that $H(X)$ is the minimum number of bits to describe $X$. (will prove in the future)</p>
+<p>e.g.
+$$
+X =
+\begin{cases}
+0 \quad 100\% \\
+1 \quad 0\%
+\end{cases}
+$$
+And we can have:
+$$
+\begin{aligned}
+H(X) = &amp; 1 \times \log \frac{1}{1} + 0 \times \log \frac{1}{0} \\
+= &amp; 0
+\end{aligned}
+$$
+Since:
+$$
+\lim_{x \to 0^+} x \log \frac{1}{x} = \lim_{x \to 0^+} -x \log x = \lim_{x \to 0^+} \frac{-\log x}{1/x} = \lim_{x \to 0^+}x = 0
+$$</p>
+<p>Another e.g.:</p>
+<p>Consider $X_1, X_2, \cdots, X_{100}$. Each $X_i = \begin{cases}0 \quad 1 \% \\ 1 \quad 99 \% \end{cases}$ <br />
+For a "typical" $(X_1, X_2, \cdots, X_{100})$, only one $X_i = 0$, rest are all $1$. $\Rightarrow$ Use $\log 100$ to describe $(X_1, X_2, \cdots, X_{100})$.</p>
+<h3 id="23-connectoin-to-computer-science"><a class="header" href="#23-connectoin-to-computer-science">2.3 Connectoin to Computer Science</a></h3>
+<p>Def. <strong>Kolmogorov complexity</strong> $K(X)$ is the length of the shortest program that makes computer (Turing machine) <em>print</em> $X$.</p>
+<p>e.g. $K(\pi) &lt; \infty$ <br />
+"Print $3.1415926\cdots$" has length $=\infty$<br />
+"Print the value between a circle circumference and its diameter" has lenght = $c$</p>
+<blockquote>
+<p>这里可以理解为，虽然直接输出 $\pi$ 是无限的，但是一个生成 $\pi$ 的程序可以是有限的，即有$K(\pi) &lt; \infty$</p>
+</blockquote>
+<p>e.g. $K(101010\cdots10) \leq 2 + c'$ <br />
+Suppose $10$ repeats $n$ times, "print $101010\cdots10$ has length $=2n+c$ <br />
+But "print $10$ for $n$ times has length  $=2\times 1 + c'$</p>
+<h2 id="chapter-3-condition-entropy"><a class="header" href="#chapter-3-condition-entropy">Chapter 3: Condition Entropy</a></h2>
+<h3 id="31-basics"><a class="header" href="#31-basics">3.1 Basics</a></h3>
+<p>Recall: $H(X)$ is the minimum number of bits to describe $X$, which measures the uncertainty of $X$.</p>
+<p>Def. For $(X,Y) \sim F(X,Y)$, the <strong>joint entropy</strong>:
+$$
+\begin{aligned}
+H(X,Y) &amp;= \sum_{(x, y)} p(x, y) \log \frac{1}{p(x, y)} \\
+&amp;= E\left[ \log \frac{1}{p(x,y)} \right]
+\end{aligned}
+$$
+means the <em>total uncertainty</em> of $X$ and $Y$.</p>
+<p>Def. <strong>Conditional entropy</strong> of $X$ with $Y$ known <strong>to be fixed at $y$</strong> is:
+$$
+\begin{aligned}
+H(X | Y=y) &amp;= \sum_x p(x|y) \log \frac{1}{p(x|y)} \\
+&amp;= E_x \left[ \log \frac{1}{p(x|y)} \right]
+\end{aligned}
+$$
+measures the <em>remaining uncertainty</em> of $X$ after knowing $Y=y$.</p>
+<p>Def. <strong>Conditional entropy</strong> of $X$ with $Y$ known is:
+$$
+\begin{aligned}
+H(X|Y) &amp;= \sum_y H(X|Y=y) \cdot p(y) \\
+&amp;= \sum_{x, y} p(x,y) \log \frac{1}{p(x|y)}
+\end{aligned}
+$$
+measures the <em>remaining uncertainty</em> of $X$ after $Y$ is known.</p>
+<p>e.g.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f78da51bd7.png" height="400px">
+</p>
+<h3 id="32-properties-of-hxy"><a class="header" href="#32-properties-of-hxy">3.2 Properties of $H(X|Y)$</a></h3>
+<p><strong>Entropy Chain Rule</strong>:
+$$
+H(X, Y) = H(Y) + H(X|Y)
+$$
+Intuition: Total uncertainty of $(X,Y)=$ uncertatinty of $Y$ alone $+$ remaining uncertainty of $X$ after knowing $Y$.</p>
+<blockquote>
+<p>这里的加号可以理解为：熵是信息量，分两步说，第一步先告诉他 $Y$ 是什么，即有 $H(Y)$ 个 bit，第二步是已经知道 $Y$ 的情况下，在告诉他 $X$ 是什么，即 $H(X|Y)$ 个 bit，两步获得的信息量是相加的</p>
+</blockquote>
+<p>By symmetry, $H(X,Y) = H(X) + H(Y|X)$ is also correct.</p>
+<p>Extension: Chain rule for joint entropy:
+$$
+H(X_1, X_2, \cdots, X_n) = H(X_1) + H(X_2 | X_1) + H(X_3 | (X_1, X_2)) + \cdots + H(X_n | (X_1, X_2, \cdots X_{n-1}))
+$$</p>
+<p>Theorem: If $X$ and $Y$ are <strong>independent</strong> (no overlay), then:
+$$
+H(X, Y) = H(X) + H(Y)
+$$
+And we have:
+$$
+H(X|Y) = H(X) \Leftrightarrow X \text{ and } Y \text{ are independent}  \\
+H(X|Y) = H(Y) \Leftrightarrow X \text{ and } Y \text{ are independent}
+$$</p>
+<h3 id="33-information-never-hurts"><a class="header" href="#33-information-never-hurts">3.3 Information never hurts</a></h3>
+<p>Theorem: Knowing $Y$ will not hurt our existing knowledge of $X$
+$$
+H(X|Y) \leq H(X)
+$$</p>
+<p>So when in <em>data compression</em>, we can have:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f7d25db2d7.png" height="120px">
+</p>
+<p>e.g. Consider a probability table.</p>
+<div class="table-wrapper"><table><thead><tr><th>$X\backslash Y$</th><th style="text-align: right">$0$</th><th style="text-align: right">$1$</th></tr></thead><tbody>
+<tr><td>$0$</td><td style="text-align: right">$0.45$</td><td style="text-align: right">$0.05$</td></tr>
+<tr><td>$1$</td><td style="text-align: right">$0.05$</td><td style="text-align: right">$0.45$</td></tr>
+</tbody></table>
+</div>
+<p>And we have
+$$
+X =
+\begin{cases}
+0 \quad 50\% \\
+1 \quad 50\%
+\end{cases}
+$$</p>
+<p>Without $Y$, we need $H(X) = 1$ bit to describe $X$.</p>
+<p>Now $Y$ is provided, we can use the following equations:
+$$
+X \oplus Y = Z \\
+Y \oplus Z = X
+$$
+Note that:
+$$
+Z =
+\begin{cases}
+0 \quad 90\% \\
+1 \quad 10\%
+\end{cases}
+$$
+And we have $H(Z) &lt; H(X)$, so the main idea is compressing $Z$ instead of $X$, and then recover $X$ with XOR.</p>
+<p>e.g.</p>
+<p>Consider $n$ balls, one ball is <em>odd</em> in that it is lighter or heavier than any other ball. Giving only one balance to compare two balls each time. How many times do we need to figure out which ball is odd?</p>
+<h2 id="chapter-4-mutual-information"><a class="header" href="#chapter-4-mutual-information">Chapter 4: Mutual Information</a></h2>
+<h3 id="41-basics"><a class="header" href="#41-basics">4.1 Basics</a></h3>
+<p>Def. Mutual Information
+$$
+\begin{aligned}
+I(X; Y) &amp;= H(X) - H(X|Y) \\
+&amp;= H(X) + H(Y) - H(X, Y) \\
+&amp;= \sum_{x, y} p(x, y) \log \frac{p(x,y)}{p(x)p(y)} \\
+&amp;= E_{x,y} \left[ \log \frac{p(x,y)}{p(x)p(y)} \right] \\
+\end{aligned}
+$$</p>
+<p>Now consider the venn graph below:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f8c31ce337.png" height="120px">
+</p>
+<p>We have
+$$
+\begin{aligned}
+&amp;H(X|Y) = A \\
+&amp;H(Y|X) = C \\
+&amp;I(X;Y) = B \\
+&amp;H(X) = A+B \\
+&amp;H(Y) = B+C \\
+&amp;H(X, Y) = A+B+C
+\end{aligned}
 $$</p>
 
                     </main>

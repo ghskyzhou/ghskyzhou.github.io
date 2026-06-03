@@ -315,6 +315,203 @@ $$
 &amp; l, w \geq 0
 \end{aligned}
 $$</p>
+<p>e.g. Shortest Path Problem</p>
+<p>Set of notdes $V$, set of edges: $E \subset V \times V$. The distance between node $i$ and node $j$ is $w_{ij}$.</p>
+<p>For each edge $(i, j) \in E$, define
+$$
+x_{ij} =
+\begin{cases}
+1 , &amp; \text{if we use edge }(i,j), \\
+0 , &amp; \text{otherwise}.
+\end{cases}
+$$</p>
+<p>Directed graph: $x_{ij}$ does not necessarily equal to $x_{ji}$. And we have the following optimization modeling</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/02/6a1e8c33aad1c.png" height="150px">
+</p>
+<h2 id="lecture-2"><a class="header" href="#lecture-2">Lecture 2</a></h2>
+<h3 id="linear-programming-线性规划"><a class="header" href="#linear-programming-线性规划">Linear Programming 线性规划</a></h3>
+<p>Def. A <strong>linear optimization</strong> or <strong>linear programming(LP)</strong> problem is an optimization problem in which the objective function and all constraint functions are <em>linear</em> (in the decision variables)</p>
+<p>e.g.
+$$
+\begin{aligned}
+\max_{x_1, x_2, x_3} \quad &amp; f(x) = 40 x_1 + 30 x_2 + 50 x_3 \\
+\text{subject to} \quad &amp; x_1 + x_2 + x_3 \leq 100 \\
+&amp; 2x_1 + x_2 + 3x_3 \leq 180 \\
+&amp; x_3 \geq x_1 \\
+&amp; x_1, x_2, x_3 \geq 0
+\end{aligned}
+$$</p>
+<p><strong>General Formulation</strong></p>
+<p>$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; a_i^\top x \geq b_i \quad &amp;\forall i \in m_1 \\
+&amp; a_i^\top x \leq d_i \quad &amp;\forall i \in m_2 \\
+&amp; a_i^\top x = e_i \quad &amp;\forall i \in m_3 \\
+&amp; x_i \geq 0 \quad &amp;\forall i \in n_1 \\
+&amp; x_i \leq 0 \quad &amp;\forall i \in n_2 \\
+&amp; x_i \text{ free} \quad &amp;\forall i \in n_3
+\end{aligned}
+$$</p>
+<p>where $m_1, m_2, m_3$ are subsets of $\{1, \dots, m\}$, $n_1, n_2, n_3$ are subsets of $\{1, \dots, n\}$.</p>
+<h4 id="standard-form-of-lps"><a class="header" href="#standard-form-of-lps">Standard Form of LPs</a></h4>
+<p>An LP is said to be of the <strong>standard form</strong> if it is of the form:
+$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; Ax = b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p>where $x \in R^n$, $A$ is an $m \times n$ matrix($m &lt; n$), and $b \in R^m$.</p>
+<p>Any LP can be written in the standard form, using "tricks".</p>
+<p><strong>Standard From Transformations</strong>:</p>
+<ul>
+<li>Maximization: use $-c$ instead of $c$ to change it to minimization.</li>
+<li>Eliminating inequality constraints using <strong>slack variables</strong> $s$.
+<ul>
+<li>$Ax \leq b \Rightarrow Ax+s=b, s \geq 0$</li>
+<li>$Ax \geq b \Rightarrow Ax-s=b, s \geq 0$</li>
+</ul>
+</li>
+<li>If one has $x_i \leq 0$, replace $x_i$ by $-y_i$ and add $y_i \geq 0$</li>
+<li>Eliminating free variables $x_i$ (no constraints on $x_i$) by replacing $x_i$ by $x_i^+ - x_i^-$, where $x_i^+ \geq 0, x_i^- \geq 0$</li>
+</ul>
+<p>e.g.</p>
+<p>Consider a LP problem:
+$$
+\begin{aligned}
+\max \quad &amp; 3x_1 - 2x_2 + x_3 \\
+\text{subject to} \quad &amp; 2x_1 + 3x_2 + 4x_3 \geq 1 \\
+&amp; 3x_1 + 4x_2 \leq 5 \\
+&amp; 5x_2 - x_3 = -1 \\
+&amp; x_1, x_2 \geq 0
+\end{aligned}
+$$</p>
+<p>We can transform it into standard form:
+$$
+\begin{aligned}
+\min \quad &amp; -3x_1 + 2x_2 - x_3^+ + x_3^- \\
+\text{subject to} \quad &amp; 2x_1 + 3x_2 + 4x_3^+ - 4x_3^- - x_4 = 1 \\
+&amp; 3x_1 + 4x_2 + x_5 = 5 \\
+&amp; 5x_2 - x_3^+ + x_3^- = -1 \\
+&amp; x_1, x_2, x_3^+, x_3^-, x_4, x_5 \geq 0
+\end{aligned}
+$$</p>
+<h4 id="more-modeling"><a class="header" href="#more-modeling">More Modeling</a></h4>
+<p><strong>Minimax Objective</strong> Problem:
+$$
+\begin{aligned}
+\min_x \quad &amp; \max_{i=1,\cdots,n} \{ c_i^\top x + d_i \} \\
+\text{subject to} \quad &amp; Ax=b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p>Solution: define $y = \max_{i=1,\cdots,n} \{ c_i^\top x + d_i \}$ and consider:
+$$
+\begin{aligned}
+\min_{x,y} \quad &amp; y \\
+\text{subject to} \quad &amp; y \geq c_i^\top x + d_i \\
+&amp; Ax=b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p><strong>Minimizing Absolute Values</strong>
+$$
+\begin{aligned}
+\min_x \quad &amp; \sum_{i=1}^n \lvert x_i \rvert \\
+\text{subject to} \quad &amp; Ax=b \\
+\end{aligned}
+$$
+This can be equivalently written as:
+$$
+\begin{aligned}
+\min_{x,t} \quad &amp; \sum_{i=1}^n t_i \\
+\text{subject to} \quad &amp; x_i \leq t_i \\
+&amp; x_i \geq -t_i \\
+&amp; Ax=b
+\end{aligned}
+$$</p>
+<p><strong>A Modeling Tool</strong></p>
+<p>Consider the optimization problem:
+$$
+\begin{aligned}
+\min_{x} \quad &amp; \sum_{i=1}^m f_i(x) \\
+\text{subject to} \quad &amp; x \in \Omega
+\end{aligned}
+$$
+It is equivalent to
+$$
+\begin{aligned}
+\min_{x,t} \quad &amp; \sum_{i=1}^m t_i \\
+\text{subject to} \quad &amp; x \in \Omega \\
+&amp; f_i(x) \leq t_i
+\end{aligned}
+$$
+Where $f_i: R^n \to R$ are given and $\Omega \subset R^n$ is the feasible set.</p>
+<h2 id="lecture-3"><a class="header" href="#lecture-3">Lecture 3</a></h2>
+<h3 id="solving-linear-programming-graphically"><a class="header" href="#solving-linear-programming-graphically">Solving Linear Programming Graphically</a></h3>
+<p>Recall the production problem:
+$$
+\begin{aligned}
+\max \quad &amp; x_1 + 2x_2 \\
+\text{subject to} \quad &amp; x_1 \leq 100 \\
+&amp;2x_2 \leq 200 \\
+&amp;_1 + x_2 \leq 150 \\
+&amp;x_1, x_2 \geq 0
+\end{aligned}
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f9ca911140.png" height="250px">
+</p>
+<p>The red polygon is the <em>feasible region</em>.<br />
+And the optimal solution is the <em>highest</em> one among these lines that touches the feasible region.</p>
+<p>Some Obeservations:</p>
+<ul>
+<li>The feasible region of an LP is a <em>polyhedron</em> 多面体</li>
+<li>The optimal solution tends to be a <em>vertex/corner</em> of the feasible region.</li>
+<li>Some constraints are <em>active</em> at the optimal solution, some are <em>inactive</em></li>
+</ul>
+<p>Def. A <strong>Polyhedron</strong> is a set that can be written in the form
+$$
+\{ x \in R^n: Ax \geq b \}
+$$
+where $A$ is an $m \times n$ matrix and $b \in R^m$.</p>
+<p>Def. <strong>Convex Set</strong>: A set $S \subseteq R^n$ is <em>convex</em> if
+$$
+\forall x, y \in S \\
+\forall \lambda \in [0,1], \lambda x + (1- \lambda) y \in S
+$$</p>
+<p>Def. <strong>Convex Combination</strong>: For any $x_1, \cdots, x_n$ and $\lambda_1 + \cdots + \lambda_n = 1$, we call $\sum_{i=1}^n \lambda_i x_i$ a <em>convex combination</em> of $x_1, \cdots, x_n$.</p>
+<p>Def. <strong>Exetreme Point</strong>: Let $P$ be a polyhedron. A point $x \in P$ is said to be an <em>extreme point</em> of $P$ if we <em>cannot</em> find two elements $y,z \in P$ with $y,z \not= x$ and a scalar $\lambda \in [0,1]$, such that $x = \lambda y + (1-\lambda) z$.</p>
+<p>Consider the production problem example above, it has $5$ exetreme points.</p>
+<h3 id="exetreme-points-and-basic-feasible-solutions"><a class="header" href="#exetreme-points-and-basic-feasible-solutions">Exetreme Points and Basic Feasible Solutions</a></h3>
+<p>Consider an LP in its standard form:
+$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; Ax = b \\
+&amp; x \geq 0
+\end{aligned}
+$$
+where $x \in R^n$, $A$ is an $m \times n$ matrix($m &lt; n$), and $b \in R^m$.</p>
+<blockquote>
+<p>General Assumption: $A$ has linearly independent rows (or equivalently $A$ hass full row <em>rank</em> $m$)</p>
+</blockquote>
+<p>Def. <strong>Basic Solution</strong>: We call $x$ a <em>basic solution(BS)</em> of the standard form LP iff:</p>
+<ol>
+<li>$Ax = b$</li>
+<li>There exist indices $B(1), \cdots, B(m)$ such that the columns of
+$$
+\begin{bmatrix}
+| &amp; | &amp; &amp; | \\
+A_{B(1)} &amp; A_{B(2)} &amp; \cdots &amp; A_{B(m)} \\
+| &amp; | &amp; &amp; |
+\end{bmatrix}
+$$
+are <em>linear independent</em> and $x_i=0$ for $i \not= B(1), \cdots, B(m)$.</li>
+</ol>
 
                     </main>
 

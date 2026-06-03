@@ -190,6 +190,8 @@
 <li><a href="https://skyzhou.top/notes/CSC4001.html">CSC4001</a></li>
 <li><a href="https://skyzhou.top/notes/CSC4303.html">CSC4303</a></li>
 <li><a href="https://skyzhou.top/notes/CSC4120.html">CSC4120</a></li>
+<li><a href="https://skyzhou.top/notes/MAT3007.html">MAT3007</a></li>
+<li><a href="https://skyzhou.top/notes/MAT3350.html">MAT3350</a></li>
 </ul>
 </li>
 </ul>
@@ -5953,7 +5955,7 @@ D &amp;\frac{1}{16} &amp;\cdots &amp;1110 \\
 E &amp;\frac{1}{64} &amp;\cdots &amp;111100 \\
 F &amp;\frac{1}{64} &amp;\cdots &amp;111101 \\
 G &amp;\frac{1}{64} &amp;\cdots &amp;111110 \\
-H &amp;\frac{1}{64} &amp;\cdots &amp;111111 \\
+H &amp;\frac{1}{64} &amp;\cdots &amp;111111
 \end{cases}
 $$</p>
 <p>Information of $X=1 \times \frac{1}{2} + 2 \times \frac{1}{4} + 3 \times \frac{1}{8} + 4 \times \frac{1}{16} + 6 \times \frac{1}{64} \times 4 = 2 $ bits</p>
@@ -5969,7 +5971,7 @@ $$</p>
 <ol>
 <li>
 <p>What is the minimum number of bits to describe $X$?</p>
-<p>Ans: Entropy $H(X)$ ... Data congression.</p>
+<p>Ans: Entropy $H(X)$ ... Data compression</p>
 </li>
 <li>
 <p>What is the maximum numberof bits that can be reliably transmitted over channel?</p>
@@ -5977,13 +5979,14 @@ $$</p>
 </li>
 </ol>
 <h2 id="chapter-2-entropy-熵"><a class="header" href="#chapter-2-entropy-熵">Chapter 2: Entropy 熵</a></h2>
+<h3 id="21-basics"><a class="header" href="#21-basics">2.1 Basics</a></h3>
 <p>Def. Let $X$ be a <em>discrete random variable</em>, e.g. $X = \{a, b, c\}$, then:
 $$
 X =
 \begin{cases}
 a, &amp; p_1\\
 b, &amp; p_2\\
-c, &amp; p_3\\
+c, &amp; p_3
 \end{cases}
 $$
 Which is easy to describe using probability mass function (PMF).</p>
@@ -6021,6 +6024,161 @@ Where "$=$" hold iff $X \sim \text{Uniform}$</p>
 <p>And now we established the lower bound and upper bound of entropy:
 $$
 0 \leq H(X) \leq \log m
+$$</p>
+<h3 id="22-connection-to-data-compression"><a class="header" href="#22-connection-to-data-compression">2.2 Connection to Data Compression</a></h3>
+<p>Shannon showed that $H(X)$ is the minimum number of bits to describe $X$. (will prove in the future)</p>
+<p>e.g.
+$$
+X =
+\begin{cases}
+0 \quad 100\% \\
+1 \quad 0\%
+\end{cases}
+$$
+And we can have:
+$$
+\begin{aligned}
+H(X) = &amp; 1 \times \log \frac{1}{1} + 0 \times \log \frac{1}{0} \\
+= &amp; 0
+\end{aligned}
+$$
+Since:
+$$
+\lim_{x \to 0^+} x \log \frac{1}{x} = \lim_{x \to 0^+} -x \log x = \lim_{x \to 0^+} \frac{-\log x}{1/x} = \lim_{x \to 0^+}x = 0
+$$</p>
+<p>Another e.g.:</p>
+<p>Consider $X_1, X_2, \cdots, X_{100}$. Each $X_i = \begin{cases}0 \quad 1 \% \\ 1 \quad 99 \% \end{cases}$ <br />
+For a "typical" $(X_1, X_2, \cdots, X_{100})$, only one $X_i = 0$, rest are all $1$. $\Rightarrow$ Use $\log 100$ to describe $(X_1, X_2, \cdots, X_{100})$.</p>
+<h3 id="23-connectoin-to-computer-science"><a class="header" href="#23-connectoin-to-computer-science">2.3 Connectoin to Computer Science</a></h3>
+<p>Def. <strong>Kolmogorov complexity</strong> $K(X)$ is the length of the shortest program that makes computer (Turing machine) <em>print</em> $X$.</p>
+<p>e.g. $K(\pi) &lt; \infty$ <br />
+"Print $3.1415926\cdots$" has length $=\infty$<br />
+"Print the value between a circle circumference and its diameter" has lenght = $c$</p>
+<blockquote>
+<p>这里可以理解为，虽然直接输出 $\pi$ 是无限的，但是一个生成 $\pi$ 的程序可以是有限的，即有$K(\pi) &lt; \infty$</p>
+</blockquote>
+<p>e.g. $K(101010\cdots10) \leq 2 + c'$ <br />
+Suppose $10$ repeats $n$ times, "print $101010\cdots10$ has length $=2n+c$ <br />
+But "print $10$ for $n$ times has length  $=2\times 1 + c'$</p>
+<h2 id="chapter-3-condition-entropy"><a class="header" href="#chapter-3-condition-entropy">Chapter 3: Condition Entropy</a></h2>
+<h3 id="31-basics"><a class="header" href="#31-basics">3.1 Basics</a></h3>
+<p>Recall: $H(X)$ is the minimum number of bits to describe $X$, which measures the uncertainty of $X$.</p>
+<p>Def. For $(X,Y) \sim F(X,Y)$, the <strong>joint entropy</strong>:
+$$
+\begin{aligned}
+H(X,Y) &amp;= \sum_{(x, y)} p(x, y) \log \frac{1}{p(x, y)} \\
+&amp;= E\left[ \log \frac{1}{p(x,y)} \right]
+\end{aligned}
+$$
+means the <em>total uncertainty</em> of $X$ and $Y$.</p>
+<p>Def. <strong>Conditional entropy</strong> of $X$ with $Y$ known <strong>to be fixed at $y$</strong> is:
+$$
+\begin{aligned}
+H(X | Y=y) &amp;= \sum_x p(x|y) \log \frac{1}{p(x|y)} \\
+&amp;= E_x \left[ \log \frac{1}{p(x|y)} \right]
+\end{aligned}
+$$
+measures the <em>remaining uncertainty</em> of $X$ after knowing $Y=y$.</p>
+<p>Def. <strong>Conditional entropy</strong> of $X$ with $Y$ known is:
+$$
+\begin{aligned}
+H(X|Y) &amp;= \sum_y H(X|Y=y) \cdot p(y) \\
+&amp;= \sum_{x, y} p(x,y) \log \frac{1}{p(x|y)}
+\end{aligned}
+$$
+measures the <em>remaining uncertainty</em> of $X$ after $Y$ is known.</p>
+<p>e.g.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f78da51bd7.png" height="400px">
+</p>
+<h3 id="32-properties-of-hxy"><a class="header" href="#32-properties-of-hxy">3.2 Properties of $H(X|Y)$</a></h3>
+<p><strong>Entropy Chain Rule</strong>:
+$$
+H(X, Y) = H(Y) + H(X|Y)
+$$
+Intuition: Total uncertainty of $(X,Y)=$ uncertatinty of $Y$ alone $+$ remaining uncertainty of $X$ after knowing $Y$.</p>
+<blockquote>
+<p>这里的加号可以理解为：熵是信息量，分两步说，第一步先告诉他 $Y$ 是什么，即有 $H(Y)$ 个 bit，第二步是已经知道 $Y$ 的情况下，在告诉他 $X$ 是什么，即 $H(X|Y)$ 个 bit，两步获得的信息量是相加的</p>
+</blockquote>
+<p>By symmetry, $H(X,Y) = H(X) + H(Y|X)$ is also correct.</p>
+<p>Extension: Chain rule for joint entropy:
+$$
+H(X_1, X_2, \cdots, X_n) = H(X_1) + H(X_2 | X_1) + H(X_3 | (X_1, X_2)) + \cdots + H(X_n | (X_1, X_2, \cdots X_{n-1}))
+$$</p>
+<p>Theorem: If $X$ and $Y$ are <strong>independent</strong> (no overlay), then:
+$$
+H(X, Y) = H(X) + H(Y)
+$$
+And we have:
+$$
+H(X|Y) = H(X) \Leftrightarrow X \text{ and } Y \text{ are independent}  \\
+H(X|Y) = H(Y) \Leftrightarrow X \text{ and } Y \text{ are independent}
+$$</p>
+<h3 id="33-information-never-hurts"><a class="header" href="#33-information-never-hurts">3.3 Information never hurts</a></h3>
+<p>Theorem: Knowing $Y$ will not hurt our existing knowledge of $X$
+$$
+H(X|Y) \leq H(X)
+$$</p>
+<p>So when in <em>data compression</em>, we can have:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f7d25db2d7.png" height="120px">
+</p>
+<p>e.g. Consider a probability table.</p>
+<div class="table-wrapper"><table><thead><tr><th>$X\backslash Y$</th><th style="text-align: right">$0$</th><th style="text-align: right">$1$</th></tr></thead><tbody>
+<tr><td>$0$</td><td style="text-align: right">$0.45$</td><td style="text-align: right">$0.05$</td></tr>
+<tr><td>$1$</td><td style="text-align: right">$0.05$</td><td style="text-align: right">$0.45$</td></tr>
+</tbody></table>
+</div>
+<p>And we have
+$$
+X =
+\begin{cases}
+0 \quad 50\% \\
+1 \quad 50\%
+\end{cases}
+$$</p>
+<p>Without $Y$, we need $H(X) = 1$ bit to describe $X$.</p>
+<p>Now $Y$ is provided, we can use the following equations:
+$$
+X \oplus Y = Z \\
+Y \oplus Z = X
+$$
+Note that:
+$$
+Z =
+\begin{cases}
+0 \quad 90\% \\
+1 \quad 10\%
+\end{cases}
+$$
+And we have $H(Z) &lt; H(X)$, so the main idea is compressing $Z$ instead of $X$, and then recover $X$ with XOR.</p>
+<p>e.g.</p>
+<p>Consider $n$ balls, one ball is <em>odd</em> in that it is lighter or heavier than any other ball. Giving only one balance to compare two balls each time. How many times do we need to figure out which ball is odd?</p>
+<h2 id="chapter-4-mutual-information"><a class="header" href="#chapter-4-mutual-information">Chapter 4: Mutual Information</a></h2>
+<h3 id="41-basics"><a class="header" href="#41-basics">4.1 Basics</a></h3>
+<p>Def. Mutual Information
+$$
+\begin{aligned}
+I(X; Y) &amp;= H(X) - H(X|Y) \\
+&amp;= H(X) + H(Y) - H(X, Y) \\
+&amp;= \sum_{x, y} p(x, y) \log \frac{p(x,y)}{p(x)p(y)} \\
+&amp;= E_{x,y} \left[ \log \frac{p(x,y)}{p(x)p(y)} \right] \\
+\end{aligned}
+$$</p>
+<p>Now consider the venn graph below:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f8c31ce337.png" height="120px">
+</p>
+<p>We have
+$$
+\begin{aligned}
+&amp;H(X|Y) = A \\
+&amp;H(Y|X) = C \\
+&amp;I(X;Y) = B \\
+&amp;H(X) = A+B \\
+&amp;H(Y) = B+C \\
+&amp;H(X, Y) = A+B+C
+\end{aligned}
 $$</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="optimization"><a class="header" href="#optimization">Optimization</a></h1>
 <p>Prof. Yongchun Li</p>
@@ -6161,6 +6319,203 @@ $$
 &amp; l, w \geq 0
 \end{aligned}
 $$</p>
+<p>e.g. Shortest Path Problem</p>
+<p>Set of notdes $V$, set of edges: $E \subset V \times V$. The distance between node $i$ and node $j$ is $w_{ij}$.</p>
+<p>For each edge $(i, j) \in E$, define
+$$
+x_{ij} =
+\begin{cases}
+1 , &amp; \text{if we use edge }(i,j), \\
+0 , &amp; \text{otherwise}.
+\end{cases}
+$$</p>
+<p>Directed graph: $x_{ij}$ does not necessarily equal to $x_{ji}$. And we have the following optimization modeling</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/02/6a1e8c33aad1c.png" height="150px">
+</p>
+<h2 id="lecture-2"><a class="header" href="#lecture-2">Lecture 2</a></h2>
+<h3 id="linear-programming-线性规划"><a class="header" href="#linear-programming-线性规划">Linear Programming 线性规划</a></h3>
+<p>Def. A <strong>linear optimization</strong> or <strong>linear programming(LP)</strong> problem is an optimization problem in which the objective function and all constraint functions are <em>linear</em> (in the decision variables)</p>
+<p>e.g.
+$$
+\begin{aligned}
+\max_{x_1, x_2, x_3} \quad &amp; f(x) = 40 x_1 + 30 x_2 + 50 x_3 \\
+\text{subject to} \quad &amp; x_1 + x_2 + x_3 \leq 100 \\
+&amp; 2x_1 + x_2 + 3x_3 \leq 180 \\
+&amp; x_3 \geq x_1 \\
+&amp; x_1, x_2, x_3 \geq 0
+\end{aligned}
+$$</p>
+<p><strong>General Formulation</strong></p>
+<p>$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; a_i^\top x \geq b_i \quad &amp;\forall i \in m_1 \\
+&amp; a_i^\top x \leq d_i \quad &amp;\forall i \in m_2 \\
+&amp; a_i^\top x = e_i \quad &amp;\forall i \in m_3 \\
+&amp; x_i \geq 0 \quad &amp;\forall i \in n_1 \\
+&amp; x_i \leq 0 \quad &amp;\forall i \in n_2 \\
+&amp; x_i \text{ free} \quad &amp;\forall i \in n_3
+\end{aligned}
+$$</p>
+<p>where $m_1, m_2, m_3$ are subsets of $\{1, \dots, m\}$, $n_1, n_2, n_3$ are subsets of $\{1, \dots, n\}$.</p>
+<h4 id="standard-form-of-lps"><a class="header" href="#standard-form-of-lps">Standard Form of LPs</a></h4>
+<p>An LP is said to be of the <strong>standard form</strong> if it is of the form:
+$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; Ax = b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p>where $x \in R^n$, $A$ is an $m \times n$ matrix($m &lt; n$), and $b \in R^m$.</p>
+<p>Any LP can be written in the standard form, using "tricks".</p>
+<p><strong>Standard From Transformations</strong>:</p>
+<ul>
+<li>Maximization: use $-c$ instead of $c$ to change it to minimization.</li>
+<li>Eliminating inequality constraints using <strong>slack variables</strong> $s$.
+<ul>
+<li>$Ax \leq b \Rightarrow Ax+s=b, s \geq 0$</li>
+<li>$Ax \geq b \Rightarrow Ax-s=b, s \geq 0$</li>
+</ul>
+</li>
+<li>If one has $x_i \leq 0$, replace $x_i$ by $-y_i$ and add $y_i \geq 0$</li>
+<li>Eliminating free variables $x_i$ (no constraints on $x_i$) by replacing $x_i$ by $x_i^+ - x_i^-$, where $x_i^+ \geq 0, x_i^- \geq 0$</li>
+</ul>
+<p>e.g.</p>
+<p>Consider a LP problem:
+$$
+\begin{aligned}
+\max \quad &amp; 3x_1 - 2x_2 + x_3 \\
+\text{subject to} \quad &amp; 2x_1 + 3x_2 + 4x_3 \geq 1 \\
+&amp; 3x_1 + 4x_2 \leq 5 \\
+&amp; 5x_2 - x_3 = -1 \\
+&amp; x_1, x_2 \geq 0
+\end{aligned}
+$$</p>
+<p>We can transform it into standard form:
+$$
+\begin{aligned}
+\min \quad &amp; -3x_1 + 2x_2 - x_3^+ + x_3^- \\
+\text{subject to} \quad &amp; 2x_1 + 3x_2 + 4x_3^+ - 4x_3^- - x_4 = 1 \\
+&amp; 3x_1 + 4x_2 + x_5 = 5 \\
+&amp; 5x_2 - x_3^+ + x_3^- = -1 \\
+&amp; x_1, x_2, x_3^+, x_3^-, x_4, x_5 \geq 0
+\end{aligned}
+$$</p>
+<h4 id="more-modeling"><a class="header" href="#more-modeling">More Modeling</a></h4>
+<p><strong>Minimax Objective</strong> Problem:
+$$
+\begin{aligned}
+\min_x \quad &amp; \max_{i=1,\cdots,n} \{ c_i^\top x + d_i \} \\
+\text{subject to} \quad &amp; Ax=b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p>Solution: define $y = \max_{i=1,\cdots,n} \{ c_i^\top x + d_i \}$ and consider:
+$$
+\begin{aligned}
+\min_{x,y} \quad &amp; y \\
+\text{subject to} \quad &amp; y \geq c_i^\top x + d_i \\
+&amp; Ax=b \\
+&amp; x \geq 0
+\end{aligned}
+$$</p>
+<p><strong>Minimizing Absolute Values</strong>
+$$
+\begin{aligned}
+\min_x \quad &amp; \sum_{i=1}^n \lvert x_i \rvert \\
+\text{subject to} \quad &amp; Ax=b \\
+\end{aligned}
+$$
+This can be equivalently written as:
+$$
+\begin{aligned}
+\min_{x,t} \quad &amp; \sum_{i=1}^n t_i \\
+\text{subject to} \quad &amp; x_i \leq t_i \\
+&amp; x_i \geq -t_i \\
+&amp; Ax=b
+\end{aligned}
+$$</p>
+<p><strong>A Modeling Tool</strong></p>
+<p>Consider the optimization problem:
+$$
+\begin{aligned}
+\min_{x} \quad &amp; \sum_{i=1}^m f_i(x) \\
+\text{subject to} \quad &amp; x \in \Omega
+\end{aligned}
+$$
+It is equivalent to
+$$
+\begin{aligned}
+\min_{x,t} \quad &amp; \sum_{i=1}^m t_i \\
+\text{subject to} \quad &amp; x \in \Omega \\
+&amp; f_i(x) \leq t_i
+\end{aligned}
+$$
+Where $f_i: R^n \to R$ are given and $\Omega \subset R^n$ is the feasible set.</p>
+<h2 id="lecture-3"><a class="header" href="#lecture-3">Lecture 3</a></h2>
+<h3 id="solving-linear-programming-graphically"><a class="header" href="#solving-linear-programming-graphically">Solving Linear Programming Graphically</a></h3>
+<p>Recall the production problem:
+$$
+\begin{aligned}
+\max \quad &amp; x_1 + 2x_2 \\
+\text{subject to} \quad &amp; x_1 \leq 100 \\
+&amp;2x_2 \leq 200 \\
+&amp;_1 + x_2 \leq 150 \\
+&amp;x_1, x_2 \geq 0
+\end{aligned}
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/06/03/6a1f9ca911140.png" height="250px">
+</p>
+<p>The red polygon is the <em>feasible region</em>.<br />
+And the optimal solution is the <em>highest</em> one among these lines that touches the feasible region.</p>
+<p>Some Obeservations:</p>
+<ul>
+<li>The feasible region of an LP is a <em>polyhedron</em> 多面体</li>
+<li>The optimal solution tends to be a <em>vertex/corner</em> of the feasible region.</li>
+<li>Some constraints are <em>active</em> at the optimal solution, some are <em>inactive</em></li>
+</ul>
+<p>Def. A <strong>Polyhedron</strong> is a set that can be written in the form
+$$
+\{ x \in R^n: Ax \geq b \}
+$$
+where $A$ is an $m \times n$ matrix and $b \in R^m$.</p>
+<p>Def. <strong>Convex Set</strong>: A set $S \subseteq R^n$ is <em>convex</em> if
+$$
+\forall x, y \in S \\
+\forall \lambda \in [0,1], \lambda x + (1- \lambda) y \in S
+$$</p>
+<p>Def. <strong>Convex Combination</strong>: For any $x_1, \cdots, x_n$ and $\lambda_1 + \cdots + \lambda_n = 1$, we call $\sum_{i=1}^n \lambda_i x_i$ a <em>convex combination</em> of $x_1, \cdots, x_n$.</p>
+<p>Def. <strong>Exetreme Point</strong>: Let $P$ be a polyhedron. A point $x \in P$ is said to be an <em>extreme point</em> of $P$ if we <em>cannot</em> find two elements $y,z \in P$ with $y,z \not= x$ and a scalar $\lambda \in [0,1]$, such that $x = \lambda y + (1-\lambda) z$.</p>
+<p>Consider the production problem example above, it has $5$ exetreme points.</p>
+<h3 id="exetreme-points-and-basic-feasible-solutions"><a class="header" href="#exetreme-points-and-basic-feasible-solutions">Exetreme Points and Basic Feasible Solutions</a></h3>
+<p>Consider an LP in its standard form:
+$$
+\begin{aligned}
+\min_{x \in R^n} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; Ax = b \\
+&amp; x \geq 0
+\end{aligned}
+$$
+where $x \in R^n$, $A$ is an $m \times n$ matrix($m &lt; n$), and $b \in R^m$.</p>
+<blockquote>
+<p>General Assumption: $A$ has linearly independent rows (or equivalently $A$ hass full row <em>rank</em> $m$)</p>
+</blockquote>
+<p>Def. <strong>Basic Solution</strong>: We call $x$ a <em>basic solution(BS)</em> of the standard form LP iff:</p>
+<ol>
+<li>$Ax = b$</li>
+<li>There exist indices $B(1), \cdots, B(m)$ such that the columns of
+$$
+\begin{bmatrix}
+| &amp; | &amp; &amp; | \\
+A_{B(1)} &amp; A_{B(2)} &amp; \cdots &amp; A_{B(m)} \\
+| &amp; | &amp; &amp; |
+\end{bmatrix}
+$$
+are <em>linear independent</em> and $x_i=0$ for $i \not= B(1), \cdots, B(m)$.</li>
+</ol>
 
                     </main>
 
