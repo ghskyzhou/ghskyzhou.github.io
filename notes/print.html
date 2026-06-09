@@ -6462,7 +6462,7 @@ $$
 \max \quad &amp; x_1 + 2x_2 \\
 \text{subject to} \quad &amp; x_1 \leq 100 \\
 &amp;2x_2 \leq 200 \\
-&amp;_1 + x_2 \leq 150 \\
+&amp;x_1 + x_2 \leq 150 \\
 &amp;x_1, x_2 \geq 0
 \end{aligned}
 $$</p>
@@ -6482,6 +6482,9 @@ $$
 \{ x \in R^n: Ax \geq b \}
 $$
 where $A$ is an $m \times n$ matrix and $b \in R^m$.</p>
+<blockquote>
+<p>注：这里的 Polyhedron 多面体，并不是传统意义上的三维多面体，而是可以有更高维度的多面体，无法直观现象。</p>
+</blockquote>
 <p>Def. <strong>Convex Set</strong>: A set $S \subseteq R^n$ is <em>convex</em> if
 $$
 \forall x, y \in S \\
@@ -6516,6 +6519,91 @@ A_{B(1)} &amp; A_{B(2)} &amp; \cdots &amp; A_{B(m)} \\
 $$
 are <em>linear independent</em> and $x_i=0$ for $i \not= B(1), \cdots, B(m)$.</li>
 </ol>
+<h4 id="finding-a-basic-solution"><a class="header" href="#finding-a-basic-solution">Finding a Basic Solution</a></h4>
+<p>Procedure:</p>
+<ol>
+<li>Choose any $m$ independent columns of $A$: $A_{B(1)}, \cdots, A_{B(m)}$</li>
+<li>Let $x_i=0$ for all $i \not= B(1), \cdots, B(m)$.</li>
+<li>Solve the equation $Ax=b$ for the remaining $x_{B(1)}, \cdots, x_{B(m)}$, giving $x_B = A_B^{-1} b$</li>
+</ol>
+<blockquote>
+<p>Since $A_{B(1)}, \cdots, A_{B(m)}$ are linearly independent, the last step must produce a <em>unique solution</em>. Basic solution of an LP only depends on its constraints, it has nothing to do with the objective function.</p>
+</blockquote>
+<h4 id="basic-feasible-solutions"><a class="header" href="#basic-feasible-solutions">Basic Feasible Solutions</a></h4>
+<p>Def. If a <em>basic solution</em> $x$ also satisfies that $x \geq 0$, then we call it a <strong>basic feasible solution (BFS)</strong>.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<p>Still production problem...
+$$
+\begin{aligned}
+\max \quad &amp; x_1 + 2x_2 \\
+\text{subject to} \quad &amp; x_1 \leq 100 \\
+&amp;2x_2 \leq 200 \\
+&amp;x_1 + x_2 \leq 150 \\
+&amp;x_1, x_2 \geq 0
+\end{aligned}
+$$
+with standard form:
+$$
+\begin{array}{rlrrrrrrl}
+\min   &amp; -x_1 &amp; &amp; -2x_2 &amp;     &amp;     &amp;     &amp;     &amp;       \\
+\text{subject to} &amp;  x_1 &amp;     &amp;      &amp; &amp; +s_1 &amp;     &amp;     &amp; = 100 \\
+&amp;      &amp;     &amp; 2x_2 &amp;     &amp;     &amp; &amp; +s_2 &amp; = 200 \\
+&amp;  x_1 &amp; &amp;  +x_2 &amp;     &amp;     &amp;     &amp;+ s_3 &amp; = 150 \\
+&amp; x_1, &amp;     &amp; x_2, &amp;     &amp; s_1, &amp;     &amp; s_2, \quad s_3 &amp; \ge 0
+\end{array}
+$$
+We can denote the fesibale set by $\{ x:Ax=b, x \geq 0 \}$ where
+$$
+A =
+\begin{bmatrix}
+1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 2 &amp; 0 &amp; 1 &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; 0 &amp; 1
+\end{bmatrix}, \quad
+b =
+\begin{bmatrix}
+100 \\
+200 \\
+150
+\end{bmatrix}
+$$
+We can choose three independent columns of $A$, e.g. the first three $(B = \{1, 2, 3\})$, we get the corresponding basic solution via:
+$$
+x_B =
+\begin{bmatrix}
+1 &amp; 0 &amp; 1 \\
+0 &amp; 2 &amp; 0 \\
+1 &amp; 1 &amp; 0
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+100 \\
+200 \\
+150
+\end{bmatrix} =
+\begin{bmatrix}
+50 \\
+100 \\
+50
+\end{bmatrix}
+$$
+That is $x_1 = 50, x_2 = 100, s_1 = 50$, therefore $(50, 100, 50, 0, 0)$ is a basic feasible solution.<br />
+One can find other basic feasible solution by choosing other sets of columns.</p>
+<h4 id="extreme-points-and-bfs"><a class="header" href="#extreme-points-and-bfs">Extreme Points and BFS</a></h4>
+<p>For the standard LP polyhedron $\{ x:Ax=b, x \geq 0 \}$, we have:<br />
+$x$ is an extreme point $\Leftrightarrow$ $x$ is a basic feasible solution.</p>
+<blockquote>
+<p>就是说，我们的可行解可以组成一个多面体，这个多面体的极值点（也就是顶点）其实就是 BFS，即通过组合矩阵 $A$ 里面的列组成满秩矩阵得到的解，作为端点，形成的多面体。</p>
+<p>为什么满秩矩阵接出来的解即这个多面体的顶点？本质上可以理解为同时选了几个约束都到了极值点，那自然就形成了可行解的顶点。</p>
+</blockquote>
+<h4 id="fundamental-theorem-of-lp"><a class="header" href="#fundamental-theorem-of-lp">Fundamental Theorem of LP</a></h4>
+<p><strong>Fundamental LP Theorem</strong>: Consider a linear problem in standard form and assume that $A$ has full row rank $m$.</p>
+<ol>
+<li>If the feasible set is nonempty, there is a basic feasible solution.</li>
+<li>If there is an optimal solution, there must be at least one optimal solution that is also a basic feasible solution.</li>
+</ol>
+<p><strong>Corollary: Characteristics</strong>: If an LP with $m$ constraints (in the standard form) has an optimal solution, then there must be an optimal solution with no more than $m$ positive entries.</p>
+<h2 id="lecture-4"><a class="header" href="#lecture-4">Lecture 4</a></h2>
+<h3 id="the-simplex-method"><a class="header" href="#the-simplex-method">The Simplex Method</a></h3>
 
                     </main>
 
