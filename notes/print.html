@@ -5919,7 +5919,7 @@ $$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
 <li>解释 Ring AllReduce 相比 Parameter Server 为什么好。</li>
 <li>阐述为什么 LLM 推理要把 Prefill 和 Decoding 拆开。</li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="introduction-to-information-theory"><a class="header" href="#introduction-to-information-theory">Introduction to Information Theory</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mat3350-introduction-to-information-theory"><a class="header" href="#mat3350-introduction-to-information-theory">MAT3350 Introduction to Information Theory</a></h1>
 <p>Prof. Kaiming SHEN @ SSE</p>
 <p>Grades:</p>
 <ul>
@@ -6180,7 +6180,7 @@ $$
 &amp;H(X, Y) = A+B+C
 \end{aligned}
 $$</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="optimization"><a class="header" href="#optimization">Optimization</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mat3007-optimization"><a class="header" href="#mat3007-optimization">MAT3007 Optimization</a></h1>
 <p>Prof. Yongchun Li</p>
 <p>Three main subjects:</p>
 <ol>
@@ -6604,6 +6604,73 @@ $x$ is an extreme point $\Leftrightarrow$ $x$ is a basic feasible solution.</p>
 <p><strong>Corollary: Characteristics</strong>: If an LP with $m$ constraints (in the standard form) has an optimal solution, then there must be an optimal solution with no more than $m$ positive entries.</p>
 <h2 id="lecture-4"><a class="header" href="#lecture-4">Lecture 4</a></h2>
 <h3 id="the-simplex-method"><a class="header" href="#the-simplex-method">The Simplex Method</a></h3>
+<p>Idea: The simplex method preceeds from one BFS (an extreme point of the feasible region) to a neighboring / adjacent one to continuously imporve the value of the object funtion until reaching optimality.</p>
+<h4 id="neighboring-bfs"><a class="header" href="#neighboring-bfs">Neighboring BFS</a></h4>
+<p>Def. <strong>Neighboring Basic Solutions</strong>: Two basic solutions are <em>neighboring / adjacent</em> if they differ by exactly one baic (or non-basic) index.</p>
+<p>e.g. A BFS constructed by using $B=\{ 1,2,3 \}$ is a neighbor to $B=\{ 1,3,5 \}$, but <em>not</em> a neighbor to $B=\{ 1,4,5 \}$</p>
+<p>So if we consider checking all the neighbors of a BFS, which consists $m(n-m)$ potential neighbors, it likely to be very slow.</p>
+<h4 id="finding-a-neighboring-bfs"><a class="header" href="#finding-a-neighboring-bfs">Finding a Neighboring BFS</a></h4>
+<p>First, we assume that we have somehow found a BFS whose basis is $B=\{ B(1),\cdots,B(m) \}$, and define:
+$$
+\begin{bmatrix}
+| &amp; | &amp; &amp; | \\
+A_{B(1)} &amp; A_{B(2)} &amp; \cdots &amp; A_{B(m)} \\
+| &amp; | &amp; &amp; |
+\end{bmatrix}
+$$
+And let $A_N$ be the matrix consisting of the non-basic columns of $A$. We have
+$$
+|B| = m, |N|=n-m \\
+B \cup N = \{1,2,\cdots,n\}
+$$
+We can write
+$$
+A=[A_B, A_N], x=[x_B;x_N]
+$$
+By definition, we have
+$$
+x_B = A_B^{-1}b \quad x_N = 0
+$$</p>
+<p>To find a neighbor, we want to select a non-basic variable $x_j, j \in N$ to <strong>enter</strong> the basis. Which means we want to increase $x_j$ from the current BFS.</p>
+<p>We consider moving $x$ to a neighboring one $y$ by
+$$
+y=x+\theta d, \quad \theta \geq 0
+$$
+where</p>
+<ol>
+<li>$d_j=1$</li>
+<li>$d_{j'}=0$ for all other non-basic indices $j' \not= j \in N$.</li>
+</ol>
+<p>We need to guarantee that the resulting step $y=x+\theta d$ is still feasible, that is:
+$$
+A(x+\theta d) = b = Ax
+$$
+i.e. $Ad=0$</p>
+<p>Now, we write $d=[d_B;d_N]$, since $d_j=1$ and $d_{j'}=0$ for all other non-basic indices, we have
+$$
+0=
+\begin{bmatrix}
+A_B &amp; A_N
+\end{bmatrix}
+\begin{bmatrix}
+d_B \\ d_N
+\end{bmatrix}=
+A_B d_B + A_j
+$$
+Therefore
+$$
+d_B = -A_B^{-1}A_j
+$$
+Which means the direction $d$ is uniquely determined once $j$ is chosen:
+$$
+d=[d_B;d_N]=[-A_B^{-1}A_j;0;\dots;1;\dots;0]
+$$
+where the $1$ is at the $j^{th}$ entry, we call such $d$ the $j^{th}$ basic direction.</p>
+<blockquote>
+<p>简单来讲，就是我们现在站在一个 BFS（顶点）上，我们想要走到相邻顶点。我们选一个 non-basic 变量 $x_j$，让它从 $0$ 开始变大，且一直满足 $Ax=b$ 约束。</p>
+<p>当 $x_j$ 增加时，basic 变量也必须跟着变化，来抵消 $x_j$ 对约束的影响，，其方向为 $d_B=-A_B^{-1}A_j$。然后沿着 $y=x+\theta d$ 走，直到某个 basic 变量变成 $0$，那这个变成 $0$ 的 basic 变量就会离开 basis。</p>
+<p>至此，得到了一个新的 BFS。</p>
+</blockquote>
 
                     </main>
 
