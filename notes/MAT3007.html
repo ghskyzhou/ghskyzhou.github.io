@@ -599,8 +599,16 @@ $x$ is an extreme point $\Leftrightarrow$ $x$ is a basic feasible solution.</p>
 </ol>
 <p><strong>Corollary: Characteristics</strong>: If an LP with $m$ constraints (in the standard form) has an optimal solution, then there must be an optimal solution with no more than $m$ positive entries.</p>
 <h2 id="lecture-4"><a class="header" href="#lecture-4">Lecture 4</a></h2>
-<h3 id="the-simplex-method"><a class="header" href="#the-simplex-method">The Simplex Method</a></h3>
+<h3 id="the-simplex-method-单纯形法"><a class="header" href="#the-simplex-method-单纯形法">The Simplex Method 单纯形法</a></h3>
 <p>Idea: The simplex method preceeds from one BFS (an extreme point of the feasible region) to a neighboring / adjacent one to continuously imporve the value of the object funtion until reaching optimality.</p>
+<p>It usually talks on standard form LP:
+$$
+\begin{aligned}
+\min_{x} \quad &amp; c^\top x \
+\text{subject to} \quad &amp; Ax=b \
+&amp; x \geq 0
+\end{aligned}
+$$</p>
 <h4 id="neighboring-bfs"><a class="header" href="#neighboring-bfs">Neighboring BFS</a></h4>
 <p>Def. <strong>Neighboring Basic Solutions</strong>: Two basic solutions are <em>neighboring / adjacent</em> if they differ by exactly one baic (or non-basic) index.</p>
 <p>e.g. A BFS constructed by using $B=\{ 1,2,3 \}$ is a neighbor to $B=\{ 1,3,5 \}$, but <em>not</em> a neighbor to $B=\{ 1,4,5 \}$</p>
@@ -628,6 +636,7 @@ $$
 x_B = A_B^{-1}b \quad x_N = 0
 $$</p>
 <p>To find a neighbor, we want to select a non-basic variable $x_j, j \in N$ to <strong>enter</strong> the basis. Which means we want to increase $x_j$ from the current BFS.</p>
+<h4 id="basic-direction"><a class="header" href="#basic-direction">Basic Direction</a></h4>
 <p>We consider moving $x$ to a neighboring one $y$ by
 $$
 y=x+\theta d, \quad \theta \geq 0
@@ -661,11 +670,125 @@ Which means the direction $d$ is uniquely determined once $j$ is chosen:
 $$
 d=[d_B;d_N]=[-A_B^{-1}A_j;0;\dots;1;\dots;0]
 $$
-where the $1$ is at the $j^{th}$ entry, we call such $d$ the $j^{th}$ basic direction.</p>
+where the $1$ is at the $j^{th}$ entry, we call such $d$ the $j^{th}$ <strong>basic direction</strong>.</p>
 <blockquote>
 <p>简单来讲，就是我们现在站在一个 BFS（顶点）上，我们想要走到相邻顶点。我们选一个 non-basic 变量 $x_j$，让它从 $0$ 开始变大，且一直满足 $Ax=b$ 约束。</p>
 <p>当 $x_j$ 增加时，basic 变量也必须跟着变化，来抵消 $x_j$ 对约束的影响，，其方向为 $d_B=-A_B^{-1}A_j$。然后沿着 $y=x+\theta d$ 走，直到某个 basic 变量变成 $0$，那这个变成 $0$ 的 basic 变量就会离开 basis。</p>
-<p>至此，得到了一个新的 BFS。</p>
+<p>至此，得到了一个新的 BFS。但是，朝着这个方向走，目标函数会变好吗（更优）？</p>
+</blockquote>
+<h4 id="reduced-cost"><a class="header" href="#reduced-cost">Reduced Cost</a></h4>
+<p>The target function is
+$$
+c^\top x
+$$
+if walking $x$ to $y=x+\theta d$, the change of function will be
+$$
+\begin{aligned}
+\Delta &amp;= c^\top y-c^\top x \\
+&amp;= c^\top (x+\theta d)-c^\top x\\
+&amp;= \theta c^\top d
+\end{aligned}
+$$
+We define the <strong>reduced cost</strong>
+$$
+\begin{aligned}
+\bar{c}_j &amp;= c^\top d \\
+&amp;= c_B^\top d_B + c_j \\
+&amp;= c_B^\top (-A_B^{-1}A_j)+c_j \\
+&amp;= c_j - c_B^\top A_B^{-1} A_j
+\end{aligned}
+$$
+And in minimization problem, if a non-basic variable $x_j$'s reduced cost satisfies $\bar{c}_j &lt; 0$, it means it will decrease the function (better direction) if it enters basis.<br />
+Thus simplex will <strong>choose</strong> a variable of $\bar{c}_j &lt; 0$ to enter basis.</p>
+<p>If all non-basic variables satisfy $\bar{c}_j \ge 0$, it means there is no neibouring that decrease the target function, and it is the <strong>Optimization Answer</strong>.</p>
+<p>Theorem: <strong>Stopping Criterion</strong><br />
+Consider a basic feasible solution $x$ associated with the basis $B(1), B(2), \cdots, B(m)$ and let $\bar{c} = [\bar{c}_1; \cdots; \bar{c}_n]$ be the corresponding vector of reduced costs. If $\bar{c}_j \ge 0$, then $x$ must be optimal.</p>
+<blockquote>
+<p>这个比较好理解，就是不断找能使得目标函数更小的加入 Basis，顺便带走一个，直到找不到能替换的为止。</p>
+</blockquote>
+<h4 id="choosing-a-stepsize-theta"><a class="header" href="#choosing-a-stepsize-theta">Choosing a Stepsize $\theta$</a></h4>
+<p>After choosing an entering variable, we know the direction $d$, but we still need to choose how far we can move along this direction while keeping <em>feasibility</em>.</p>
+<p>The feasibility requires:
+$$
+y = x + \theta d \ge 0
+$$
+For variables with $d_i \ge 0$, there is no restriction on $\theta$, but for variables with $d_i &lt; 0$, we need
+$$
+x_i + \theta d_i \ge 0
+$$
+$$
+\theta \le -\frac{x_i}{d_i}
+$$
+Therefore the largest feasible stepsize is:
+$$
+\theta^* = \min_{i\in B, d_i &lt;0} \left\{ -\frac{x_i}{d_i} \right\}
+$$</p>
+<blockquote>
+<p>其实就是，沿着这个方向 $d$ 走，谁先变成 $0$，谁就限制了能走多远。</p>
+</blockquote>
+<p>Consider the minimum number is reached by a basic variable $x_\ell$, we have
+$$
+\theta^* = -\frac{x_\ell}{d_\ell}
+$$
+$$
+y_\ell = x_\ell + \theta^* d_\ell = 0
+$$
+That is, $x_\ell$ is leaving basis, and the entering variable $x_j$ is entering basis. The basis changed from $B$ to $B'=B-\{\ell\} + \{j\}$.</p>
+<p>This is a <strong>simplex pivot</strong>.</p>
+<blockquote>
+<p>What if <strong>no variable is decreasing</strong>?</p>
+</blockquote>
+<p>If the direction satisfies
+$$
+d \ge 0
+$$
+That is walking along the direction and all variables are not gonna be negative.
+$$
+x + \theta d \ge 0
+$$
+Meanwhile since we are choosing
+$$
+\bar{c}_j &lt; 0
+$$
+So the target function is always decreasing, that is the LP has no limit optimal solution, which is <strong>unbounded</strong>.</p>
+<h4 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h4>
+<p>Initialization: We start from a BFS $x$ with corresponding basis $B$.</p>
+<ol>
+<li>
+<p>We first compute the reduced costs $\bar{c}$:
+$$
+\bar{c}_j = c_j - c_B^\top A_B^{-1} A_j
+$$</p>
+<ul>
+<li>If $\bar{c} \ge 0$, then $x$ is optimal.</li>
+<li>Otherwise choose some $j \in N$ such that $\bar{c} &lt; 0$.</li>
+</ul>
+</li>
+<li>
+<p>Compute the $j^{th}$ basic direction $d$
+$$
+d = [-A_B^{-1}A_j;0;\cdots;1;\cdots;0]
+$$</p>
+<ul>
+<li>If $d \ge 0$, then the problem is unbounded.</li>
+<li>Otherwise, compute $\theta^*$:</li>
+</ul>
+<p>$$
+\theta^* = \min_{i\in B, d_i &lt;0} \left\{ -\frac{x_i}{d_i} \right\}
+$$</p>
+</li>
+<li>
+<p>Set $y=x+\theta^* d$. Then the point $y$ is the new BFS with index $j$ replacing $B(\ell)$ in the basis. The objective function value (decrease) is changed by
+$$
+\theta^* c^\top d = \theta^* \bar{c}_j
+$$</p>
+</li>
+<li>
+<p>Repeate this procedures.</p>
+</li>
+</ol>
+<blockquote>
+<p>站在当前 BFS 上，用 reduced cost 找一个能让目标变好的 non-basic variable，让它进入 basis；然后沿着对应 basic direction 走，用 minimum ratio test 找最多能走多远；走到某个 basic variable 变成 $0$，让它离开 basis；得到新的 BFS；重复直到所有 reduced costs 都不能让目标变好。</p>
 </blockquote>
 
                     </main>

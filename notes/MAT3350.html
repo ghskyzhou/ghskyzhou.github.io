@@ -422,6 +422,7 @@ I(X; Y) &amp;= H(X) - H(X|Y) \\
 &amp;= E_{x,y} \left[ \log \frac{p(x,y)}{p(x)p(y)} \right] \\
 \end{aligned}
 $$</p>
+<p>Consider <code>X -&gt; Channel -&gt; Y</code>, then $I(X;Y)$ is the maximum number of bits reliably transmitted by our channel.</p>
 <p>Now consider the venn graph below:</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/06/03/6a1f8c31ce337.png" height="120px">
@@ -436,6 +437,50 @@ $$
 &amp;H(Y) = B+C \\
 &amp;H(X, Y) = A+B+C
 \end{aligned}
+$$</p>
+<h3 id="42-kl-divergence"><a class="header" href="#42-kl-divergence">4.2 KL Divergence</a></h3>
+<p>Def. For two distributions $p(x), q(x)$, their <strong>KL Divergence</strong>:
+$$
+D(p || q) = \sum_x p(x) \log \frac{p(x)}{q(x)}
+$$</p>
+<blockquote>
+<p>$D(p || q)$ gives "distance"(or "difference") between $p$ and $q$. BUT $D(p||q) \not= D(q||p)$</p>
+</blockquote>
+<p>Def. <strong>Cross Entropy</strong>
+$$
+CE(p,q) = \sum_x p(x) \log \frac{1}{q(x)}
+$$</p>
+<p>Theorem:
+$$
+CE(p,q) = H(p) + D(p||q)
+$$</p>
+<blockquote>
+<p>CE（交叉熵）其实就是，比如在机器学习中，模型的理解 $q$ 和真实世界 $p$ 差得有多远，真实世界按照 $p$ 产生数据，但我用模型 $q$ 去预测它，平均会有多惊讶（可以作为 loss）</p>
+<p>KL Divergence（KL 散度）就是因为用了错误模型 $q$，额外多付出了多少代价</p>
+</blockquote>
+<h3 id="43-hypothesis-testing"><a class="header" href="#43-hypothesis-testing">4.3 Hypothesis Testing</a></h3>
+<p>Let $X_1, X_2, \cdots, X_n$ be independent random variables, but not sure which is their distribution, $p(x)$ or $q(x)$?</p>
+<p>Two <strong>hypothesis</strong>:</p>
+<ol>
+<li>$H_1: X_i \sim p(x)$</li>
+<li>$H_2: X_i \sim q(x)$</li>
+</ol>
+<p>Q: How to use $X_1, X_2, \cdots, X_n$ to decide which is true?<br />
+A: If $p(x)$ is more likely to produce $X_1, X_2, \cdots, X_n$, then $H_1$ is true, otherwise $H_2$ is true.</p>
+<p>Def. <strong>Log-likelihood Ratoi</strong>:
+$$
+LLR = \frac{1}{n} \log \frac{p(x_1, x_2, \cdots, x_n)}{q(x_1, x_2, \cdots, x_n)}
+$$
+So the hypothesis test is:</p>
+<ol>
+<li>If $LLR &gt; 0$, $p(x)$ will be the distribution</li>
+<li>If $LLR &lt; 0$, $q(x)$ will be the distribution</li>
+</ol>
+<h2 id="chapter-5-conditional-mutual-information"><a class="header" href="#chapter-5-conditional-mutual-information">Chapter 5: Conditional Mutual Information</a></h2>
+<h3 id="51-basis"><a class="header" href="#51-basis">5.1 Basis</a></h3>
+<p>Def. For $(X,Y,Z) \sim p(x,y,z)$, the <strong>Conditional Mutual Information</strong> is
+$$
+I(X;Y|Z) = H(X|Z)-H(X|Y,Z)
 $$</p>
 
                     </main>
