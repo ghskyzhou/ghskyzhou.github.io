@@ -6547,7 +6547,7 @@ $$</p>
 <p>Theorem:</p>
 <p>For any $\delta&gt;0$, for sufficiently large $n$,
 $$
-\Pr{X^n\in A_\epsilon^{(n)}}&gt;1-\delta.
+\Pr\{X^n\in A_\epsilon^{(n)}\}&gt;1-\delta.
 $$</p>
 <p>Theorem (Size of Typical Set):</p>
 <p>For any $\delta&gt;0$, for sufficiently large $n$,
@@ -6603,7 +6603,7 @@ bits.</li>
 <p>Theorem (Converse):</p>
 <p>There is no set $B_n$ with
 $$
-\Pr{X^n\in B_n}\to 1
+\Pr\{X^n\in B_n\}\to 1
 $$
 and
 $$
@@ -6617,7 +6617,7 @@ for large $n$.</p>
 <h3 id="91-variable-length-code"><a class="header" href="#91-variable-length-code">9.1 Variable Length Code</a></h3>
 <p>Def. A <strong>variable length code</strong> is a map
 $$
-c:\mathcal X\to {0,1}^*
+c:\mathcal X\to \{0,1\}^*
 $$
 that assigns each source symbol a bit string.</p>
 <p>For a sequence,
@@ -6769,9 +6769,9 @@ $$</p>
 $$
 \begin{aligned}
 L
-&amp;=\sum_i q_i\ell_i \
-&amp;&lt;\sum_i q_i\log\frac1{p_i}+1 \
-&amp;=H(q)+D(q||p)+1 \
+&amp;=\sum_i q_i\ell_i \\
+&amp;&lt;\sum_i q_i\log\frac1{p_i}+1 \\
+&amp;=H(q)+D(q||p)+1 \\
 &amp;=CE(q,p)+1.
 \end{aligned}
 $$</p>
@@ -6878,7 +6878,7 @@ but the codebook size grows exponentially.</p>
 <h3 id="114-d-ary-huffman-code"><a class="header" href="#114-d-ary-huffman-code">11.4 D-ary Huffman Code</a></h3>
 <p>For $D$-ary codewords:
 $$
-c:\mathcal X\to {0,1,\cdots,D-1}^*.
+c:\mathcal X\to \{0,1,\cdots,D-1\}^*.
 $$</p>
 <p>Algorithm:</p>
 <p>Merge the $D$ least likely symbols each time.</p>
