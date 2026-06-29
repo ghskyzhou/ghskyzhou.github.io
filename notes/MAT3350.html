@@ -477,11 +477,721 @@ So the hypothesis test is:</p>
 <li>If $LLR &lt; 0$, $q(x)$ will be the distribution</li>
 </ol>
 <h2 id="chapter-5-conditional-mutual-information"><a class="header" href="#chapter-5-conditional-mutual-information">Chapter 5: Conditional Mutual Information</a></h2>
-<h3 id="51-basis"><a class="header" href="#51-basis">5.1 Basis</a></h3>
-<p>Def. For $(X,Y,Z) \sim p(x,y,z)$, the <strong>Conditional Mutual Information</strong> is
+<h3 id="51-basics"><a class="header" href="#51-basics">5.1 Basics</a></h3>
+<p>Def. For $(X,Y,Z) \sim p(x,y,z)$, the <strong>conditional mutual information</strong> is
 $$
-I(X;Y|Z) = H(X|Z)-H(X|Y,Z)
+I(X;Y|Z)=H(X|Z)-H(X|Y,Z).
 $$</p>
+<p>Equivalent forms:
+$$
+\begin{aligned}
+I(X;Y|Z)
+&amp;=H(Y|Z)-H(Y|X,Z) \\
+&amp;=H(X|Z)+H(Y|Z)-H(X,Y|Z) \\
+&amp;=H(X,Z)+H(Y,Z)-H(Z)-H(X,Y,Z).
+\end{aligned}
+$$</p>
+<p>Interpretation:</p>
+<ul>
+<li>$H(X|Z)$: uncertainty of $X$ after side information $Z$ is known.</li>
+<li>$I(X;Y|Z)$: additional information about $X$ learned from $Y$ after $Z$ is already known.</li>
+</ul>
+<blockquote>
+<p>先知道 $Z$，再看 $Y$。$I(X;Y|Z)$ 问的是：在已经知道 $Z$ 的情况下，$Y$ 还能额外告诉我们多少关于 $X$ 的信息。</p>
+</blockquote>
+<p>Theorem:
+$$
+I(X;Y|Z)\geq 0.
+$$
+Equality holds iff $X$ and $Y$ are conditionally independent given $Z$:
+$$
+p(x,y|z)=p(x|z)p(y|z).
+$$</p>
+<p>Important warning:
+$$
+I(X;Y|Z)
+$$
+can be larger or smaller than $I(X;Y)$.</p>
+<p>Example intuition:</p>
+<ul>
+<li>If $Z$ is pure noise independent of everything, conditioning on $Z$ does not help much.</li>
+<li>If $Z$ helps remove noise from $Y$, then $I(X;Y|Z)$ can become larger.</li>
+<li>If $Z$ already reveals $X$, then $I(X;Y|Z)=0$.</li>
+</ul>
+<h3 id="52-chain-rule-for-mutual-information"><a class="header" href="#52-chain-rule-for-mutual-information">5.2 Chain Rule for Mutual Information</a></h3>
+<p>Theorem:
+$$
+I(X_1,\cdots,X_n;Y)
+=I(X_1;Y)+I(X_2;Y|X_1)+\cdots+I(X_n;Y|X_1,\cdots,X_{n-1}).
+$$</p>
+<p>Interpretation:</p>
+<p>Instead of decoding all users together, we may decode one by one:</p>
+<p>$$
+(X_1,\cdots,X_n)\rightarrow \text{Channel}\rightarrow Y.
+$$</p>
+<p>First decode $X_1$, then subtract the known part from $Y$, then decode $X_2$, and so on.</p>
+<blockquote>
+<p>总信息量可以拆成“第一层信息 + 已知第一层后的第二层信息 + 已知前两层后的第三层信息 + ...”。</p>
+</blockquote>
+<h3 id="53-markov-chain-and-data-processing"><a class="header" href="#53-markov-chain-and-data-processing">5.3 Markov Chain and Data Processing</a></h3>
+<p>Def. $X\to Y\to Z$ is a <strong>Markov chain</strong> if
+$$
+p(x,y,z)=p(x)p(y|x)p(z|y).
+$$</p>
+<p>Equivalently,
+$$
+p(z|x,y)=p(z|y).
+$$</p>
+<p>Intuition:</p>
+<p>$$
+X\to Y\to Z
+$$
+means $Z$ depends on $X$ only through $Y$.</p>
+<p>Theorem:
+If $X\to Y\to Z$, then $Z\to Y\to X$ is also a Markov chain.</p>
+<p>Theorem:
+If $X\to Y\to Z$, then $X$ and $Z$ are conditionally independent given $Y$:
+$$
+I(X;Z|Y)=0.
+$$</p>
+<p>Theorem (Data Processing Inequality):
+If
+$$
+X\to Y\to Z,
+$$
+then
+$$
+I(X;Z)\leq I(X;Y).
+$$</p>
+<p>Also,
+$$
+I(X;Z)\leq I(Y;Z).
+$$</p>
+<blockquote>
+<p>信息经过处理不会凭空变多。$X$ 先告诉 $Y$，$Y$ 再告诉 $Z$，所以 $Z$ 对 $X$ 的了解不可能超过 $Y$ 对 $X$ 的了解。</p>
+</blockquote>
+<p>Useful identity for proof:
+$$
+I(X;Y,Z)=I(X;Z)+I(X;Y|Z)
+=I(X;Y)+I(X;Z|Y).
+$$</p>
+<p>For Markov chain $X\to Y\to Z$, since $I(X;Z|Y)=0$,
+$$
+I(X;Z)+I(X;Y|Z)=I(X;Y).
+$$</p>
+<h2 id="chapter-6-three-party-mutual-information"><a class="header" href="#chapter-6-three-party-mutual-information">Chapter 6: Three-Party Mutual Information</a></h2>
+<h3 id="61-basics"><a class="header" href="#61-basics">6.1 Basics</a></h3>
+<p>Def. For $(X,Y,Z)\sim p(x,y,z)$, the <strong>three-party mutual information</strong> is
+$$
+I(X;Y;Z)=I(X;Y)-I(X;Y|Z).
+$$</p>
+<p>Equivalent forms:
+$$
+\begin{aligned}
+I(X;Y;Z)
+&amp;=H(X)+H(Y)+H(Z) \\
+&amp;\quad -H(X,Y)-H(X,Z)-H(Y,Z)+H(X,Y,Z).
+\end{aligned}
+$$</p>
+<p>Symmetric identities:
+$$
+I(X;Y;Z)=I(X;Z)-I(X;Z|Y)=I(Y;Z)-I(Y;Z|X).
+$$</p>
+<p>Important warning:
+$$
+I(X;Y)\geq 0,\qquad I(X;Y|Z)\geq 0,
+$$
+but
+$$
+I(X;Y;Z)
+$$
+can be positive, zero, or negative.</p>
+<blockquote>
+<p>two-party MI 和 conditional MI 都不会负；three-party MI 不一样，它不是一个普通的“信息量”，而更像三者重叠关系的代数量。</p>
+</blockquote>
+<h3 id="62-information-theoretic-security"><a class="header" href="#62-information-theoretic-security">6.2 Information Theoretic Security</a></h3>
+<p>Let</p>
+<ul>
+<li>$X$ be plaintext,</li>
+<li>$K$ be key,</li>
+<li>$Y$ be ciphertext.</li>
+</ul>
+<p>Encryption:
+$$
+Y=f(X,K).
+$$</p>
+<p>Decryption:
+$$
+\hat X=g(Y,K).
+$$</p>
+<p>Def. A system has <strong>perfect secrecy</strong> if
+$$
+I(X;Y)=0.
+$$</p>
+<p>This means the ciphertext reveals nothing about the plaintext without the key.</p>
+<p>Def. The system is perfectly decodable if
+$$
+H(X|Y,K)=0.
+$$</p>
+<p>This means once both $Y$ and $K$ are known, $X$ can be recovered exactly.</p>
+<p>Example (One-Time Pad):</p>
+<p>Let
+$$
+X\sim \operatorname{Bern}\left(\frac12\right),\qquad
+K\sim \operatorname{Bern}\left(\frac12\right)
+$$
+independently, and define
+$$
+Y=X\oplus K.
+$$</p>
+<p>Then
+$$
+\hat X=Y\oplus K.
+$$</p>
+<p>So
+$$
+I(X;Y)=0,\qquad H(X|Y,K)=0.
+$$</p>
+<p>Theorem (Shannon's Perfect Secrecy Limit):
+If
+$$
+I(X;Y)=0
+$$
+and
+$$
+H(X|Y,K)=0,
+$$
+then
+$$
+H(K)\geq H(X).
+$$</p>
+<blockquote>
+<p>想做到完全安全，key 的不确定性至少要和 message 一样大。One-time pad 安全，但 key 必须和 plaintext 一样长，所以实际很不方便。</p>
+</blockquote>
+<h2 id="chapter-7-entropy-rate"><a class="header" href="#chapter-7-entropy-rate">Chapter 7: Entropy Rate</a></h2>
+<h3 id="71-motivation"><a class="header" href="#71-motivation">7.1 Motivation</a></h3>
+<p>For iid random variables $X_1,\cdots,X_n$,
+$$
+H(X_1,\cdots,X_n)=\sum_{i=1}^n H(X_i)=nH(X_1).
+$$</p>
+<p>But natural language, music, text, etc. are not iid. Later symbols depend on previous symbols.</p>
+<p>Def. For a stochastic process $\mathcal X={X_i}$, the <strong>entropy rate</strong> is
+$$
+H(\mathcal X)=\lim_{n\to\infty}\frac1n H(X_1,\cdots,X_n),
+$$
+if the limit exists.</p>
+<p>Examples:</p>
+<p>If $X_i$ are iid, then
+$$
+H(\mathcal X)=H(X_1).
+$$</p>
+<p>If $X_i=X_1$ for all $i$, then
+$$
+H(\mathcal X)=\lim_{n\to\infty}\frac1n H(X_1)=0.
+$$</p>
+<blockquote>
+<p>entropy rate 是“平均每个新符号还带来多少新信息”。如果后面全是重复，平均新信息趋近于 0。</p>
+</blockquote>
+<h3 id="72-stationary-stochastic-process"><a class="header" href="#72-stationary-stochastic-process">7.2 Stationary Stochastic Process</a></h3>
+<p>Def. A stochastic process $\mathcal X={X_i}$ is <strong>stationary</strong> if shifting time does not change the joint distribution:
+$$
+p(X_1,\cdots,X_n)=p(X_{1+k},\cdots,X_{n+k})
+$$
+for all $n,k$.</p>
+<p>Theorem:</p>
+<p>For stationary $\mathcal X={X_i}$,
+$$
+\lim_{n\to\infty} H(X_n|X_1,\cdots,X_{n-1})
+$$
+exists.</p>
+<p>Moreover,
+$$
+H(\mathcal X)
+=\lim_{n\to\infty}\frac1n H(X_1,\cdots,X_n)
+=\lim_{n\to\infty}H(X_n|X_1,\cdots,X_{n-1}).
+$$</p>
+<p>Key idea:</p>
+<p>Let
+$$
+a_n=H(X_n|X_1,\cdots,X_{n-1}).
+$$</p>
+<p>For stationary processes, $a_n$ is non-increasing:
+$$
+a_{n+1}\leq a_n.
+$$</p>
+<p>Also,
+$$
+H(X_1,\cdots,X_n)=\sum_{i=1}^n a_i.
+$$</p>
+<p>So the average converges to the same limit.</p>
+<h3 id="73-markov-process"><a class="header" href="#73-markov-process">7.3 Markov Process</a></h3>
+<p>Def. A stochastic process is <strong>Markov</strong> if
+$$
+p(X_n|X_1,\cdots,X_{n-1})=p(X_n|X_{n-1}).
+$$</p>
+<p>That is, the future depends on the past only through the present.</p>
+<p>Theorem:</p>
+<p>If $\mathcal X$ is stationary and Markov, then
+$$
+H(\mathcal X)=H(X_2|X_1).
+$$</p>
+<p>If the stationary distribution is $\pi_i$ and transition matrix is $P_{ij}$, then
+$$
+H(\mathcal X)
+=\sum_i \pi_i H(P_{i,\cdot})
+=-\sum_i\sum_j \pi_i P_{ij}\log P_{ij}.
+$$</p>
+<p>Example:</p>
+<p>If
+$$
+X_{n+1}=aX_n+Z_n,
+$$
+where $Z_n$ are iid and independent of the past, then
+$$
+H(\mathcal X)=H(X_2|X_1)=H(Z_1).
+$$</p>
+<blockquote>
+<p>给定 $X_n$ 后，$X_{n+1}$ 的不确定性只来自新的 noise $Z_n$。</p>
+</blockquote>
+<h2 id="chapter-8-aep"><a class="header" href="#chapter-8-aep">Chapter 8: AEP</a></h2>
+<h3 id="81-lln-and-aep"><a class="header" href="#81-lln-and-aep">8.1 LLN and AEP</a></h3>
+<p>Theorem (Law of Large Numbers):</p>
+<p>For iid $X_i\sim p(x)$,
+$$
+\frac1n\sum_{i=1}^n X_i \to E[X]
+$$
+in probability.</p>
+<p>Theorem (Asymptotic Equipartition Property, AEP):</p>
+<p>For iid $X_i\sim p(x)$,
+$$
+-\frac1n\log p(X_1,\cdots,X_n)\to H(X)
+$$
+in probability.</p>
+<p>Proof idea:
+$$
+p(X_1,\cdots,X_n)=\prod_{i=1}^n p(X_i),
+$$
+so
+$$
+-\frac1n\log p(X_1,\cdots,X_n)
+=\frac1n\sum_{i=1}^n \log\frac1{p(X_i)}.
+$$</p>
+<p>By LLN, this converges to
+$$
+E\left[\log\frac1{p(X)}\right]=H(X).
+$$</p>
+<blockquote>
+<p>长序列的概率通常差不多是 $2^{-nH(X)}$。所以虽然每个具体序列概率不同，但“大多数概率质量”集中在一批概率差不多的序列上。</p>
+</blockquote>
+<h3 id="82-typical-set"><a class="header" href="#82-typical-set">8.2 Typical Set</a></h3>
+<p>Def. For $\epsilon&gt;0$, a sequence $(x_1,\cdots,x_n)$ is <strong>$\epsilon$-typical</strong> if
+$$
+\left|-\frac1n\log p(x_1,\cdots,x_n)-H(X)\right|\leq \epsilon.
+$$</p>
+<p>Def. The <strong>typical set</strong> is
+$$
+A_\epsilon^{(n)}
+=\left{x^n:
+\left|-\frac1n\log p(x^n)-H(X)\right|\leq \epsilon
+\right}.
+$$</p>
+<p>For any $x^n\in A_\epsilon^{(n)}$,
+$$
+2^{-n[H(X)+\epsilon]}
+\leq p(x^n)\leq
+2^{-n[H(X)-\epsilon]}.
+$$</p>
+<p>Theorem:</p>
+<p>For any $\delta&gt;0$, for sufficiently large $n$,
+$$
+\Pr{X^n\in A_\epsilon^{(n)}}&gt;1-\delta.
+$$</p>
+<p>Theorem (Size of Typical Set):</p>
+<p>For any $\delta&gt;0$, for sufficiently large $n$,
+$$
+(1-\delta)2^{n[H(X)-\epsilon]}
+\leq |A_\epsilon^{(n)}|
+\leq 2^{n[H(X)+\epsilon]}.
+$$</p>
+<p>Therefore,
+$$
+|A_\epsilon^{(n)}|\approx 2^{nH(X)}.
+$$</p>
+<blockquote>
+<p>typical set 的大小远小于全集 $|\mathcal X|^n$，但它包含几乎全部概率质量。压缩就是只给 typical set 里的序列编号。</p>
+</blockquote>
+<p>Example (Binary Source):</p>
+<p>If
+$$
+X_i=\begin{cases}
+0,&amp;p,\
+1,&amp;1-p,
+\end{cases}
+$$
+then a typical sequence contains about $np$ zeros and $n(1-p)$ ones.</p>
+<p>Number of typical sequences is roughly
+$$
+\binom{n}{np}\approx 2^{nH(X)}.
+$$</p>
+<p>Important warning:</p>
+<p>Typical sequence is not necessarily the most likely sequence.</p>
+<p>If $p=0.1$, the most likely sequence may be all $1$'s, but a typical sequence has about $10%$ zeros and $90%$ ones.</p>
+<h3 id="83-fundamental-limit-of-data-compression"><a class="header" href="#83-fundamental-limit-of-data-compression">8.3 Fundamental Limit of Data Compression</a></h3>
+<p>Theorem (Achievability):</p>
+<p>For iid $X_i\sim p(x)$ and any $\delta&gt;0$, for sufficiently large $n$, the sequence
+$$
+(X_1,\cdots,X_n)
+$$
+can be described using
+$$
+n[H(X)+\delta]
+$$
+bits with probability of error going to $0$.</p>
+<p>Main idea:</p>
+<ul>
+<li>If $x^n\in A_\epsilon^{(n)}$, encode its index inside the typical set.</li>
+<li>This needs about
+$$
+\log |A_\epsilon^{(n)}|\approx nH(X)
+$$
+bits.</li>
+<li>If $x^n\notin A_\epsilon^{(n)}$, use a fallback code.</li>
+</ul>
+<p>Theorem (Converse):</p>
+<p>There is no set $B_n$ with
+$$
+\Pr{X^n\in B_n}\to 1
+$$
+and
+$$
+|B_n|&lt;2^{n[H(X)-\epsilon]}
+$$
+for large $n$.</p>
+<blockquote>
+<p>$H(X)$ 不是某种“推荐压缩率”，而是极限。高于它可以做到，低于它基本不可能。</p>
+</blockquote>
+<h2 id="chapter-9-data-compression"><a class="header" href="#chapter-9-data-compression">Chapter 9: Data Compression</a></h2>
+<h3 id="91-variable-length-code"><a class="header" href="#91-variable-length-code">9.1 Variable Length Code</a></h3>
+<p>Def. A <strong>variable length code</strong> is a map
+$$
+c:\mathcal X\to {0,1}^*
+$$
+that assigns each source symbol a bit string.</p>
+<p>For a sequence,
+$$
+c(x_1,\cdots,x_n)=c(x_1)c(x_2)\cdots c(x_n).
+$$</p>
+<p>Def. A code is <strong>uniquely decodable</strong> (U.D.) if no two different source sequences produce the same encoded bit string.</p>
+<p>That is,
+$$
+(x_1,\cdots,x_n)\neq (y_1,\cdots,y_m)
+\Rightarrow
+c(x_1,\cdots,x_n)\neq c(y_1,\cdots,y_m).
+$$</p>
+<blockquote>
+<p>单个 codeword 不同还不够，因为拼起来以后可能撞车。U.D. 要求任意长串拼接后也不能歧义。</p>
+</blockquote>
+<h3 id="92-prefix-free-code"><a class="header" href="#92-prefix-free-code">9.2 Prefix-Free Code</a></h3>
+<p>Def. A code is <strong>prefix-free</strong> if no codeword is a prefix of another codeword.</p>
+<p>Theorem:
+$$
+\text{prefix-free}\Rightarrow \text{uniquely decodable}.
+$$</p>
+<p>But
+$$
+\text{uniquely decodable}\nRightarrow \text{prefix-free}.
+$$</p>
+<p>Example:</p>
+<p>$$
+{0,10,110,111}
+$$
+is prefix-free.</p>
+<p>Prefix-free codes can be represented by leaves of a binary tree.</p>
+<h3 id="93-krafts-inequality"><a class="header" href="#93-krafts-inequality">9.3 Kraft's Inequality</a></h3>
+<p>Theorem (Kraft Inequality):</p>
+<p>Let $\ell_i$ be the codeword length for symbol $i$, where $i=1,\cdots,m$.</p>
+<p>There exists a binary prefix-free code with lengths $\ell_i$ iff
+$$
+\sum_{i=1}^m 2^{-\ell_i}\leq 1.
+$$</p>
+<p>Tree interpretation:</p>
+<ul>
+<li>A codeword of length $\ell_i$ occupies $2^{\ell_{\max}-\ell_i}$ leaves in a full binary tree of depth $\ell_{\max}$.</li>
+<li>Total occupied leaves cannot exceed $2^{\ell_{\max}}$.</li>
+</ul>
+<p>For $D$-ary codes:
+$$
+\sum_{i=1}^m D^{-\ell_i}\leq 1.
+$$</p>
+<h3 id="94-mcmillans-inequality"><a class="header" href="#94-mcmillans-inequality">9.4 McMillan's Inequality</a></h3>
+<p>Theorem (McMillan Inequality):</p>
+<p>There exists a binary uniquely decodable code with lengths $\ell_i$ iff
+$$
+\sum_{i=1}^m 2^{-\ell_i}\leq 1.
+$$</p>
+<p>For $D$-ary uniquely decodable codes:
+$$
+\sum_{i=1}^m D^{-\ell_i}\leq 1.
+$$</p>
+<blockquote>
+<p>prefix-free 看起来比 U.D. 更严格，但从“可实现的长度集合”角度看，它们满足同一个 Kraft/McMillan 条件。所以优化平均长度时可以专心找 prefix-free code。</p>
+</blockquote>
+<h2 id="chapter-10-shannon-code"><a class="header" href="#chapter-10-shannon-code">Chapter 10: Shannon Code</a></h2>
+<h3 id="101-optimizing-codeword-length"><a class="header" href="#101-optimizing-codeword-length">10.1 Optimizing Codeword Length</a></h3>
+<p>For source alphabet
+$$
+\mathcal X={1,\cdots,m},
+$$
+suppose symbol $i$ has probability $p_i$ and codeword length $\ell_i$.</p>
+<p>We want to minimize expected length:
+$$
+L=\sum_i p_i\ell_i
+$$
+subject to
+$$
+\sum_i 2^{-\ell_i}\leq 1,\qquad \ell_i\in \mathbb Z^+.
+$$</p>
+<p>Relax the integer constraint. The optimal real-valued length is
+$$
+\ell_i^*=\log\frac1{p_i}.
+$$</p>
+<p>Then
+$$
+L^*=\sum_i p_i\log\frac1{p_i}=H(X).
+$$</p>
+<p>Therefore, for any uniquely decodable code,
+$$
+L\geq H(X).
+$$</p>
+<blockquote>
+<p>概率大的符号应该给短码，概率小的符号给长码。最理想长度就是 surprise：$\log(1/p_i)$。</p>
+</blockquote>
+<h3 id="102-shannon-code"><a class="header" href="#102-shannon-code">10.2 Shannon Code</a></h3>
+<p>Def. The <strong>Shannon code</strong> chooses
+$$
+\ell_i=\left\lceil \log\frac1{p_i}\right\rceil.
+$$</p>
+<p>Since
+$$
+\ell_i&lt;\log\frac1{p_i}+1,
+$$
+we have
+$$
+L=\sum_i p_i\ell_i
+&lt;\sum_i p_i\left(\log\frac1{p_i}+1\right)
+=H(X)+1.
+$$</p>
+<p>Theorem:</p>
+<p>For Shannon code,
+$$
+H(X)\leq L &lt; H(X)+1.
+$$</p>
+<p>If every $p_i$ is a power of $2$, then $\log(1/p_i)$ is integer and
+$$
+L=H(X).
+$$</p>
+<h3 id="103-block-coding"><a class="header" href="#103-block-coding">10.3 Block Coding</a></h3>
+<p>The $+1$ bit overhead may be large for single symbols.</p>
+<p>Idea: group $n$ symbols together:
+$$
+Y=(X_1,\cdots,X_n).
+$$</p>
+<p>Design Shannon code for $Y$.</p>
+<p>If $X_i$ are iid, then
+$$
+H(Y)=H(X_1,\cdots,X_n)=nH(X).
+$$</p>
+<p>For the block code,
+$$
+H(Y)\leq L_Y &lt; H(Y)+1.
+$$</p>
+<p>Divide by $n$:
+$$
+H(X)\leq \frac{L_Y}{n}&lt;H(X)+\frac1n.
+$$</p>
+<p>As $n\to\infty$,
+$$
+\frac{L_Y}{n}\to H(X).
+$$</p>
+<blockquote>
+<p>把很多 symbols 打包一起编码，可以把每个 symbol 平均多出来的 overhead 从 $1$ bit 降到 $1/n$ bit。但代价是 codebook size 指数爆炸。</p>
+</blockquote>
+<h3 id="104-wrong-distribution"><a class="header" href="#104-wrong-distribution">10.4 Wrong Distribution</a></h3>
+<p>Suppose the true test distribution is $q_i$, but the code is designed using training distribution $p_i$.</p>
+<p>Shannon code length:
+$$
+\ell_i=\left\lceil \log\frac1{p_i}\right\rceil.
+$$</p>
+<p>Expected length under true distribution $q$:
+$$
+\begin{aligned}
+L
+&amp;=\sum_i q_i\ell_i \
+&amp;&lt;\sum_i q_i\log\frac1{p_i}+1 \
+&amp;=H(q)+D(q||p)+1 \
+&amp;=CE(q,p)+1.
+\end{aligned}
+$$</p>
+<p>Note:</p>
+<ul>
+<li>$D(q||p)$ is the extra cost of not knowing the true distribution.</li>
+<li>If $p=q$, then $D(q||p)=0$.</li>
+</ul>
+<h3 id="105-value-of-side-information"><a class="header" href="#105-value-of-side-information">10.5 Value of Side Information</a></h3>
+<p>Suppose $(X,Y)$ are correlated, and $Y$ is provided to both encoder and decoder as side information.</p>
+<p>For each possible $y$, design a code for $X$ based on
+$$
+p(x|y).
+$$</p>
+<p>For each $y$,
+$$
+H(X|Y=y)\leq L_y &lt; H(X|Y=y)+1.
+$$</p>
+<p>Average over $y$:
+$$
+H(X|Y)\leq L &lt; H(X|Y)+1.
+$$</p>
+<p>Since
+$$
+H(X|Y)\leq H(X),
+$$
+side information can reduce the required number of bits.</p>
+<blockquote>
+<p>如果 decoder 和 encoder 都知道 $Y$，我们可以根据不同的 $Y=y$ 使用不同 codebook。相关性越强，$H(X|Y)$ 越小，越省 bits。</p>
+</blockquote>
+<h2 id="chapter-11-huffman-code"><a class="header" href="#chapter-11-huffman-code">Chapter 11: Huffman Code</a></h2>
+<h3 id="111-optimal-solution"><a class="header" href="#111-optimal-solution">11.1 Optimal Solution</a></h3>
+<p>Recall the codeword length problem:
+$$
+\min \sum_i p_i\ell_i
+$$
+subject to
+$$
+\sum_i 2^{-\ell_i}\leq 1,\qquad \ell_i\in\mathbb Z^+.
+$$</p>
+<p>Shannon code is simple but may be suboptimal because it only rounds
+$$
+\log\frac1{p_i}.
+$$</p>
+<p>The optimal prefix-free code is given by <strong>Huffman coding</strong>.</p>
+<p>Algorithm (Binary Huffman Code):</p>
+<ol>
+<li>Sort symbols by probability.</li>
+<li>Merge the two least likely symbols.</li>
+<li>Replace them by one combined symbol with probability equal to their sum.</li>
+<li>Repeat until only one symbol remains.</li>
+<li>Assign $0/1$ labels to branches and read codewords from root to leaves.</li>
+</ol>
+<p>Expected length:
+$$
+L=\sum_i p_i\ell_i.
+$$</p>
+<h3 id="112-optimality-lemmas"><a class="header" href="#112-optimality-lemmas">11.2 Optimality Lemmas</a></h3>
+<p>Lemma 1:</p>
+<p>For an optimal prefix-free code, if
+$$
+p_i&gt;p_j,
+$$
+then
+$$
+\ell_i\leq \ell_j.
+$$</p>
+<blockquote>
+<p>More likely symbols should not have longer codewords.</p>
+</blockquote>
+<p>Lemma 2:</p>
+<p>In an optimal binary prefix-free code, the two longest codewords can be chosen to have the same length and share the same parent node.</p>
+<p>Lemma 3:</p>
+<p>In an optimal binary prefix-free code, the two least likely symbols can be assigned to these two longest sibling codewords.</p>
+<p>Theorem (Huffman Optimality):</p>
+<p>Merging the two least likely symbols reduces the problem to a smaller optimal coding problem.</p>
+<p>If the Huffman tree is optimal for the reduced source, expanding the merged node gives an optimal tree for the original source.</p>
+<blockquote>
+<p>Huffman 的贪心是对的，因为在某个最优树里，最小的两个概率一定可以被放在最深处当 siblings。先把它们合并不会破坏最优性。</p>
+</blockquote>
+<h3 id="113-remarks"><a class="header" href="#113-remarks">11.3 Remarks</a></h3>
+<p>Huffman code is not unique.</p>
+<p>Reasons:</p>
+<ul>
+<li>Ties in probability can be merged in different orders.</li>
+<li>Left/right branches can swap $0$ and $1$.</li>
+<li>Different trees may have the same expected length.</li>
+</ul>
+<p>Theorem:</p>
+<p>For binary Huffman code,
+$$
+H(X)\leq L_{\text{Huffman}}&lt;H(X)+1.
+$$</p>
+<p>The lower bound follows from entropy being the fundamental limit.</p>
+<p>To make
+$$
+L_{\text{Huffman}}\to H(X),
+$$
+we can Huffman-code blocks
+$$
+(X_1,\cdots,X_n),
+$$
+but the codebook size grows exponentially.</p>
+<h3 id="114-d-ary-huffman-code"><a class="header" href="#114-d-ary-huffman-code">11.4 D-ary Huffman Code</a></h3>
+<p>For $D$-ary codewords:
+$$
+c:\mathcal X\to {0,1,\cdots,D-1}^*.
+$$</p>
+<p>Algorithm:</p>
+<p>Merge the $D$ least likely symbols each time.</p>
+<p>Important:</p>
+<p>For a full $D$-ary tree, the number of leaves must satisfy
+$$
+m\equiv 1 \pmod{D-1}.
+$$</p>
+<p>If not, add dummy symbols with probability $0$ until
+$$
+m+r\equiv 1 \pmod{D-1}.
+$$</p>
+<p>Then run the normal $D$-ary Huffman algorithm.</p>
+<p>For $D$-ary code measured in $D$-ary digits,
+$$
+H_D(X)\leq L_D &lt; H_D(X)+1,
+$$
+where
+$$
+H_D(X)=\sum_i p_i\log_D\frac1{p_i}.
+$$</p>
+<p>Measured in bits:
+$$
+H(X)\leq L_D\log_2D &lt; H(X)+\log_2D.
+$$</p>
+<h2 id="midterm-cheat-sheet-priority"><a class="header" href="#midterm-cheat-sheet-priority">Midterm Cheat-Sheet Priority</a></h2>
+<p>Must memorize:</p>
+<p>$$
+H(X,Y)=H(X)+H(Y|X)
+$$</p>
+<p>$$
+I(X;Y)=H(X)-H(X|Y)=H(X)+H(Y)-H(X,Y)
+$$</p>
+<p>$$
+I(X;Y|Z)=H(X|Z)-H(X|Y,Z)
+$$</p>
+<p>$$
+D(p||q)=\sum_x p(x)\log\frac{p(x)}{q(x)}\geq 0
+$$</p>
+<p>$$
+A_\epsilon^{(n)}\approx 2^{nH(X)},\qquad p(x^n)\approx 2^{-nH(X)}
+$$</p>
+<p>$$
+\sum_i 2^{-\ell_i}\leq 1
+$$</p>
+<p>$$
+H(X)\leq L_{\text{Shannon}},L_{\text{Huffman}}&lt;H(X)+1
+$$</p>
+<p>Most likely exam operations:</p>
+<ol>
+<li>Expand entropy / mutual information expressions.</li>
+<li>Prove inequalities using chain rule and "conditioning reduces entropy".</li>
+<li>Compute typical set size or probability.</li>
+<li>Compute entropy rate for stationary Markov processes.</li>
+<li>Construct Huffman code and compute expected length.</li>
+</ol>
 
                     </main>
 

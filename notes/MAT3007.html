@@ -604,8 +604,8 @@ $x$ is an extreme point $\Leftrightarrow$ $x$ is a basic feasible solution.</p>
 <p>It usually talks on standard form LP:
 $$
 \begin{aligned}
-\min_{x} \quad &amp; c^\top x \
-\text{subject to} \quad &amp; Ax=b \
+\min_{x} \quad &amp; c^\top x \\
+\text{subject to} \quad &amp; Ax=b \\
 &amp; x \geq 0
 \end{aligned}
 $$</p>
@@ -790,6 +790,9 @@ $$</p>
 <blockquote>
 <p>站在当前 BFS 上，用 reduced cost 找一个能让目标变好的 non-basic variable，让它进入 basis；然后沿着对应 basic direction 走，用 minimum ratio test 找最多能走多远；走到某个 basic variable 变成 $0$，让它离开 basis；得到新的 BFS；重复直到所有 reduced costs 都不能让目标变好。</p>
 </blockquote>
+<h2 id="lecture-5"><a class="header" href="#lecture-5">Lecture 5</a></h2>
+<h3 id="degeneracy"><a class="header" href="#degeneracy">Degeneracy</a></h3>
+<p>Def. We call a BFS $x$ <strong>degenerate</strong> if some of the basic variables $x_B$ are $0$. Otherwise, it is <strong>non-degenerate</strong>.</p>
 
                     </main>
 
