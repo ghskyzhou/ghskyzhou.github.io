@@ -6935,6 +6935,1255 @@ $$</p>
 <li>Compute entropy rate for stationary Markov processes.</li>
 <li>Construct Huffman code and compute expected length.</li>
 </ol>
+<h2 id="chapter-12-channel-capacity"><a class="header" href="#chapter-12-channel-capacity">Chapter 12: Channel Capacity</a></h2>
+<h3 id="121-discrete-channels"><a class="header" href="#121-discrete-channels">12.1 Discrete Channels</a></h3>
+<p>Def. A <strong>discrete channel</strong> consists of two finite alphabets
+$$
+\mathcal X=\{1,\cdots,m\},\qquad
+\mathcal Y=\{1,\cdots,n\},
+$$
+and a transition probability
+$$
+p(y|x),\qquad x\in\mathcal X,\ y\in\mathcal Y.
+$$</p>
+<p>The channel only specifies how the output is generated after the input is fixed. Once an input distribution $p(x)$ is chosen,
+$$
+p(x,y)=p(x)p(y|x),
+$$
+and hence
+$$
+p(y)=\sum_x p(x)p(y|x).
+$$</p>
+<p>Def. The <strong>matrix representation</strong> of a channel is
+$$
+A=[a_{ij}],\qquad a_{ij}=p(Y=j|X=i).
+$$</p>
+<p>Every row of $A$ is a PMF, so
+$$
+a_{ij}\geq0,\qquad \sum_j a_{ij}=1.
+$$</p>
+<p>If
+$$
+\mathbf p_X=[p(X=1),\cdots,p(X=m)],
+$$
+then
+$$
+\mathbf p_Y=\mathbf p_XA.
+$$</p>
+<blockquote>
+<p>channel matrix 决定 $p(y|x)$，但不决定 $p(x)$。不同 input distribution 会产生不同 $p(y)$，也会得到不同 $I(X;Y)$。</p>
+</blockquote>
+<p>Examples:</p>
+<ol>
+<li><strong>Noiseless channel</strong>: $Y=X$, so $p(y|x)=1$ iff $y=x$.</li>
+<li><strong>Binary Erasure Channel (BEC)</strong>: the input bit is erased with probability $\gamma$.</li>
+<li><strong>Binary Symmetric Channel (BSC)</strong>: the input bit is flipped with probability $\gamma$.</li>
+</ol>
+<p>For a BEC,
+$$
+\mathcal X=\{0,1\},\qquad \mathcal Y=\{0,e,1\},
+$$
+and
+$$
+A=
+\begin{bmatrix}
+1-\gamma&amp;\gamma&amp;0\\
+0&amp;\gamma&amp;1-\gamma
+\end{bmatrix}.
+$$</p>
+<p>For a BSC,
+$$
+A=
+\begin{bmatrix}
+1-\gamma&amp;\gamma\\
+\gamma&amp;1-\gamma
+\end{bmatrix}.
+$$</p>
+<h3 id="122-discrete-memoryless-channel"><a class="header" href="#122-discrete-memoryless-channel">12.2 Discrete Memoryless Channel</a></h3>
+<p>Def. The <strong>$n$-th extension</strong> of a discrete channel has input and output
+$$
+x^n=(x_1,\cdots,x_n)\in\mathcal X^n,
+\qquad
+y^n=(y_1,\cdots,y_n)\in\mathcal Y^n.
+$$</p>
+<p>Def. A channel is <strong>discrete memoryless</strong> (DMC) if the current output depends on the past only through the current input:
+$$
+(X^{i-1},Y^{i-1})\to X_i\to Y_i.
+$$</p>
+<p>Equivalently,
+$$
+p(y_i|x^n,y^{i-1})=p(y_i|x_i).
+$$</p>
+<p>Theorem:</p>
+<p>For a DMC,
+$$
+p(y^n|x^n)=\prod_{i=1}^n p(y_i|x_i).
+$$</p>
+<p>Proof idea:
+$$
+\begin{aligned}
+p(y^n|x^n)
+&amp;=\prod_{i=1}^n p(y_i|y^{i-1},x^n)\\
+&amp;=\prod_{i=1}^n p(y_i|x_i).
+\end{aligned}
+$$</p>
+<blockquote>
+<p>memoryless 是 channel 的性质，不代表输入 $X_1,\cdots,X_n$ 必须 independent。它只保证给定 $X_i$ 后，$Y_i$ 不再受其他时刻影响。</p>
+</blockquote>
+<h3 id="123-information-capacity"><a class="header" href="#123-information-capacity">12.3 Information Capacity</a></h3>
+<p>Theorem (Information Capacity of a DMC):
+$$
+C=\max_{p(x)}I(X;Y).
+$$</p>
+<p>The unit is bits per channel use.</p>
+<p>For a noiseless channel with $|\mathcal X|=m$,
+$$
+I(X;Y)=H(X),
+$$
+so
+$$
+C=\max_{p(x)}H(X)=\log m,
+$$
+achieved by the uniform input.</p>
+<p>For a BEC with erasure probability $\gamma$,
+$$
+H(Y|X)=H_b(\gamma),
+$$
+where
+$$
+H_b(t)=-t\log t-(1-t)\log(1-t).
+$$</p>
+<p>Let $q=p(X=0)$. Then
+$$
+p_Y=[q(1-\gamma),\gamma,(1-q)(1-\gamma)].
+$$</p>
+<p>$H(Y)$ is maximized at $q=1/2$, and
+$$
+\max_q H(Y)=H_b(\gamma)+(1-\gamma).
+$$</p>
+<p>Therefore,
+$$
+C_{\mathrm{BEC}}=1-\gamma.
+$$</p>
+<p>For a BSC with crossover probability $\gamma$,
+$$
+H(Y|X)=H_b(\gamma).
+$$</p>
+<p>Also,
+$$
+H(Y)\leq1,
+$$
+with equality for $X\sim\operatorname{Bernoulli}(1/2)$. Thus,
+$$
+C_{\mathrm{BSC}}=1-H_b(\gamma).
+$$</p>
+<p>Important distinction:</p>
+<ul>
+<li>BEC tells the receiver which symbols were lost, so $C=1-\gamma$.</li>
+<li>BSC replaces a symbol by another valid symbol, so the receiver does not know where the error occurred; its capacity is $1-H_b(\gamma)$.</li>
+</ul>
+<h2 id="chapter-13-random-coding"><a class="header" href="#chapter-13-random-coding">Chapter 13: Random Coding</a></h2>
+<h3 id="131-encoding-and-decoding"><a class="header" href="#131-encoding-and-decoding">13.1 Encoding and Decoding</a></h3>
+<p>Consider communication over a DMC:
+$$
+W\to X^n(W)\to Y^n\to \widehat W,
+$$
+where
+$$
+W\in\{1,\cdots,M\},\qquad M=2^{nR}.
+$$</p>
+<p>Def. An <strong>$(M,n)$-code</strong> consists of:</p>
+<ol>
+<li>A message set $\{1,\cdots,M\}$.</li>
+<li>An encoding function
+$$
+X^n:\{1,\cdots,M\}\to\mathcal X^n.
+$$</li>
+<li>A decoding function
+$$
+g:\mathcal Y^n\to\{1,\cdots,M\}.
+$$</li>
+</ol>
+<p>The rate is
+$$
+R=\frac{\log M}{n}
+$$
+bits per channel use.</p>
+<p>Def. The <strong>conditional error probability</strong> for message $i$ is
+$$
+\lambda_i
+=\Pr\{g(Y^n)\neq i\mid X^n=X^n(i)\}.
+$$</p>
+<p>Def. The <strong>maximum error probability</strong> and <strong>average error probability</strong> are
+$$
+\lambda_{\max}=\max_{1\leq i\leq M}\lambda_i,
+$$
+and
+$$
+\lambda_{\mathrm{avg}}
+=\frac1M\sum_{i=1}^M\lambda_i.
+$$</p>
+<p>A rate $R$ is <strong>achievable</strong> if there exists a sequence of $(2^{nR},n)$-codes such that
+$$
+\lambda_{\max}\to0
+$$
+or, equivalently after expurgation,
+$$
+\lambda_{\mathrm{avg}}\to0.
+$$</p>
+<p>Def. The <strong>operational channel capacity</strong> is the supremum of all achievable rates.</p>
+<h3 id="132-joint-typicality"><a class="header" href="#132-joint-typicality">13.2 Joint Typicality</a></h3>
+<p>Def. A pair $(x^n,y^n)$ is <strong>jointly $\epsilon$-typical</strong> if
+$$
+\left|-\frac1n\log p(x^n)-H(X)\right|&lt;\epsilon,
+$$
+$$
+\left|-\frac1n\log p(y^n)-H(Y)\right|&lt;\epsilon,
+$$
+and
+$$
+\left|-\frac1n\log p(x^n,y^n)-H(X,Y)\right|&lt;\epsilon.
+$$</p>
+<p>The set of all jointly typical pairs is denoted by
+$$
+A_\epsilon^{(n)}(X,Y).
+$$</p>
+<p>Example:</p>
+<p>If
+$$
+p(0,0)=p(1,1)=0.45,
+\qquad
+p(0,1)=p(1,0)=0.05,
+$$
+then a jointly typical pair $(x^n,y^n)$ satisfies
+$$
+x_i=y_i
+$$
+for about $90%$ of the positions.</p>
+<p>Theorem (Joint AEP):</p>
+<p>Suppose $(X_i,Y_i)\sim p(x,y)$ iid.</p>
+<ol>
+<li>
+<p>A true pair is jointly typical with high probability:
+$$
+\Pr\{(X^n,Y^n)\in A_\epsilon^{(n)}\}\to1.
+$$</p>
+</li>
+<li>
+<p>The number of jointly typical pairs is approximately
+$$
+|A_\epsilon^{(n)}|\approx2^{nH(X,Y)}.
+$$</p>
+</li>
+</ol>
+<p>More precisely, for sufficiently large $n$,
+$$
+(1-\epsilon)2^{n[H(X,Y)-\epsilon]}
+\leq |A_\epsilon^{(n)}|
+\leq2^{n[H(X,Y)+\epsilon]}.
+$$</p>
+<ol start="3">
+<li>If $U^n\sim\prod_i p(x_i)$ and $V^n\sim\prod_i p(y_i)$ are generated independently, then
+$$
+\Pr\{(U^n,V^n)\in A_\epsilon^{(n)}\}
+\approx2^{-nI(X;Y)}.
+$$</li>
+</ol>
+<p>A useful bound is
+$$
+\Pr\{(U^n,V^n)\in A_\epsilon^{(n)}\}
+\leq2^{-n[I(X;Y)-3\epsilon]}.
+$$</p>
+<blockquote>
+<p>真正通过 channel 产生的 $(X^n,Y^n)$ 几乎一定 jointly typical；两个独立生成的序列却“碰巧看起来相关”的概率约为 $2^{-nI(X;Y)}$。这正是 random coding 能工作的原因。</p>
+</blockquote>
+<h3 id="133-shannons-random-coding-idea"><a class="header" href="#133-shannons-random-coding-idea">13.3 Shannon's Random Coding Idea</a></h3>
+<p>The random coding proof has three main steps:</p>
+<ol>
+<li>Choose an input distribution $p(x)$, ideally one maximizing $I(X;Y)$.</li>
+<li>Generate every codeword independently:
+$$
+X^n(w)\sim\prod_{i=1}^n p(x_i),
+\qquad w=1,\cdots,2^{nR}.
+$$</li>
+<li>Given $y^n$, find the unique $\widehat w$ such that
+$$
+(X^n(\widehat w),y^n)\in A_\epsilon^{(n)}.
+$$</li>
+</ol>
+<p>There are two possible decoding errors:</p>
+<ul>
+<li>The transmitted codeword and received sequence are not jointly typical.</li>
+<li>A wrong codeword is also jointly typical with the received sequence.</li>
+</ul>
+<p>Joint AEP makes the first event unlikely. The second event is controlled by comparing
+$$
+2^{nR}
+$$
+wrong candidates with the probability
+$$
+2^{-nI(X;Y)}
+$$
+that any one candidate looks jointly typical.</p>
+<p>So the key condition is
+$$
+2^{nR}2^{-nI(X;Y)}\to0,
+$$
+or
+$$
+R&lt;I(X;Y).
+$$</p>
+<h2 id="chapter-14-channel-coding-theorem"><a class="header" href="#chapter-14-channel-coding-theorem">Chapter 14: Channel Coding Theorem</a></h2>
+<p>Theorem (Channel Coding Theorem for a DMC):</p>
+<p>Let
+$$
+C=\max_{p(x)}I(X;Y).
+$$</p>
+<ol>
+<li>Every rate $R&lt;C$ is achievable.</li>
+<li>Every rate $R&gt;C$ is not achievable.</li>
+</ol>
+<p>This chapter proves achievability. The converse is proved in Chapter 15.</p>
+<h3 id="141-random-codebook-and-typicality-decoder"><a class="header" href="#141-random-codebook-and-typicality-decoder">14.1 Random Codebook and Typicality Decoder</a></h3>
+<p>Fix an input distribution $p(x)$ and a rate
+$$
+R&lt;I(X;Y).
+$$</p>
+<p>Step 1: <strong>Codebook generation</strong>.</p>
+<p>Generate
+$$
+M=2^{nR}
+$$
+codewords independently. For every message $w$,
+$$
+X^n(w)=(X_1(w),\cdots,X_n(w)),
+$$
+where every entry is drawn iid from $p(x)$.</p>
+<p>Thus the random codebook contains $M$ rows and $n$ columns:
+$$
+\mathcal C=
+\begin{bmatrix}
+X_1(1)&amp;\cdots&amp;X_n(1)\\
+X_1(2)&amp;\cdots&amp;X_n(2)\\
+\vdots&amp;&amp;\vdots\\
+X_1(M)&amp;\cdots&amp;X_n(M)
+\end{bmatrix}.
+$$</p>
+<p>The entire codebook is revealed to both encoder and decoder.</p>
+<p>Step 2: <strong>Encoding</strong>.</p>
+<p>To send message $w$, transmit
+$$
+X_1(w),X_2(w),\cdots,X_n(w)
+$$
+sequentially through the DMC.</p>
+<p>Step 3: <strong>Decoding</strong>.</p>
+<p>After receiving $y^n$, find the unique $\widehat w$ satisfying
+$$
+(X^n(\widehat w),y^n)\in A_\epsilon^{(n)}.
+$$</p>
+<p>Declare an error if:</p>
+<ul>
+<li>No such message exists; or</li>
+<li>More than one such message exists.</li>
+</ul>
+<h3 id="142-average-error-analysis"><a class="header" href="#142-average-error-analysis">14.2 Average Error Analysis</a></h3>
+<p>By symmetry of random code generation, assume without loss of generality that
+$$
+W=1
+$$
+was sent.</p>
+<p>Define
+$$
+E_w=\{(X^n(w),Y^n)\in A_\epsilon^{(n)}\}.
+$$</p>
+<p>An error occurs only if
+$$
+E_1^c\cup E_2\cup\cdots\cup E_M
+$$
+occurs. Therefore, by the union bound,
+$$
+\lambda_1
+\leq \Pr(E_1^c)+\sum_{w=2}^{M}\Pr(E_w).
+$$</p>
+<p>For the transmitted codeword, Joint AEP gives
+$$
+\Pr(E_1^c)\to0.
+$$</p>
+<p>For every wrong codeword $w\neq1$, $X^n(w)$ is independent of $Y^n$. Hence,
+$$
+\Pr(E_w)
+\leq2^{-n[I(X;Y)-3\epsilon]}.
+$$</p>
+<p>Thus, for sufficiently large $n$,
+$$
+\begin{aligned}
+\lambda_1
+&amp;\leq \epsilon+(2^{nR}-1)2^{-n[I(X;Y)-3\epsilon]}\\
+&amp;\leq \epsilon+2^{n[R-I(X;Y)+3\epsilon]}.
+\end{aligned}
+$$</p>
+<p>If
+$$
+R&lt;I(X;Y)-3\epsilon,
+$$
+then
+$$
+\lambda_1\to0.
+$$</p>
+<p>By symmetry, the same bound holds for every message after averaging over all randomly generated codebooks. Therefore,
+$$
+E_{\mathcal C}[\lambda_{\mathrm{avg}}(\mathcal C)]\to0.
+$$</p>
+<p>Since an average cannot be smaller than every individual value, there must exist at least one deterministic codebook $\mathcal C^<em>$ such that
+$$
+\lambda_{\mathrm{avg}}(\mathcal C^</em>)\to0.
+$$</p>
+<blockquote>
+<p>random coding 不是说实际通信时不断随机换 codebook。随机性只是证明工具：先证明随机 codebook 的平均表现很好，因此至少存在一个固定的好 codebook。</p>
+</blockquote>
+<h3 id="143-from-average-error-to-maximum-error"><a class="header" href="#143-from-average-error-to-maximum-error">14.3 From Average Error to Maximum Error</a></h3>
+<p>Suppose a code with $M=2^{nR}$ messages satisfies
+$$
+\lambda_{\mathrm{avg}}\leq2\epsilon.
+$$</p>
+<p>Sort its conditional errors:
+$$
+\lambda_{m_1}\leq\lambda_{m_2}\leq\cdots\leq\lambda_{m_M}.
+$$</p>
+<p>Keep only the better half of the messages. For
+$$
+k=M/2,
+$$
+we have
+$$
+M\lambda_{\mathrm{avg}}
+=\sum_{i=1}^M\lambda_{m_i}
+\geq\sum_{i=k+1}^M\lambda_{m_i}
+\geq\frac M2\lambda_{m_k}.
+$$</p>
+<p>Therefore,
+$$
+\lambda_{m_k}\leq2\lambda_{\mathrm{avg}}\leq4\epsilon.
+$$</p>
+<p>After discarding the worse half,
+$$
+\lambda_{\max}\leq4\epsilon.
+$$</p>
+<p>The new rate is
+$$
+\frac1n\log\frac{2^{nR}}2
+=R-\frac1n\to R.
+$$</p>
+<p>Thus vanishing average error implies vanishing maximum error with asymptotically no rate loss.</p>
+<p>Finally, choose $p^<em>(x)$ maximizing $I(X;Y)$. Since every
+$$
+R&lt;I_{p^</em>}(X;Y)=C
+$$
+is achievable, the achievability part of the channel coding theorem follows.</p>
+<h2 id="chapter-15-converse"><a class="header" href="#chapter-15-converse">Chapter 15: Converse</a></h2>
+<h3 id="151-fanos-inequality"><a class="header" href="#151-fanos-inequality">15.1 Fano's Inequality</a></h3>
+<p>Suppose we estimate a discrete random variable $X\in\mathcal X$ from $Y$:
+$$
+\widehat X=g(Y).
+$$</p>
+<p>Let
+$$
+P_e=\Pr\{\widehat X\neq X\}.
+$$</p>
+<p>Theorem (Fano's Inequality):
+$$
+H(X|Y)
+\leq H_b(P_e)+P_e\log(|\mathcal X|-1).
+$$</p>
+<p>Since
+$$
+H_b(P_e)\leq1,
+$$
+a simpler form is
+$$
+H(X|Y)\leq1+P_e\log|\mathcal X|.
+$$</p>
+<blockquote>
+<p>Fano's inequality 把“decoding error 很小”翻译为“知道 observation 后剩余的不确定性很小”。它是 converse proof 中从 reliability 连到 information 的桥梁。</p>
+</blockquote>
+<p>Proof:</p>
+<p>Define the error indicator
+$$
+E=
+\begin{cases}
+0,&amp;\widehat X=X,\\
+1,&amp;\widehat X\neq X.
+\end{cases}
+$$</p>
+<p>Because $E$ is determined by $(X,Y)$,
+$$
+H(E|X,Y)=0.
+$$</p>
+<p>Using the chain rule in two ways,
+$$
+\begin{aligned}
+H(E,X|Y)
+&amp;=H(X|Y)+H(E|X,Y)\\
+&amp;=H(X|Y),
+\end{aligned}
+$$
+and
+$$
+H(E,X|Y)=H(E|Y)+H(X|E,Y).
+$$</p>
+<p>Now,
+$$
+H(E|Y)\leq H(E)=H_b(P_e).
+$$</p>
+<p>If $E=0$, $X=\widehat X$ is known from $Y$, so
+$$
+H(X|E=0,Y)=0.
+$$</p>
+<p>If $E=1$, at most $|\mathcal X|-1$ possibilities remain, so
+$$
+H(X|E=1,Y)\leq\log(|\mathcal X|-1).
+$$</p>
+<p>Therefore,
+$$
+H(X|E,Y)
+\leq P_e\log(|\mathcal X|-1),
+$$
+which proves the result.</p>
+<h3 id="152-converse-of-the-channel-coding-theorem"><a class="header" href="#152-converse-of-the-channel-coding-theorem">15.2 Converse of the Channel Coding Theorem</a></h3>
+<p>Consider any $(2^{nR},n)$-code over a DMC. Let
+$$
+W\sim\operatorname{Uniform}\{1,\cdots,2^{nR}\}.
+$$</p>
+<p>Without feedback,
+$$
+W\to X^n\to Y^n\to\widehat W
+$$
+is a Markov chain.</p>
+<p>Since $W$ is uniform,
+$$
+H(W)=nR.
+$$</p>
+<p>By the mutual information identity,
+$$
+nR=H(W|\widehat W)+I(W;\widehat W).
+$$</p>
+<p>Fano's inequality gives
+$$
+H(W|\widehat W)
+\leq H_b(P_e)+P_e\log(2^{nR}-1)
+\leq1+nRP_e.
+$$</p>
+<p>By data processing,
+$$
+I(W;\widehat W)\leq I(X^n;Y^n).
+$$</p>
+<p>For a DMC,
+$$
+\begin{aligned}
+I(X^n;Y^n)
+&amp;=H(Y^n)-H(Y^n|X^n)\\
+&amp;\leq\sum_{i=1}^n H(Y_i)-\sum_{i=1}^nH(Y_i|X_i)\\
+&amp;=\sum_{i=1}^nI(X_i;Y_i)\\
+&amp;\leq nC.
+\end{aligned}
+$$</p>
+<p>Combining the bounds,
+$$
+nR\leq1+nRP_e+nC.
+$$</p>
+<p>Equivalently,
+$$
+R(1-P_e)\leq C+\frac1n.
+$$</p>
+<p>If a sequence of codes has
+$$
+P_e\to0,
+$$
+then letting $n\to\infty$ gives
+$$
+R\leq C.
+$$</p>
+<p>Therefore every $R&gt;C$ is not achievable.</p>
+<p>The two parts together give the fundamental separation:
+$$
+\begin{cases}
+R&lt;C,&amp;\text{reliable communication is possible},\\
+R&gt;C,&amp;\text{reliable communication is impossible}.
+\end{cases}
+$$</p>
+<blockquote>
+<p>$R=C$ 是边界点。capacity 定义为 achievable rates 的 supremum；定理的标准表述通常只直接保证所有 $R&lt;C$ 可达、所有 $R&gt;C$ 不可达。</p>
+</blockquote>
+<h2 id="chapter-16-feedback-capacity"><a class="header" href="#chapter-16-feedback-capacity">Chapter 16: Feedback Capacity</a></h2>
+<h3 id="161-channel-with-feedback"><a class="header" href="#161-channel-with-feedback">16.1 Channel with Feedback</a></h3>
+<p>With noiseless causal feedback, the encoder knows all previous outputs before choosing the next input:
+$$
+X_i=f_i(W,Y^{i-1}).
+$$</p>
+<p>The decoder still observes $Y^n$ and produces
+$$
+\widehat W=g(Y^n).
+$$</p>
+<p>Example (BEC with Feedback):</p>
+<p>For a BEC with erasure probability $\gamma$, retransmit the current bit whenever the previous output is $e$.</p>
+<p>The number of transmissions for one successful bit is geometric with mean
+$$
+\frac1{1-\gamma}.
+$$</p>
+<p>Therefore the achieved rate is
+$$
+R=\frac1{1/(1-\gamma)}=1-\gamma.
+$$</p>
+<p>This equals the ordinary BEC capacity.</p>
+<blockquote>
+<p>feedback 可以让协议更直观：丢了就重传。但在 DMC 中，它不能把 capacity 提高到原来的 $C$ 以上。</p>
+</blockquote>
+<h3 id="162-feedback-does-not-increase-dmc-capacity"><a class="header" href="#162-feedback-does-not-increase-dmc-capacity">16.2 Feedback Does Not Increase DMC Capacity</a></h3>
+<p>Theorem:</p>
+<p>For every DMC,
+$$
+C_{\mathrm{FB}}=C.
+$$</p>
+<p>Achievability is immediate: the encoder can ignore the feedback and use an ordinary capacity-achieving code. Hence,
+$$
+C_{\mathrm{FB}}\geq C.
+$$</p>
+<p>For the converse, consider any feedback code with average error probability $P_e$.</p>
+<p>Although
+$$
+W\to X^n\to Y^n
+$$
+is generally not a Markov chain because $X_i$ depends on $Y^{i-1}$, we still have
+$$
+W\to Y^n\to\widehat W.
+$$</p>
+<p>Thus,
+$$
+I(W;\widehat W)\leq I(W;Y^n).
+$$</p>
+<p>Now,
+$$
+\begin{aligned}
+I(W;Y^n)
+&amp;=H(Y^n)-H(Y^n|W)\\
+&amp;\leq\sum_{i=1}^nH(Y_i)
+-\sum_{i=1}^nH(Y_i|W,Y^{i-1}).
+\end{aligned}
+$$</p>
+<p>Since $X_i=f_i(W,Y^{i-1})$ and the channel is memoryless,
+$$
+H(Y_i|W,Y^{i-1})=H(Y_i|X_i).
+$$</p>
+<p>Therefore,
+$$
+\begin{aligned}
+I(W;Y^n)
+&amp;\leq\sum_{i=1}^n
+\left[H(Y_i)-H(Y_i|X_i)\right]\\
+&amp;=\sum_{i=1}^nI(X_i;Y_i)\\
+&amp;\leq nC.
+\end{aligned}
+$$</p>
+<p>Using Fano's inequality again,
+$$
+nR\leq1+nRP_e+nC.
+$$</p>
+<p>Letting $n\to\infty$ and $P_e\to0$ yields
+$$
+R\leq C.
+$$</p>
+<p>Hence,
+$$
+C_{\mathrm{FB}}\leq C,
+$$
+and finally
+$$
+C_{\mathrm{FB}}=C.
+$$</p>
+<p>Remarks:</p>
+<ul>
+<li>For a DMC, iid capacity-achieving inputs are already optimal for capacity.</li>
+<li>For channels with memory, feedback may increase capacity because iid inputs can be suboptimal.</li>
+<li>Even when capacity is unchanged, feedback can simplify coding, reduce delay, or improve error exponents.</li>
+</ul>
+<h2 id="chapter-17-differential-entropy"><a class="header" href="#chapter-17-differential-entropy">Chapter 17: Differential Entropy</a></h2>
+<h3 id="171-definition-and-examples"><a class="header" href="#171-definition-and-examples">17.1 Definition and Examples</a></h3>
+<p>For a discrete random variable $X\sim p(x)$,
+$$
+H(X)=\sum_xp(x)\log\frac1{p(x)}.
+$$</p>
+<p>For a continuous random variable $X$ with probability density function $f(x)$, the corresponding quantity is <strong>differential entropy</strong>.</p>
+<p>Def.
+$$
+h(X)=\int_{-\infty}^{\infty}f(x)\log\frac1{f(x)},dx
+=-\int_{-\infty}^{\infty}f(x)\log f(x),dx.
+$$</p>
+<p>When the logarithm is base $2$, $h(X)$ is measured in bits. When it is base $e$, it is measured in nats.</p>
+<p>Important warning:
+$$
+h(X)
+$$
+can be negative, unlike discrete entropy.</p>
+<p>Example (Uniform Distribution):</p>
+<p>If
+$$
+X\sim\operatorname{Uniform}[0,a],
+$$
+then
+$$
+f(x)=\frac1a,\qquad 0\leq x\leq a,
+$$
+and
+$$
+h(X)=\int_0^a\frac1a\log a,dx=\log a.
+$$</p>
+<p>Thus $h(X)&lt;0$ when $0&lt;a&lt;1$.</p>
+<p>Example (Exponential Distribution):</p>
+<p>If
+$$
+X\sim\operatorname{Exp}(\lambda),
+\qquad
+f(x)=\lambda e^{-\lambda x},\ x\geq0,
+$$
+then, in nats,
+$$
+\begin{aligned}
+h(X)
+&amp;=-E[\ln f(X)]\\
+&amp;=\lambda E[X]-\ln\lambda\\
+&amp;=1-\ln\lambda.
+\end{aligned}
+$$</p>
+<p>In bits,
+$$
+h(X)=\log_2\frac e\lambda.
+$$</p>
+<p>Example (Gaussian Distribution):</p>
+<p>If
+$$
+X\sim\mathcal N(0,\sigma^2),
+$$
+then
+$$
+f(x)=\frac1{\sqrt{2\pi\sigma^2}}
+\exp\left(-\frac{x^2}{2\sigma^2}\right),
+$$
+and
+$$
+h(X)=\frac12\log(2\pi e\sigma^2).
+$$</p>
+<h3 id="172-continuous-aep-and-typical-volume"><a class="header" href="#172-continuous-aep-and-typical-volume">17.2 Continuous AEP and Typical Volume</a></h3>
+<p>Theorem (Continuous AEP):</p>
+<p>If $X_i\sim f(x)$ iid, then
+$$
+-\frac1n\log f(X_1,\cdots,X_n)\to h(X)
+$$
+in probability.</p>
+<p>Proof idea:
+$$
+\begin{aligned}
+-\frac1n\log f(X_1,\cdots,X_n)
+&amp;=-\frac1n\log\prod_{i=1}^nf(X_i)\\
+&amp;=-\frac1n\sum_{i=1}^n\log f(X_i)\\
+&amp;\to -E[\log f(X)]\\
+&amp;=h(X)
+\end{aligned}
+$$
+by LLN.</p>
+<p>Def. The <strong>continuous typical set</strong> is
+$$
+A_\epsilon^{(n)}
+=\left\{x^n:
+\left|-\frac1n\log f(x^n)-h(X)\right|&lt;\epsilon
+\right\}.
+$$</p>
+<p>For every $x^n\in A_\epsilon^{(n)}$,
+$$
+2^{-n[h(X)+\epsilon]}
+&lt;f(x^n)&lt;
+2^{-n[h(X)-\epsilon]}.
+$$</p>
+<p>Theorem:</p>
+<p>For sufficiently large $n$,
+$$
+\Pr\{X^n\in A_\epsilon^{(n)}\}&gt;1-\epsilon.
+$$</p>
+<p>The continuous analogue of cardinality is <strong>volume</strong>:
+$$
+\operatorname{Vol}(A_\epsilon^{(n)})
+=\int_{A_\epsilon^{(n)}}dx_1\cdots dx_n.
+$$</p>
+<p>Its bounds are
+$$
+(1-\epsilon)2^{n[h(X)-\epsilon]}
+\leq\operatorname{Vol}(A_\epsilon^{(n)})
+\leq2^{n[h(X)+\epsilon]}.
+$$</p>
+<p>Therefore,
+$$
+\operatorname{Vol}(A_\epsilon^{(n)})
+\approx2^{nh(X)}.
+$$</p>
+<p>Example (Gaussian Typical Set):</p>
+<p>For $X_i\sim\mathcal N(0,\sigma^2)$,
+$$
+-\frac1n\log f(x^n)
+=\frac{\log e}{2\sigma^2}\frac1n\sum_{i=1}^nx_i^2
++\frac12\log(2\pi\sigma^2).
+$$</p>
+<p>Joint typicality is therefore equivalent to
+$$
+\frac1n\sum_{i=1}^n x_i^2\approx\sigma^2.
+$$</p>
+<blockquote>
+<p>Gaussian typical sequences lie in a thin spherical shell of radius approximately $\sqrt{n\sigma^2}$, rather than near the origin.</p>
+</blockquote>
+<h3 id="173-relative-entropy-and-mutual-information"><a class="header" href="#173-relative-entropy-and-mutual-information">17.3 Relative Entropy and Mutual Information</a></h3>
+<p>Def. For two densities $f$ and $g$, the <strong>relative entropy</strong> is
+$$
+D(f||g)=\int f(x)\log\frac{f(x)}{g(x)},dx.
+$$</p>
+<p>Theorem:
+$$
+D(f||g)\geq0,
+$$
+with equality iff $f=g$ almost everywhere.</p>
+<p>Def. For jointly continuous $(X,Y)$,
+$$
+I(X;Y)
+=\iint f(x,y)
+\log\frac{f(x,y)}{f_X(x)f_Y(y)},dx,dy.
+$$</p>
+<p>Equivalently,
+$$
+I(X;Y)=h(Y)-h(Y|X)
+=h(X)+h(Y)-h(X,Y).
+$$</p>
+<p>Although differential entropy can be negative,
+$$
+I(X;Y)\geq0,
+$$
+because
+$$
+I(X;Y)=D(f_{XY}||f_Xf_Y).
+$$</p>
+<p>As in the discrete case,
+$$
+I(X;Y)=0
+\Leftrightarrow X\text{ and }Y\text{ are independent}.
+$$</p>
+<p>Useful properties:</p>
+<ol>
+<li>
+<p>Differential entropy chain rule:
+$$
+h(X^n)=\sum_{i=1}^nh(X_i|X^{i-1}).
+$$</p>
+</li>
+<li>
+<p>Mutual information chain rule:
+$$
+I(X^n;Y)
+=\sum_{i=1}^nI(X_i;Y|X^{i-1}).
+$$</p>
+</li>
+<li>
+<p>Translation:
+$$
+h(X+c)=h(X).
+$$</p>
+</li>
+<li>
+<p>Scaling:
+$$
+h(aX)=h(X)+\log|a|,\qquad a\neq0.
+$$</p>
+</li>
+<li>
+<p>For a nonsingular matrix $A$,
+$$
+h(AX^n)=h(X^n)+\log|\det A|.
+$$</p>
+</li>
+</ol>
+<h3 id="174-joint-aep-for-continuous-variables"><a class="header" href="#174-joint-aep-for-continuous-variables">17.4 Joint AEP for Continuous Variables</a></h3>
+<p>A pair $(x^n,y^n)$ is jointly typical if
+$$
+-\frac1n\log f_X(x^n)\approx h(X),
+$$
+$$
+-\frac1n\log f_Y(y^n)\approx h(Y),
+$$
+and
+$$
+-\frac1n\log f_{XY}(x^n,y^n)\approx h(X,Y).
+$$</p>
+<p>The continuous Joint AEP gives the same two facts needed for random coding:</p>
+<ol>
+<li>
+<p>If $(X_i,Y_i)\sim f_{XY}$ iid, then
+$$
+\Pr\{(X^n,Y^n)\text{ jointly typical}\}\to1.
+$$</p>
+</li>
+<li>
+<p>If $\widetilde X^n$ and $\widetilde Y^n$ are independently generated from $f_X$ and $f_Y$, then
+$$
+\Pr\{(\widetilde X^n,\widetilde Y^n)
+\text{ jointly typical}\}
+\lesssim2^{-n[I(X;Y)-3\epsilon]}.
+$$</p>
+</li>
+</ol>
+<p>So the typicality-decoding proof from a DMC can later be adapted to continuous channels.</p>
+<h3 id="175-connection-between-hx-and-hx"><a class="header" href="#175-connection-between-hx-and-hx">17.5 Connection Between $H(X)$ and $h(X)$</a></h3>
+<p>Quantize a continuous $X$ using bins of width $\Delta$. If
+$$
+i\Delta\leq X&lt;(i+1)\Delta,
+$$
+map $X$ to a discrete representative $X^\Delta=x_i$.</p>
+<p>For small $\Delta$,
+$$
+p(X^\Delta=x_i)\approx f(x_i)\Delta.
+$$</p>
+<p>Hence,
+$$
+\begin{aligned}
+H(X^\Delta)
+&amp;=-\sum_i f(x_i)\Delta
+\log[f(x_i)\Delta]\\
+&amp;\approx-\int f(x)\log f(x),dx-\log\Delta\\
+&amp;=h(X)-\log\Delta.
+\end{aligned}
+$$</p>
+<p>Therefore,
+$$
+h(X)=\lim_{\Delta\to0}
+\left[H(X^\Delta)+\log\Delta\right].
+$$</p>
+<blockquote>
+<p>当 $\Delta\to0$ 时，离散化后的 $H(X^\Delta)\to\infty$，而 $\log\Delta\to-\infty$。differential entropy 是去掉“分辨率成本”后的有限部分，所以它本身不等于描述一个实数所需的绝对 bit 数。</p>
+</blockquote>
+<h2 id="chapter-18-maximum-entropy"><a class="header" href="#chapter-18-maximum-entropy">Chapter 18: Maximum Entropy</a></h2>
+<h3 id="181-gaussian-maximizes-entropy-under-a-power-constraint"><a class="header" href="#181-gaussian-maximizes-entropy-under-a-power-constraint">18.1 Gaussian Maximizes Entropy Under a Power Constraint</a></h3>
+<p>Goal:</p>
+<p>Among all continuous distributions satisfying
+$$
+E[X^2]=\int x^2f(x),dx\leq P,
+$$
+find the one maximizing $h(X)$.</p>
+<p>Theorem (Maximum Entropy Theorem):</p>
+<p>If $E[X^2]\leq P$, then
+$$
+h(X)\leq\frac12\log(2\pi eP).
+$$</p>
+<p>Equality holds iff
+$$
+X\sim\mathcal N(0,P).
+$$</p>
+<p>Proof using relative entropy:</p>
+<p>Let
+$$
+\phi(x)=\frac1{\sqrt{2\pi P}}
+\exp\left(-\frac{x^2}{2P}\right)
+$$
+be the density of $\mathcal N(0,P)$.</p>
+<p>Since
+$$
+D(f||\phi)\geq0,
+$$
+we have
+$$
+h(f)\leq-\int f(x)\log\phi(x),dx.
+$$</p>
+<p>Now,
+$$
+\begin{aligned}
+-\int f(x)\log\phi(x),dx
+&amp;=\frac{\log e}{2P}E[X^2]
++\frac12\log(2\pi P)\\
+&amp;\leq\frac12\log(2\pi eP).
+\end{aligned}
+$$</p>
+<p>For $f=\phi$, equality holds throughout. Therefore the Gaussian is optimal.</p>
+<blockquote>
+<p>entropy 希望 distribution 尽量 spread out；power constraint 又限制它不能无限扩散。两者平衡后的最优形状正是 Gaussian。</p>
+</blockquote>
+<h3 id="182-lagrange-multiplier-derivation"><a class="header" href="#182-lagrange-multiplier-derivation">18.2 Lagrange Multiplier Derivation</a></h3>
+<p>We can also solve
+$$
+\max_f -\int f(x)\log f(x),dx
+$$
+subject to
+$$
+\int f(x)x^2,dx=P,
+\qquad
+\int f(x),dx=1.
+$$</p>
+<p>The functional Lagrangian is
+$$
+\begin{aligned}
+L[f,\lambda,\mu]
+&amp;=-\int f(x)\log f(x),dx\\
+&amp;\quad+\lambda\left(\int f(x)x^2,dx-P\right)\\
+&amp;\quad+\mu\left(\int f(x),dx-1\right).
+\end{aligned}
+$$</p>
+<p>At an optimum,
+$$
+\frac{\delta L}{\delta f(x)}
+=-\log f(x)-\log e+\lambda x^2+\mu=0.
+$$</p>
+<p>Thus,
+$$
+f^*(x)=K e^{-cx^2},
+$$
+which is Gaussian after choosing the constants to satisfy normalization and power.</p>
+<p>The inequality constraint can be replaced by equality at the maximum because a distribution using less than all available power can be scaled outward to obtain larger entropy.</p>
+<h3 id="183-exponential-maximizes-entropy-under-a-mean-constraint"><a class="header" href="#183-exponential-maximizes-entropy-under-a-mean-constraint">18.3 Exponential Maximizes Entropy Under a Mean Constraint</a></h3>
+<p>Suppose $X\geq0$ and
+$$
+E[X]=m.
+$$</p>
+<p>The entropy-maximization problem is
+$$
+\max_f -\int_0^\infty f(x)\log f(x),dx
+$$
+subject to
+$$
+\int_0^\infty xf(x),dx=m,
+\qquad
+\int_0^\infty f(x),dx=1.
+$$</p>
+<p>The Lagrange condition gives
+$$
+f^*(x)=K e^{-cx}.
+$$</p>
+<p>After normalization and matching the mean,
+$$
+f^*(x)=\frac1m e^{-x/m},\qquad x\geq0.
+$$</p>
+<p>Therefore the exponential distribution maximizes entropy among nonnegative random variables with fixed mean, and
+$$
+h(X)\leq\log(em),
+$$
+with equality iff $X\sim\operatorname{Exp}(1/m)$.</p>
+<p>General pattern:</p>
+<ul>
+<li>Fixed finite support $\Rightarrow$ uniform maximizes entropy.</li>
+<li>Fixed second moment $\Rightarrow$ Gaussian maximizes entropy.</li>
+<li>Nonnegative with fixed mean $\Rightarrow$ exponential maximizes entropy.</li>
+</ul>
+<h2 id="chapter-19-gaussian-channel"><a class="header" href="#chapter-19-gaussian-channel">Chapter 19: Gaussian Channel</a></h2>
+<h3 id="191-awgn-channel-and-capacity"><a class="header" href="#191-awgn-channel-and-capacity">19.1 AWGN Channel and Capacity</a></h3>
+<p>Consider the <strong>additive white Gaussian noise (AWGN) channel</strong>
+$$
+Y_i=X_i+Z_i,
+$$
+where
+$$
+Z_i\sim\mathcal N(0,\sigma^2)
+$$
+are iid and independent of the inputs.</p>
+<p>The codewords satisfy the average power constraint
+$$
+\frac1n\sum_{i=1}^n x_i^2(w)\leq P.
+$$</p>
+<p>The signal-to-noise ratio is
+$$
+\operatorname{SNR}=\frac P{\sigma^2}.
+$$</p>
+<p>Theorem (AWGN Channel Capacity):
+$$
+C=\frac12\log\left(1+\frac P{\sigma^2}\right)
+$$
+bits per channel use.</p>
+<p>The capacity-achieving input is
+$$
+X\sim\mathcal N(0,P).
+$$</p>
+<p>Derivation:
+$$
+\begin{aligned}
+I(X;Y)
+&amp;=h(Y)-h(Y|X)\\
+&amp;=h(Y)-h(X+Z|X)\\
+&amp;=h(Y)-h(Z).
+\end{aligned}
+$$</p>
+<p>Since $X$ and $Z$ are independent and $E[Z]=0$,
+$$
+E[Y^2]=E[(X+Z)^2]
+=E[X^2]+E[Z^2]
+\leq P+\sigma^2.
+$$</p>
+<p>By the maximum entropy theorem,
+$$
+h(Y)\leq\frac12\log[2\pi e(P+\sigma^2)].
+$$</p>
+<p>Also,
+$$
+h(Z)=\frac12\log(2\pi e\sigma^2).
+$$</p>
+<p>Therefore,
+$$
+\begin{aligned}
+I(X;Y)
+&amp;\leq\frac12\log
+\frac{P+\sigma^2}{\sigma^2}\\
+&amp;=\frac12\log\left(1+\frac P{\sigma^2}\right).
+\end{aligned}
+$$</p>
+<p>If
+$$
+X\sim\mathcal N(0,P),
+$$
+then
+$$
+Y=X+Z\sim\mathcal N(0,P+\sigma^2),
+$$
+so equality holds.</p>
+<blockquote>
+<p>Gaussian noise 固定后，最大化 $I(X;Y)$ 等价于最大化 output entropy $h(Y)$。power constraint 下 Gaussian output entropy 最大，而 Gaussian input 加 Gaussian noise 恰好仍是 Gaussian。</p>
+</blockquote>
+<h3 id="192-achievability"><a class="header" href="#192-achievability">19.2 Achievability</a></h3>
+<p>Fix
+$$
+R&lt;C.
+$$</p>
+<p>Generate a random codebook using iid Gaussian entries:
+$$
+X_i(w)\sim\mathcal N(0,P)
+$$
+independently for all $i$ and $w$.</p>
+<p>To handle a strict power constraint, one can instead use variance $P-\eta$ and discard codewords whose empirical power is atypically large. By LLN,
+$$
+\frac1n\sum_{i=1}^nX_i^2(w)\approx P-\eta.
+$$</p>
+<p>The decoder finds the unique $\widehat w$ such that
+$$
+(X^n(\widehat w),Y^n)
+$$
+is jointly typical.</p>
+<p>Assume $W=1$ was sent. The error probability is bounded by
+$$
+\begin{aligned}
+P_e
+&amp;\leq
+\Pr\{(X^n(1),Y^n)\text{ is not jointly typical}\}\\
+&amp;\quad+\sum_{w=2}^{2^{nR}}
+\Pr\{(X^n(w),Y^n)\text{ is jointly typical}\}.
+\end{aligned}
+$$</p>
+<p>Continuous Joint AEP gives
+$$
+P_e
+\leq\epsilon+(2^{nR}-1)
+2^{-n[I(X;Y)-3\epsilon]}.
+$$</p>
+<p>Hence $P_e\to0$ whenever
+$$
+R&lt;I(X;Y)-3\epsilon.
+$$</p>
+<p>Choosing Gaussian input and then letting $\epsilon,\eta\to0$ shows that every
+$$
+R&lt;C
+$$
+is achievable.</p>
+<h3 id="193-converse"><a class="header" href="#193-converse">19.3 Converse</a></h3>
+<p>Let $W$ be uniform over $2^{nR}$ messages, and let $P_e$ be the decoding error probability.</p>
+<p>By Fano's inequality and data processing,
+$$
+\begin{aligned}
+nR
+&amp;=H(W)\\
+&amp;\leq1+nRP_e+I(W;\widehat W)\\
+&amp;\leq1+nRP_e+I(X^n;Y^n).
+\end{aligned}
+$$</p>
+<p>For the AWGN channel,
+$$
+\begin{aligned}
+I(X^n;Y^n)
+&amp;=h(Y^n)-h(Y^n|X^n)\\
+&amp;=h(Y^n)-h(Z^n)\\
+&amp;\leq\sum_{i=1}^nh(Y_i)-\sum_{i=1}^nh(Z_i).
+\end{aligned}
+$$</p>
+<p>Let
+$$
+P_i=E[X_i^2].
+$$</p>
+<p>Then
+$$
+h(Y_i)-h(Z_i)
+\leq\frac12\log\left(1+\frac{P_i}{\sigma^2}\right),
+$$
+so
+$$
+I(X^n;Y^n)
+\leq\sum_{i=1}^n
+\frac12\log\left(1+\frac{P_i}{\sigma^2}\right).
+$$</p>
+<p>The power constraint gives
+$$
+\frac1n\sum_{i=1}^nP_i\leq P.
+$$</p>
+<p>Since $\log(1+x)$ is concave, Jensen's inequality gives
+$$
+\begin{aligned}
+I(X^n;Y^n)
+&amp;\leq\frac n2
+\log\left(1+\frac{\frac1n\sum_iP_i}{\sigma^2}\right)\\
+&amp;\leq\frac n2\log\left(1+\frac P{\sigma^2}\right)\\
+&amp;=nC.
+\end{aligned}
+$$</p>
+<p>Therefore,
+$$
+nR\leq1+nRP_e+nC.
+$$</p>
+<p>Letting $n\to\infty$ and $P_e\to0$ yields
+$$
+R\leq C.
+$$</p>
+<p>Important warning:</p>
+<p>We cannot conclude for every $i$ that
+$$
+P_i\leq P.
+$$</p>
+<p>The constraint only controls the average
+$$
+\frac1n\sum_iP_i\leq P.
+$$</p>
+<p>Jensen's inequality is the step that converts the collection $P_1,\cdots,P_n$ into the average power $P$.</p>
+<h3 id="194-key-interpretations"><a class="header" href="#194-key-interpretations">19.4 Key Interpretations</a></h3>
+<p>The capacity formula is
+$$
+C=\frac12\log(1+\operatorname{SNR}).
+$$</p>
+<p>At low SNR,
+$$
+C\approx\frac{\operatorname{SNR}}{2\ln2}.
+$$</p>
+<p>At high SNR,
+$$
+C\approx\frac12\log\operatorname{SNR}.
+$$</p>
+<p>So doubling signal power does not double capacity. Capacity grows only logarithmically with power.</p>
+<p>The factor $1/2$ appears because this is a real scalar Gaussian channel. A complex Gaussian channel has two real dimensions per channel use and commonly yields
+$$
+C=\log(1+\operatorname{SNR}).
+$$</p>
+<p>Final chain of ideas:
+$$
+\text{power constraint}
+\Rightarrow
+\text{Gaussian maximizes }h(Y)
+\Rightarrow
+\max I(X;Y)
+=\frac12\log(1+\operatorname{SNR}).
+$$</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mat3007-optimization"><a class="header" href="#mat3007-optimization">MAT3007 Optimization</a></h1>
 <p>Prof. Yongchun Li</p>
 <p>Three main subjects:</p>
