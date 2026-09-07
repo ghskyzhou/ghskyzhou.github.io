@@ -190,8 +190,11 @@
 <li><a href="https://skyzhou.top/notes/CSC4001.html">CSC4001</a></li>
 <li><a href="https://skyzhou.top/notes/CSC4303.html">CSC4303</a></li>
 <li><a href="https://skyzhou.top/notes/CSC4120.html">CSC4120</a></li>
+<li><a href="https://skyzhou.top/notes/CSC4140.html">CSC4140</a></li>
 <li><a href="https://skyzhou.top/notes/MAT3007.html">MAT3007</a></li>
 <li><a href="https://skyzhou.top/notes/MAT3350.html">MAT3350</a></li>
+<li><a href="https://skyzhou.top/notes/DDA3005.html">DDA3005</a></li>
+<li><a href="https://skyzhou.top/notes/STA4001.html">STA4001</a></li>
 </ul>
 </li>
 </ul>
@@ -5919,6 +5922,51 @@ $$T_{Ring\_ReduceScatter} = (p-1)\alpha + \frac{p-1}{p}n\beta$$</li>
 <li>解释 Ring AllReduce 相比 Parameter Server 为什么好。</li>
 <li>阐述为什么 LLM 推理要把 Prefill 和 Decoding 拆开。</li>
 </ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="csc4140-computer-graphics"><a class="header" href="#csc4140-computer-graphics">CSC4140 Computer Graphics</a></h1>
+<h2 id="l1-course-introduction"><a class="header" href="#l1-course-introduction">L1 Course Introduction</a></h2>
+<p>Recommend Textbook:
+<a href="https://repo.darmajaya.ac.id/5422/1/Fundamentals%20of%20Computer%20Graphics%2C%20Fourth%20Edition%20%28%20PDFDrive%20%29.pdf">Fundamentals of Computer Graphics, 4th Edition — Marschner &amp; Shirley et al., CRC Press</a></p>
+<h3 id="what-is-computer-graphics"><a class="header" href="#what-is-computer-graphics">What is Computer Graphics?</a></h3>
+<p>Computers: accept, process, transform, and present information.</p>
+<p>Computer Graphics: the communication channel between the physical world and the digital world.</p>
+<h3 id="why-study-computer-graphics"><a class="header" href="#why-study-computer-graphics">Why Study Computer Graphics?</a></h3>
+<p>History and Applications...</p>
+<p><strong>Fundamental Intellectual Challenges</strong>:</p>
+<ul>
+<li>Creates and interacts with realistic visual worlds.</li>
+<li>Requires understanding of all aspects of the physical world.</li>
+<li>Demands new computing methods, displays and technologies.</li>
+</ul>
+<p><strong>Technical Challenges</strong>:</p>
+<ul>
+<li>Math of (perspective) projections, curves and surfaces.</li>
+<li>Physics of lighting and shading.</li>
+<li>Representing / operating on shapes in 3D.</li>
+<li>Animation / simulation.</li>
+<li>Computational photograpy.</li>
+</ul>
+<h3 id="course-topics"><a class="header" href="#course-topics">Course Topics</a></h3>
+<p><strong>Rasterization</strong> 光栅化</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e1343cce2f.png" height="150px">
+</p>
+<p><strong>Curves and Meshes</strong> 曲线和网格</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e139f680b8.png" height="150px">
+</p>
+<p><strong>Ray Tracing</strong> 光线追踪</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e13c20b4cc.png" height="150px">
+</p>
+<p><strong>Animation / Simulation</strong></p>
+<p><strong>Computational Photography</strong></p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e146205489.png" height="150px">
+</p>
+<h3 id="course-logistics"><a class="header" href="#course-logistics">Course Logistics</a></h3>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e1516390d8.png" height="250px">
+</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mat3350-introduction-to-information-theory"><a class="header" href="#mat3350-introduction-to-information-theory">MAT3350 Introduction to Information Theory</a></h1>
 <p>Prof. Kaiming SHEN @ SSE</p>
 <p>Grades:</p>
@@ -8801,6 +8849,129 @@ $$</p>
 <h2 id="lecture-5"><a class="header" href="#lecture-5">Lecture 5</a></h2>
 <h3 id="degeneracy"><a class="header" href="#degeneracy">Degeneracy</a></h3>
 <p>Def. We call a BFS $x$ <strong>degenerate</strong> if some of the basic variables $x_B$ are $0$. Otherwise, it is <strong>non-degenerate</strong>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dda3005-numerical-methods"><a class="header" href="#dda3005-numerical-methods">DDA3005: Numerical Methods</a></h1>
+<h2 id="l1-introduction-to-numerical-methods"><a class="header" href="#l1-introduction-to-numerical-methods">L1 Introduction to Numerical Methods</a></h2>
+<h3 id="numerical-methods"><a class="header" href="#numerical-methods">Numerical Methods</a></h3>
+<p><strong>Main Goal</strong>: <strong>Design and analysis of algorithms</strong> for solving mathematical problems arising in science and engineering <strong>numerically</strong>.</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Deal with <strong>continuous</strong> quantities(time, distance, velocity, tempreature, density and pressure) typically measured by real numbers.</li>
+<li>Consider effects of <strong>approximations</strong>.</li>
+<li>Use scientific computing and <strong>computer simulations</strong> to understand natural phenomena.</li>
+<li>Simulations and algorithms allow to build accessible and cheap <strong>virtual prototypes</strong> of engineering problems: "build-and-test". 虚拟样机</li>
+</ul>
+<p align="center">
+<img src="https://img.skyzhou.top/i/2026/09/07/6a9e52e3bcba2.png" height="150px">
+</p>
+<h3 id="general-mathematical-problems"><a class="header" href="#general-mathematical-problems">General Mathematical Problems</a></h3>
+<p>Consider a function:</p>
+<p>$$
+y=f(x)
+$$</p>
+<p>And we have typical problems:</p>
+<ol>
+<li><strong>Evaluate a function</strong>: given x, output y.</li>
+<li><strong>Solve an equation</strong>: given y, find x.</li>
+<li><strong>Optimize</strong>: find x that yields optimal y.</li>
+</ol>
+<p>When thinking about the problems, we should consider:</p>
+<ul>
+<li>Discrete or Continuous(Concrete)</li>
+<li>Linear or Nonlinear</li>
+<li>Finite or Inifinite Dimensional</li>
+<li>Purely Algebraic or Involve derivatives or Integrals</li>
+</ul>
+<p>And we have strategies like:</p>
+<ul>
+<li>Differential $\to$ Algebraic</li>
+<li>Nonlinear $\to$ Linear</li>
+<li>Complicated $\to$ Simple</li>
+</ul>
+<p>The obtained solution might only <strong>approximate</strong> the true solution of the original problem.</p>
+<h3 id="example-1-image-deblurring"><a class="header" href="#example-1-image-deblurring">Example 1: Image Deblurring</a></h3>
+<p>Consider a blurry image, knowing the type of blurring can we <strong>reconstruct</strong> the original image?</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e566e3d77a.png" height="150px">
+</p>
+<p>We assume that blurring is a linear operation:</p>
+<p>$$
+Ax = b
+$$</p>
+<p>where $b$ is the given blurry image (in vector form), $A$ represents the blurring operation and $x$ is the original image that we want to find and reconstruct.</p>
+<p>We can obtain $x$ by simple matrix inversion:</p>
+<p>$$
+x = A^{-1} b
+$$</p>
+<p>A grayscale image with $m \times n$ pixels is usually represented as a matrix $X \in \mathbb{R}^{m \times n}$. And we can tranform it to vector $x = \text{vec}(X) \in \mathbb{R}^{mn}$ firstly.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e588f086bd.png" height="150px">
+</p>
+<p>The blurring operation is modeled via a blurring kernal $W \in \mathbb{R}^{s \times t}$ (<em>point spread function</em>) and satisfies $\sum_{i,j} w_{ij}=1$, for example:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e58de9e22e.png" height="100px">
+</p>
+<p>And we can apply the blurring kernal over each pixel $x_{ij}$, like performing a local average.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e59246b816.png" height="120px">
+</p>
+<p>So, to obtain the original image from the blurred image $b = \text{vec}(B)$, we can solve the linear system of equations:</p>
+<p>$$
+Ax = A \cdot \text{vec}(X) = \text{vec}(B) = b
+$$</p>
+<p>Questions and Challenges:</p>
+<ul>
+<li>How can we solve linear systems $Ax=b$ on a computer?</li>
+<li>Can we describe / explain the observed phenomenon mathematically?</li>
+<li>The tested image has $1024 \times 1024$ pixels in total, hence $A$ is a matrix of $1048576 \times 1048576$, how can we deal with it?</li>
+</ul>
+<h3 id="example-2-large-scale-optimizaiton"><a class="header" href="#example-2-large-scale-optimizaiton">Example 2: Large-Scale Optimizaiton</a></h3>
+<p>Many machine learning problems can be expressed in the form:</p>
+<p>$$
+\min_{w \in \mathbb{R}^n} f(w) := \frac1N \sum_{i=1}^N f_i(w)
+$$</p>
+<p>where each $f_i: \mathbb{R}^n \to \mathbb{R}$ is smoothe and $N \in \mathbb{N}$ is given.</p>
+<p>Each $f_i$ satisfis $f_i(w) = \ell(w, \xi_i)$ where $\ell: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}$ is the common loss function.</p>
+<p>Support Vector Machines (SVM).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="stochastic-processes"><a class="header" href="#stochastic-processes">Stochastic Processes</a></h1>
+<h2 id="l0-examples-of-stochastic-processes"><a class="header" href="#l0-examples-of-stochastic-processes">L0 Examples of Stochastic Processes</a></h2>
+<h3 id="example-1-discrete-steps-in-time"><a class="header" href="#example-1-discrete-steps-in-time">Example 1: Discrete Steps in Time</a></h3>
+<p>Imagine browsing the internet purely at random and navigating across an interconncted network of states (webpages).</p>
+<p><strong>The Fundamental Principle</strong>: Given where the system is right now, where it goes next is completely <strong>independent</strong> of how it got there.</p>
+<p>Two Real-Wordl Dilemmas:</p>
+<ul>
+<li>The Dead End: A webpage that has not outgoing links.</li>
+<li>The Spider Trap: Two pages only link back and forth to each other.</li>
+</ul>
+<p>Solution: <strong>Random Teleportaion</strong></p>
+<ul>
+<li>Most of time (~85%): Follow an actual hyperlink on the page.</li>
+<li>Occasionally (~15%): Get bored, type a brand-new random URL.</li>
+</ul>
+<p>After we clicked for a million times, we get the Google PageRank Intuition: The importance of a page is how long-run time spent on it. That is, more important the webpage is, the more frequent it will be clicked to.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e711e518c7.png" height="100px">
+</p>
+<h3 id="example-2-events-across-continuous-time"><a class="header" href="#example-2-events-across-continuous-time">Example 2: Events Across Continuous Time</a></h3>
+<p>Real-world events do not wait for discrete "clicks", they unfold in <strong>continuous time</strong>.</p>
+<p>A stream of independent, unpredictable events with a steady average pace is a <strong>Poisson Process</strong>.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e72da08225.png" height="150px">
+</p>
+<p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
+<p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
+<h2 id="l1-review-of-probability-tools"><a class="header" href="#l1-review-of-probability-tools">L1 Review of Probability Tools</a></h2>
+<p>Mostly STA2001 contents.</p>
+<p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
+<p>$$
+\begin{aligned}
+P(A_1 \cup A_2 \cup \cdots \cup A_n) = &amp; \sum_{A_i} P(A_i) \\
+&amp; - \sum_{A_i,A_j} P(A_i A_j) \\
+&amp; + \sum_{A_i,A_j,A_k} P(A_i A_j A_k) \\
+&amp; - \cdots \\
+&amp; + (-1)^{n-1} P(A_1 A_2 \cdots A_n)
+\end{aligned}
+$$</p>
+<p>Numbers of terms in each sum: $\binom{n}{k}$</p>
 
                     </main>
 

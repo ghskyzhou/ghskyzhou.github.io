@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - CUHKSZ CSC Notes</title>
+        <title>STA4001 - CUHKSZ CSC Notes</title>
 
 
         <!-- Custom HTML head -->
@@ -176,38 +176,55 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="welcome-to-skyzhous-notes"><a class="header" href="#welcome-to-skyzhous-notes">Welcome to Skyzhou's Notes</a></h1>
-<p>‌ようこそいらっしゃいました！</p>
-<p>目前已经有的笔记：</p>
+                        <h1 id="stochastic-processes"><a class="header" href="#stochastic-processes">Stochastic Processes</a></h1>
+<h2 id="l0-examples-of-stochastic-processes"><a class="header" href="#l0-examples-of-stochastic-processes">L0 Examples of Stochastic Processes</a></h2>
+<h3 id="example-1-discrete-steps-in-time"><a class="header" href="#example-1-discrete-steps-in-time">Example 1: Discrete Steps in Time</a></h3>
+<p>Imagine browsing the internet purely at random and navigating across an interconncted network of states (webpages).</p>
+<p><strong>The Fundamental Principle</strong>: Given where the system is right now, where it goes next is completely <strong>independent</strong> of how it got there.</p>
+<p>Two Real-Wordl Dilemmas:</p>
 <ul>
-<li>CUHKSZ (CS)
+<li>The Dead End: A webpage that has not outgoing links.</li>
+<li>The Spider Trap: Two pages only link back and forth to each other.</li>
+</ul>
+<p>Solution: <strong>Random Teleportaion</strong></p>
 <ul>
-<li><a href="https://skyzhou.top/notes/CSC3001.html">CSC3001</a></li>
-<li><a href="https://skyzhou.top/notes/CSC3200.html">CSC3200</a></li>
-<li><a href="https://skyzhou.top/notes/CSC3060.html">CSC3060</a></li>
-<li><a href="https://skyzhou.top/notes/CSC3170.html">CSC3170</a></li>
-<li><a href="https://skyzhou.top/notes/CSC4001.html">CSC4001</a></li>
-<li><a href="https://skyzhou.top/notes/CSC4303.html">CSC4303</a></li>
-<li><a href="https://skyzhou.top/notes/CSC4120.html">CSC4120</a></li>
-<li><a href="https://skyzhou.top/notes/CSC4140.html">CSC4140</a></li>
-<li><a href="https://skyzhou.top/notes/MAT3007.html">MAT3007</a></li>
-<li><a href="https://skyzhou.top/notes/MAT3350.html">MAT3350</a></li>
-<li><a href="https://skyzhou.top/notes/DDA3005.html">DDA3005</a></li>
-<li><a href="https://skyzhou.top/notes/STA4001.html">STA4001</a></li>
+<li>Most of time (~85%): Follow an actual hyperlink on the page.</li>
+<li>Occasionally (~15%): Get bored, type a brand-new random URL.</li>
 </ul>
-</li>
-</ul>
-<h2 id="有些笔记可能-latex-一下子加载不出来需要手动刷新一下"><a class="header" href="#有些笔记可能-latex-一下子加载不出来需要手动刷新一下">有些笔记可能 $\LaTeX$ 一下子加载不出来，需要手动刷新一下</a></h2>
-<p>非常抱歉！</p>
+<p>After we clicked for a million times, we get the Google PageRank Intuition: The importance of a page is how long-run time spent on it. That is, more important the webpage is, the more frequent it will be clicked to.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e711e518c7.png" height="100px">
+</p>
+<h3 id="example-2-events-across-continuous-time"><a class="header" href="#example-2-events-across-continuous-time">Example 2: Events Across Continuous Time</a></h3>
+<p>Real-world events do not wait for discrete "clicks", they unfold in <strong>continuous time</strong>.</p>
+<p>A stream of independent, unpredictable events with a steady average pace is a <strong>Poisson Process</strong>.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/07/6a9e72da08225.png" height="150px">
+</p>
+<p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
+<p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
+<h2 id="l1-review-of-probability-tools"><a class="header" href="#l1-review-of-probability-tools">L1 Review of Probability Tools</a></h2>
+<p>Mostly STA2001 contents.</p>
+<p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
+<p>$$
+\begin{aligned}
+P(A_1 \cup A_2 \cup \cdots \cup A_n) = &amp; \sum_{A_i} P(A_i) \\
+&amp; - \sum_{A_i,A_j} P(A_i A_j) \\
+&amp; + \sum_{A_i,A_j,A_k} P(A_i A_j A_k) \\
+&amp; - \cdots \\
+&amp; + (-1)^{n-1} P(A_1 A_2 \cdots A_n)
+\end{aligned}
+$$</p>
+<p>Numbers of terms in each sum: $\binom{n}{k}$</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-
-                            <a rel="next prefetch" href="CSC3001.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                            <a rel="prev" href="DDA3005.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
                             </a>
+
 
                         <div style="clear: both"></div>
                     </nav>
@@ -215,10 +232,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-
-                    <a rel="next prefetch" href="CSC3001.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                    <a rel="prev" href="DDA3005.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
                     </a>
+
             </nav>
 
         </div>
