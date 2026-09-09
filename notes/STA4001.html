@@ -216,6 +216,94 @@ P(A_1 \cup A_2 \cup \cdots \cup A_n) = &amp; \sum_{A_i} P(A_i) \\
 \end{aligned}
 $$</p>
 <p>Numbers of terms in each sum: $\binom{n}{k}$</p>
+<p><strong>Poisson r.v. as limit of Binomial r.v.'s</strong></p>
+<p>Suppose that $X_n$ is a binomial r.v. with parameters $(n, p_n)$, and let $\lambda_n = n p_n \to \lambda$ when $n \to \infin$.</p>
+<p>Then for any fixed $i$, we have</p>
+<p>$$
+P{X_n=i} = \lim_{n \to \infin} \frac{n!}{i!(n-i)!} p_n^i(1-p_n)^{n-i} \rightarrow e^{-\lambda}\frac{\lambda^i}{i!}
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa10b2a2e18c.png" height="200px">
+</p>
+<p><strong>What does mean a density value $f(x)$?</strong></p>
+<p>Consider a pdf</p>
+<p>$$
+f(x) =
+\begin{cases}
+\frac{1}{x^2} &amp; x \ge 1, \\
+0 &amp; x &lt; 1
+\end{cases}
+$$</p>
+<p>Then the meaning of $f(2) = \frac14$ will be: For small $\epsilon$, $P(2-\epsilon \le X \le 2+\epsilon) \approx \frac14 \cdot 2 \epsilon$</p>
+<p>Or in formal we have:</p>
+<p>Since
+$$
+f(x) = F'(x) = \lim_{h\to 0} \frac{F(x+h)-f(x)}{h}
+$$</p>
+<p>we have for small $h$,
+$$
+P{x &lt; X \le x+h} = F(x+h) - F(x) \approx h \cdot f(x)
+$$</p>
+<p><strong>Expectation of R.V.</strong></p>
+<p>For discrete r.v. $X$ with pmf $P(x)$, we have definition:</p>
+<p>$$
+E[X] = \sum_x x P(X=x)
+$$</p>
+<p>Now, consider $N$ as a r.v. with natural numbers $1,2,3,\cdots$, then</p>
+<p>$$
+\begin{aligned}
+E[N] &amp;=&amp;&amp; 1\cdot P(N=1) + 2\cdot P(N=2) + 3\cdot P(N=3) \\
+&amp;=&amp;&amp; P(N=1) + \\
+&amp;&amp;&amp;[P(N=2)+P(N=2)] + \\
+&amp;&amp;&amp;[P(N=3) + P(N=3) + P(N=3)]+\\
+&amp;&amp;&amp; \cdots\\
+&amp;=&amp;&amp; [P(N=1)+P(N=2)+P(N=3)+\cdots] + \\
+&amp;&amp;&amp; [P(N=2)+P(N=3)+P(N=4)+\cdots] + \\
+&amp;&amp;&amp; \cdots \\
+&amp;=&amp;&amp; P(N\ge 1) + P(N \ge 2) + P(N \ge 3) + \cdots \\
+&amp;=&amp;&amp; \sum_{n=0}^\infin P(N &gt; n)
+\end{aligned}
+$$</p>
+<p>We call it the formula of integer random variables.</p>
+<p>e.g. There are $m$ kinds of cards, the probability of choosing the $i$ th card is $p_i$, we want to know the expectation $E[N]$ of getting all kinds of cards.</p>
+<p>Consider $A_i = {\text{didn't get }i\text{ th card in the previous } n \text{ times}}$, then we have:</p>
+<p>$$
+\{N &gt; n\} = A_1 \cup A_2 \cup \cdots \cup A_m
+$$</p>
+<p>Use the Inclusion-Exclusion Principle:</p>
+<p>$$
+\begin{aligned}
+P(N&gt;n) &amp;= \sum_i P(A_i) - \sum_{i&lt;j} P(A_i \cap A_j) + \sum_{i&lt;j&lt;k}P(A_i \cap A_j \cap A_k) - \cdots \\
+&amp;=\sum_i(1-p_i)^n - \sum_{i&lt;j}(1-p_i-p_j)^n + \sum_{i&lt;j&lt;k}(1-p_i-p_j-p_k)^n - \cdots
+\end{aligned}
+$$</p>
+<p>And we put it back to</p>
+<p>$$
+\begin{aligned}
+E[N] &amp;= \sum_{n=0}^\infin P(N&gt;n) \\
+&amp;= \sum_i \sum_{n=0}^\infin (1-p_i)^n - \sum_{i&lt;j} \sum_{n=0}^\infin (1-p_i-p_j)^n + \cdots
+\end{aligned}
+$$</p>
+<p>Since we have geometric series:</p>
+<p>$$
+\sum_{n=0}^\infin (1-x)^n = \frac1x
+$$</p>
+<p>Thus,</p>
+<p>$$
+E[N] = \sum_i \frac1{p_i}-\sum_{i&lt;j}\frac1{p_i+p_j} + \sum_{i&lt;j&lt;k} \frac1{p_i+p_j+p_k} - \cdots + (-1)^{m+1} \frac1{p_1+\cdots+p_m}
+$$</p>
+<blockquote>
+<p>Extension(By ChatGPT): Consider the traditional uniform Coupon Collector where $p_i=\frac1m$, the formula will become:
+$$
+E[N] = m(1+\frac12+\frac13+\cdots+\frac1m) = mH_m \approx m(\ln m + \gamma)
+$$</p>
+</blockquote>
+<p><strong>Exercise</strong>: Let $X \sim N(0,1)$, $\epsilon$ uniform sign $(+1,-1)$, $P(\epsilon=+1)=P(\epsilon=-1) = \frac12$, and they are independent. Define $Y=\epsilon X$, show that:</p>
+<ol>
+<li>$Y \sim N(0,1)$.</li>
+<li>$\text{cov}(X,Y) = 0$.</li>
+<li>$X$ and $Y$ are <strong>NOT</strong> independent.</li>
+</ol>
 
                     </main>
 

@@ -259,6 +259,105 @@ $$</p>
 <p>where each $f_i: \mathbb{R}^n \to \mathbb{R}$ is smoothe and $N \in \mathbb{N}$ is given.</p>
 <p>Each $f_i$ satisfis $f_i(w) = \ell(w, \xi_i)$ where $\ell: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}$ is the common loss function.</p>
 <p>Support Vector Machines (SVM).</p>
+<h2 id="l2-floating-point-numbers-and-arithemtic"><a class="header" href="#l2-floating-point-numbers-and-arithemtic">L2 Floating-Point Numbers and Arithemtic</a></h2>
+<h3 id="floating-point-numbers"><a class="header" href="#floating-point-numbers">Floating-Point Numbers</a></h3>
+<p>Consider the memory architecture in computers:</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0f0b60e346.png" height="80px">
+</p>
+<p>Observation:</p>
+<ul>
+<li>There are only finitely many memory cells.</li>
+<li>Only finitely many numbers are representable on a computer.</li>
+</ul>
+<p>The <strong>floating-point number system</strong> is characterized by four integers:</p>
+<ul>
+<li>$\beta$: base or radix</li>
+<li>$p$: precision</li>
+<li>$[L,U]$: exponent range</li>
+</ul>
+<p>A real lnumber $x$ is represented as:</p>
+<p>$$
+x = \pm \left[
+d_0 + \frac{d_1}{\beta} + \frac{d_2}{\beta^2} + \cdots + \frac{d_{p-1}}{\beta^{p-1}}
+\right]\beta^E
+$$</p>
+<p>where $0 \le d_i \le \beta-1, i = 0, \cdots, p-1$ and $L \le E \le U$.</p>
+<p>And we usually have:</p>
+<ul>
+<li>$E$: <strong>exponent</strong> 指数</li>
+<li>$d_0.d_1 d_2 \cdots d_{p-1}$: <strong>mantissa</strong> 尾数</li>
+<li>$d_1 d_2 \cdots d_{p-1}$: <strong>fraction</strong> 小数部分</li>
+</ul>
+<p>e.g. Let us set $\beta=10$ and $p=7$, we can write:</p>
+<p>$$
+\begin{aligned}
+0.1 &amp;= + 0.100000 \cdot 10^0\\
+31.41592 &amp;= + 3.141592 \cdot 10^1
+\end{aligned}
+$$</p>
+<p><strong>Normalization</strong>: The floating-point system is said to be <strong>normalized</strong> if the leading digit $d_0$ is always <strong>nonzero</strong> unless the represented number is zero. And the mantissa $m$ of a nonzero floating-point number always satisfies $1 \le m &lt; \beta$</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li>The floating-point number system is <em>finite</em> and <em>discrete</em>.</li>
+<li>Total number of normalized floating-point numbers in a system is:
+$$
+2(\beta-1)\beta^{p-1}(U-L+1)+1
+$$</li>
+<li>Smallest positive normalized number:
+$$
+\text{UFL} = \text{underflow level} = \beta^L
+$$</li>
+<li>Largest floating-point number:
+$$
+\text{OFL} = \text{overflow level} = \beta^{U+1}(1-\beta^{-p})
+$$</li>
+</ul>
+<p>e.g. Floating-point system: Let us consider the system $\beta=2$, $p=3$, $L=-1$ and $U=1$, this system contains:</p>
+<p>$$
+2 \cdot (2-1) \cdot 2^2 \cdot (2+1) + 1 = 25
+$$</p>
+<p>numbers in total and we hvae:</p>
+<p>$$
+\text{OFL} = (1.11)_{2} \cdot 2^1 = (1+\frac12+\frac14) \cdot 2 = (3.5)_{10}
+$$</p>
+<p>$$
+\text{UFL} = (1.00)_2 \cdot 2^{-1} = (1+0+0) \cdot \frac12 = (0.5)_{10}
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0f86f86008.png" height="50px">
+</p>
+<p>All normalized floating-point systems look <strong>discrete</strong> and <strong>unequally spaced</strong>.</p>
+<p><strong>Rounding Rules</strong>:</p>
+<p>If the real number $x$ is not representable, then it is approximated by a "nearby" floating-point number $\text{fl}(x)$.</p>
+<p>Two commonly used rouding rules:</p>
+<ul>
+<li><strong>Chop</strong>: truncatehte base-$\beta$ expansion of $x$ after the $(p-1)$st digit (<strong>round toward zero</strong>).</li>
+<li><strong>Round to nearest</strong>: 四舍五入</li>
+</ul>
+<p>Rounding to nearest is the most accurate and is the default rounding rule in IEEE systems.</p>
+<p><strong>Matchine Precision</strong></p>
+<p>The accuracy of a floating-point system is characterized by the <strong>unit roundoff</strong>(machine precision or machine epsilon), denoted by $\epsilon_{\text{mach}}$:</p>
+<ul>
+<li>With rounding by chopping: $\epsilon_{\text{mach}} = \beta^{1-p}$</li>
+<li>With rounding to nearest: $\epsilon_{\text{mach}} = \frac12 \beta^{1-p}$</li>
+</ul>
+<p>Alternatively, $\epsilon_{\text{mach}}$ is defined as the smallest number $\epsilon$ such that $\text{fl}(1+\epsilon) &gt; 1$.</p>
+<p><strong>Proposition: Rounding</strong></p>
+<p>For every $x \in \mathbb{R}$ in the range of the floating-point system, we have:</p>
+<p>$$
+|\text{fl}(x)-x| \le \epsilon_{\text{mach}}|x|
+$$</p>
+<p>or we can write in a more common way:</p>
+<p>$$
+\frac{|\text{fl}(x)-x|}{|x|} \le \epsilon_{\text{mach}}
+$$</p>
+<p>For IEEE floating-point systems:</p>
+<ul>
+<li>$\epsilon_{\text{mach}} = 2^{-24} \approx 10^{-7}$ in single precision.</li>
+<li>$\epsilon_{\text{mach}} = 2^{-53} \approx 10^{-16}$ in double precision.</li>
+<li>$\epsilon_{\text{mach}} = 2^{-113} \approx 10^{-36}$ in quadruple precision.</li>
+</ul>
 
                     </main>
 

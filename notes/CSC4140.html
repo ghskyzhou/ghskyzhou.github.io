@@ -221,6 +221,109 @@
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/09/07/6a9e1516390d8.png" height="250px">
 </p>
+<h2 id="l2-review-of-vectors-and-linear-algebra"><a class="header" href="#l2-review-of-vectors-and-linear-algebra">L2 Review of Vectors and Linear Algebra</a></h2>
+<h3 id="linear-algebra"><a class="header" href="#linear-algebra">Linear Algebra</a></h3>
+<p><strong>Why Linear Algebra?</strong></p>
+<p>Effective bridge between geometry, physics and computation. We can express the solution to a problem in terms of linear algebra, and fasten the calculation speed.</p>
+<p>Linear algebra is the study of <strong>vector spaces</strong> and linear maps between them.</p>
+<h3 id="vectors"><a class="header" href="#vectors">Vectors</a></h3>
+<blockquote>
+<p>This part are mostly learnt at Year 1 UG course, so just a quick review.</p>
+</blockquote>
+<p><strong>2 Forms of Representing Vectors in 2D</strong>:</p>
+<ol>
+<li>Litter Arrow: using $(x,y)$.</li>
+<li>Direction + Magnitude: $(\theta, r)$</li>
+</ol>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0ae9c32a1d.png" height="100px">
+</p>
+<p><strong>Simple Rules</strong></p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0aaa11de72.png" height="250px">
+</p>
+<p><strong>Cross Product, Determinant and Angle</strong></p>
+<p>Useful abuse of notation in 2D.</p>
+<p>$$
+\sqrt{\det(u, v, u \times v)} = |u| |v| \sin(\theta)
+$$</p>
+<p>where $\theta$ is the angle between $u$ and $v$, $\det$ is the determinant of three column vectors.</p>
+<h3 id="matrices"><a class="header" href="#matrices">Matrices</a></h3>
+<p>In graphics, matrices are pervasively used to represent transformations: <strong>translation, rotation, shear, scale.</strong></p>
+<p><strong>Matrix Representation of Cross Product</strong></p>
+<p>Consider a vector:</p>
+<p>$$
+u := (u_1, u_2, u_3)
+$$</p>
+<p>and we have</p>
+<p>$$
+\hat{u} :=
+\begin{bmatrix}
+0 &amp; -u_3 &amp; u_2 \\
+u_3 &amp; 0 &amp; -u_1 \\
+-u_2 &amp; u_1 &amp; 0
+\end{bmatrix}
+$$</p>
+<p>then</p>
+<p>$$
+u \times v = \hat{u}v =
+\begin{bmatrix}
+0 &amp; -u_3 &amp; u_2 \\
+u_3 &amp; 0 &amp; -u_1 \\
+-u_2 &amp; u_1 &amp; 0
+\end{bmatrix}
+\begin{bmatrix}
+v_1 \
+v_2 \
+v_3
+\end{bmatrix}
+$$</p>
+<p>Notice that</p>
+<p>$$
+u \times v = -v \times u
+$$</p>
+<p>and we have</p>
+<p>$$
+v \times u = - \hat{u}v = \hat{u}^\top v
+$$</p>
+<p><strong>Determinant, Volumn and Triple Product</strong></p>
+<p>$\det(u,v,w)$ encodes the (signed) volumn of the parallelepiped with edge vectors $u,v,w$.</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0b2fc21512.png" height="150px">
+</p>
+<p><strong>Other Triple Products</strong></p>
+<p><em>Jacobi Identity</em></p>
+<p>$$
+u \times (v \times w) + v \times (w \times u) + w \times (u \times v) = 0
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/09/6aa0b4392cd96.png" height="150px">
+</p>
+<p><em>Lagrange's Identity</em></p>
+<p>$$
+u \times (v \times w) = v(u \cdot w) - w(u \cdot v)
+$$</p>
+<h3 id="basis-transformations"><a class="header" href="#basis-transformations">Basis Transformations</a></h3>
+<p><strong>Basis Transformations - Formula</strong></p>
+<p>Given vector $v$ written in the standard basis, rewrite as $v_Q$ in terms of basis $Q$.</p>
+<p>If the columns of $Q$ are orthonormal:</p>
+<p>$$
+v_Q = Q^\top v
+$$</p>
+<p>Otherwise ($Q$ Not orthonoraml):</p>
+<p>$$
+v_Q = (Q^\top Q)^{-1} Q^\top v
+$$</p>
+<p>And a useful fact is that: Any matrix of the form $A^\top A$ is positive semi-definite:</p>
+<p>$$
+x^\top (A^\top A) x = (x^\top A^\top)(Ax)=(Ax)^\top(Ax) \ge 0
+$$</p>
+<p>Since it is written as a vector dotted with itself, $(Ax)^\top(Ax)$ can never be negative.</p>
+<p><strong>Determinants and Rank</strong></p>
+<p><strong>Eigenvalues and Eigenvectors</strong></p>
+<p><strong>Solving $Ax=b$</strong></p>
+<p>Gradient Descent</p>
+<p>Steepest Descent</p>
 
                     </main>
 
