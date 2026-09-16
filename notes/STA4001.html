@@ -203,7 +203,7 @@
 </p>
 <p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
 <p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
-<h2 id="l1-l2-review-of-probability-tools"><a class="header" href="#l1-l2-review-of-probability-tools">L1-L2(?) Review of Probability Tools</a></h2>
+<h2 id="l1-l3-review-of-probability-tools"><a class="header" href="#l1-l3-review-of-probability-tools">L1-L3(?) Review of Probability Tools</a></h2>
 <p>Mostly STA2001 contents.</p>
 <p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
 <p>$$
@@ -371,6 +371,15 @@ $$</p>
 <p><strong>Theorem</strong>: Jointly, the $n$ order statistics has pdf</p>
 <p>$$
 f_{(1,2,\cdots,n)}(x_1,x_2, \cdots, x_n) = n! \prod_{i=1}^n f(x_i), \quad x_1 &lt; x_2 &lt; \cdots &lt; x_n
+$$</p>
+<p><strong>Conditonal Expectation</strong></p>
+<p>Conditional expectation of $X$ given that $Y=b$: Sipmly, defined to be the mean of the conditional distribution $f_{X|Y}(X|Y=b)$ i.e.</p>
+<p>$$
+E[X|Y=b] = \int x \cdot p_{X|Y}(x|b)
+$$</p>
+<p>Conditional expectation of $\varphi(X)$ given that $Y=b$: Similarly, this is mean of $\varphi(X)$ under the conditional distribution $p_{X|Y}(\varphi(X)|Y=b)$ i.e.</p>
+<p>$$
+E(\varphi(X)|Y=b) = \int \varphi(x) \cdot p_{X|Y} (x|b)
 $$</p>
 
                     </main>

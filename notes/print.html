@@ -9307,6 +9307,47 @@ $$</p>
 \sigma^2 = \frac1{n-1}\left( \sum_{i=1}^n x_i^2 - n \bar{x}^2 \right)
 $$</p>
 <p>avoids making two passes through the data.</p>
+<h2 id="l4-errors-and-conditioning"><a class="header" href="#l4-errors-and-conditioning">L4 Errors and Conditioning</a></h2>
+<h3 id="approximations-and-errors"><a class="header" href="#approximations-and-errors">Approximations and Errors</a></h3>
+<p><strong>Absolute Error and Relative Error</strong></p>
+<p><strong>Absolute Error</strong>: $\text{approximate value} - \text{true value}$</p>
+<p><strong>Relative Error</strong>: $\frac{\text{absolute value}}{\text{true value}}$</p>
+<p>$\text{approx. value} = (\text{true value} \cdot (1 + \text{rel. error}))$</p>
+<p>The true value is usually unknown, so we <strong>estimate</strong> or <strong>bound</strong> the error rather than compute it exactly.</p>
+<p><strong>Data Erorr and Computational Error</strong></p>
+<p>Typical problem: evaluate a function $f: \mathbb{R} \to \mathbb{R}$ for a given argument:</p>
+<ul>
+<li>$x$ = true value of input.</li>
+<li>$f(x)$ = corresponding output value for true function.</li>
+<li>$\hat{x}$ = approximate input actually used.</li>
+<li>$\hat{f}$ = approximate function actually used.</li>
+</ul>
+<p>Total Error:</p>
+<p>$$
+\begin{aligned}
+\hat{f}(\hat{x}) - f(x) =&amp; ( \hat{f}(\hat{x}) - f(\hat{x}) ) &amp;&amp;+ &amp;&amp;( f(\hat{x}) - f(x) ) \\
+&amp;\text{computational error} &amp;&amp;+ &amp;&amp;\text{propagated data error}
+\end{aligned}
+$$</p>
+<p><strong>Truncation Error and Rounding Error</strong></p>
+<p><strong>Truncation Error</strong>:  difference between <strong>true result</strong> and <strong>result produced by given algorithm</strong> by using exact arithmetic</p>
+<p><strong>Rounding Error</strong>: Difference between result produced by given algorithm using <strong>exact arithmetic</strong> and result produced by same algorithm using <strong>limited precision arithmetic</strong>.</p>
+<p>Computational error is <strong>sum</strong> of truncation error and rounding error, where one of these usually dominates.</p>
+<p>e.g. Finite Difference Approximation</p>
+<p>Error in finite difference approximation</p>
+<p>$$
+f'(x) \approx \frac{f(x+h)-f(x)}h
+$$</p>
+<p>exhibits trade-off between rounding error and truncation error.</p>
+<ul>
+<li>Truncation error is bounded by $\frac{Mh}2$ where $M$ bounds $|f''(t)|$ for $t$ near $x$.</li>
+<li>Rounding error is bounded by $\frac{2\varepsilon}h$ where the error in function values is assumed to be bounded by $\varepsilon$.</li>
+<li>Total error minimized when $h \approx 2 \sqrt{\frac{\varepsilon}M}$</li>
+<li>Error increases for smaller $h$ because of rounding error and increases for larger $h$ because of truncation error.</li>
+</ul>
+<blockquote>
+<p>not finished.</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="stochastic-processes"><a class="header" href="#stochastic-processes">Stochastic Processes</a></h1>
 <h2 id="l0-examples-of-stochastic-processes"><a class="header" href="#l0-examples-of-stochastic-processes">L0 Examples of Stochastic Processes</a></h2>
 <h3 id="example-1-discrete-steps-in-time"><a class="header" href="#example-1-discrete-steps-in-time">Example 1: Discrete Steps in Time</a></h3>
@@ -9334,7 +9375,7 @@ $$</p>
 </p>
 <p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
 <p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
-<h2 id="l1-l2-review-of-probability-tools"><a class="header" href="#l1-l2-review-of-probability-tools">L1-L2(?) Review of Probability Tools</a></h2>
+<h2 id="l1-l3-review-of-probability-tools"><a class="header" href="#l1-l3-review-of-probability-tools">L1-L3(?) Review of Probability Tools</a></h2>
 <p>Mostly STA2001 contents.</p>
 <p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
 <p>$$
@@ -9502,6 +9543,15 @@ $$</p>
 <p><strong>Theorem</strong>: Jointly, the $n$ order statistics has pdf</p>
 <p>$$
 f_{(1,2,\cdots,n)}(x_1,x_2, \cdots, x_n) = n! \prod_{i=1}^n f(x_i), \quad x_1 &lt; x_2 &lt; \cdots &lt; x_n
+$$</p>
+<p><strong>Conditonal Expectation</strong></p>
+<p>Conditional expectation of $X$ given that $Y=b$: Sipmly, defined to be the mean of the conditional distribution $f_{X|Y}(X|Y=b)$ i.e.</p>
+<p>$$
+E[X|Y=b] = \int x \cdot p_{X|Y}(x|b)
+$$</p>
+<p>Conditional expectation of $\varphi(X)$ given that $Y=b$: Similarly, this is mean of $\varphi(X)$ under the conditional distribution $p_{X|Y}(\varphi(X)|Y=b)$ i.e.</p>
+<p>$$
+E(\varphi(X)|Y=b) = \int \varphi(x) \cdot p_{X|Y} (x|b)
 $$</p>
 
                     </main>
