@@ -203,7 +203,7 @@
 </p>
 <p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
 <p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
-<h2 id="l1-review-of-probability-tools"><a class="header" href="#l1-review-of-probability-tools">L1 Review of Probability Tools</a></h2>
+<h2 id="l1-l2-review-of-probability-tools"><a class="header" href="#l1-l2-review-of-probability-tools">L1-L2(?) Review of Probability Tools</a></h2>
 <p>Mostly STA2001 contents.</p>
 <p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
 <p>$$
@@ -220,7 +220,7 @@ $$</p>
 <p>Suppose that $X_n$ is a binomial r.v. with parameters $(n, p_n)$, and let $\lambda_n = n p_n \to \lambda$ when $n \to \infin$.</p>
 <p>Then for any fixed $i$, we have</p>
 <p>$$
-P{X_n=i} = \lim_{n \to \infin} \frac{n!}{i!(n-i)!} p_n^i(1-p_n)^{n-i} \rightarrow e^{-\lambda}\frac{\lambda^i}{i!}
+P\{X_n=i\} = \lim_{n \to \infin} \frac{n!}{i!(n-i)!} p_n^i(1-p_n)^{n-i} \rightarrow e^{-\lambda}\frac{\lambda^i}{i!}
 $$</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/09/09/6aa10b2a2e18c.png" height="200px">
@@ -242,7 +242,7 @@ f(x) = F'(x) = \lim_{h\to 0} \frac{F(x+h)-f(x)}{h}
 $$</p>
 <p>we have for small $h$,
 $$
-P{x &lt; X \le x+h} = F(x+h) - F(x) \approx h \cdot f(x)
+P\{x &lt; X \le x+h\} = F(x+h) - F(x) \approx h \cdot f(x)
 $$</p>
 <p><strong>Expectation of R.V.</strong></p>
 <p>For discrete r.v. $X$ with pmf $P(x)$, we have definition:</p>
@@ -266,7 +266,7 @@ E[N] &amp;=&amp;&amp; 1\cdot P(N=1) + 2\cdot P(N=2) + 3\cdot P(N=3) \\
 $$</p>
 <p>We call it the formula of integer random variables.</p>
 <p>e.g. There are $m$ kinds of cards, the probability of choosing the $i$ th card is $p_i$, we want to know the expectation $E[N]$ of getting all kinds of cards.</p>
-<p>Consider $A_i = {\text{didn't get }i\text{ th card in the previous } n \text{ times}}$, then we have:</p>
+<p>Consider $A_i = \{\text{didn't get }i\text{ th card in the previous } n \text{ times}\}$, then we have:</p>
 <p>$$
 \{N &gt; n\} = A_1 \cup A_2 \cup \cdots \cup A_m
 $$</p>
@@ -304,6 +304,74 @@ $$</p>
 <li>$\text{cov}(X,Y) = 0$.</li>
 <li>$X$ and $Y$ are <strong>NOT</strong> independent.</li>
 </ol>
+<p>Consider $Y=\epsilon X$ as</p>
+<p>$$
+Y = \begin{cases}
+X, &amp; 50\% \\
+-X, &amp; 50\%
+\end{cases}
+$$</p>
+<p>Firstly, since $X \sim N(0,1)$ is symmetrical within $x=0$, we have $Y$ for half time $X$ and half time $-X$. Thus $Y \sim N(0,1)$ Q.E.D.</p>
+<p>Secondly, consider $XY=\epsilon X^2$</p>
+<p>$$
+\text{cov}(X,Y) = E[XY]-E[X]E[Y] = E[XY] = E[\epsilon X^2] = 0
+$$</p>
+<p>which is uncorrelated.</p>
+<p>Thirdly, since $Y=\epsilon X, \epsilon = \pm1$, we always have</p>
+<p>$$
+Y^2 = X^2
+$$</p>
+<p>Thus, <strong>if</strong> $X,Y$ are independent, we have</p>
+<p>$$
+E[X^2 Y^2] = E[X^2] E[Y^2] = 1
+$$</p>
+<p>But actually, we have $Y^2 = X^2$, and</p>
+<p>$$
+E[X^2 Y^2] = E[X^4] = 3 \not= 1
+$$</p>
+<p>Thus, $X$ and $Y$ are <strong>not</strong> independent.</p>
+<p><strong>Multivariate Change of R.V.s</strong></p>
+<p>Let $f_{X_1,X_2}(x_1,x_2)$ be the <em>joint density function</em> of two continuous r.v.s $X_1$ and $X_2$.</p>
+<p>Assume that the map $(x_1,x_2)\mapsto (y_2,y_2)$ where
+$$
+\begin{cases}
+y_1 = g_1 (x_1, x_2) \\
+y_2 = g_2 (x_1, x_2)
+\end{cases}
+$$</p>
+<p>has a unique inverse function</p>
+<p>$$
+\begin{cases}
+x_1 = h_1(y_1,y_2) \\
+x_2 = h_2(y_1,y_2)
+\end{cases}
+$$</p>
+<p>Then $Y_1 = g_1(X_1,X_2)$ and $Y_2 = g_2(X_1,X_2)$ are jointly continuous with joint density function givenby</p>
+<p>$$
+f_{Y_1,Y_2}(y_1,y_2) = f_{X_1,X_2}(h_1(y_1,y_2), h_2(y_1,y_2)) |J|
+$$</p>
+<p>where</p>
+<p>$$
+J = \left| \begin{matrix} \frac{\partial x_1}{\partial y_1} &amp; \frac{\partial x_1}{\partial y_2} \\  \frac{\partial x_2}{\partial y_1} &amp; \frac{\partial x_2}{\partial y_2} \end{matrix} \right| = \frac{\partial x_1}{\partial y_1} \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \frac{\partial x_2}{\partial y_1}
+$$</p>
+<p><strong>???</strong></p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7aac91fcb0.png" height="550px">
+</p>
+<p><strong>Order Statistics</strong></p>
+<p>Let $X_1, X_2, \cdots, X_n$ be a i.i.d. sample of continuous r.v.'s with common cdf $F(x)$ and pdf $f(x)$.</p>
+<p>The <strong>order statistics</strong> associated to the sample are the list of their sorted values $(X_{(1)}, X_{(2)}, \cdots, X_{(n)})$, where</p>
+<p>$$
+X_{(1)} &lt; X_{(2)} &lt; \cdots &lt; x_{(n)}
+$$</p>
+<p><strong>Theorem</strong>: For $1 \le i \le n$, the $i$-th order statistic $X_{(i)}$ has pdf</p>
+<p>$$
+f_{(i)}(x) = \frac{n!}{(n-i)!(i-1)!} f(x) (F(x))^{i-1} (1-F(x))^{n-i}
+$$</p>
+<p><strong>Theorem</strong>: Jointly, the $n$ order statistics has pdf</p>
+<p>$$
+f_{(1,2,\cdots,n)}(x_1,x_2, \cdots, x_n) = n! \prod_{i=1}^n f(x_i), \quad x_1 &lt; x_2 &lt; \cdots &lt; x_n
+$$</p>
 
                     </main>
 

@@ -337,27 +337,111 @@ $$</p>
 </ul>
 <p>Rounding to nearest is the most accurate and is the default rounding rule in IEEE systems.</p>
 <p><strong>Matchine Precision</strong></p>
-<p>The accuracy of a floating-point system is characterized by the <strong>unit roundoff</strong>(machine precision or machine epsilon), denoted by $\epsilon_{\text{mach}}$:</p>
+<p>The accuracy of a floating-point system is characterized by the <strong>unit roundoff</strong>(machine precision or machine epsilon), denoted by $\varepsilon_{\text{mach}}$:</p>
 <ul>
-<li>With rounding by chopping: $\epsilon_{\text{mach}} = \beta^{1-p}$</li>
-<li>With rounding to nearest: $\epsilon_{\text{mach}} = \frac12 \beta^{1-p}$</li>
+<li>With rounding by chopping: $\varepsilon_{\text{mach}} = \beta^{1-p}$</li>
+<li>With rounding to nearest: $\varepsilon_{\text{mach}} = \frac12 \beta^{1-p}$</li>
 </ul>
-<p>Alternatively, $\epsilon_{\text{mach}}$ is defined as the smallest number $\epsilon$ such that $\text{fl}(1+\epsilon) &gt; 1$.</p>
+<p>Alternatively, $\varepsilon_{\text{mach}}$ is defined as the smallest number $\varepsilon$ such that $\text{fl}(1+\varepsilon) &gt; 1$.</p>
 <p><strong>Proposition: Rounding</strong></p>
 <p>For every $x \in \mathbb{R}$ in the range of the floating-point system, we have:</p>
 <p>$$
-|\text{fl}(x)-x| \le \epsilon_{\text{mach}}|x|
+|\text{fl}(x)-x| \le \varepsilon_{\text{mach}}|x|
 $$</p>
 <p>or we can write in a more common way:</p>
 <p>$$
-\frac{|\text{fl}(x)-x|}{|x|} \le \epsilon_{\text{mach}}
+\frac{|\text{fl}(x)-x|}{|x|} \le \varepsilon_{\text{mach}}
 $$</p>
 <p>For IEEE floating-point systems:</p>
 <ul>
-<li>$\epsilon_{\text{mach}} = 2^{-24} \approx 10^{-7}$ in single precision.</li>
-<li>$\epsilon_{\text{mach}} = 2^{-53} \approx 10^{-16}$ in double precision.</li>
-<li>$\epsilon_{\text{mach}} = 2^{-113} \approx 10^{-36}$ in quadruple precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-24} \approx 10^{-7}$ in single precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-53} \approx 10^{-16}$ in double precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-113} \approx 10^{-36}$ in quadruple precision.</li>
 </ul>
+<p><strong>Subnormals and Gradual Underflow</strong></p>
+<p>?</p>
+<p><strong>Exceptional Values</strong></p>
+<p>IEEE floating-point standards:</p>
+<ul>
+<li><strong>Inf</strong>: "infinity", results from dividing a finite number by zero ($1/0$)</li>
+<li><strong>NaN</strong>: "not a number", results from undefined or interminate operations such as $0/0, 0\cdot \text{Inf}$ or $\text{Inf}/\text{Inf}$.</li>
+</ul>
+<h2 id="l3-floating-point-arithmetic-and-error-analysis"><a class="header" href="#l3-floating-point-arithmetic-and-error-analysis">L3 Floating-Point Arithmetic and Error Analysis</a></h2>
+<h3 id="floating-point-arithmetic-and-cancellation"><a class="header" href="#floating-point-arithmetic-and-cancellation">Floating-Point Arithmetic and Cancellation</a></h3>
+<p><strong>Floating-Point Arithmetic</strong>:</p>
+<ul>
+<li>Addtion or Subtraction ($\oplus, \ominus$)</li>
+<li>Multiplication ($\odot$)</li>
+<li>Division ($\oslash$)</li>
+</ul>
+<p>Results of these floating-point operations may <strong>diffier</strong> from results of the corresponding real arithmetic operation.</p>
+<p>e.g. Let us set $\beta=10$ and $p=6$, and $x=1.92403 \cdot 10^2$ and $y=6.35782 \cdot 10^{-1}$ be given. We can get
+$$
+x \oplus y = 1.93039 \cdot 10^2
+$$
+(use rounding to nearest)</p>
+<p>Comments: The real result may fail to be representable because its exponent is byond the available range. Overflow is a serious problem as there is <strong>no good approximation</strong> to arbitrarily large numbers in floating-point systems.</p>
+<p>e.g. Evaluating a Divergent Series:</p>
+<p>$$
+\sum_{k=1}^\infin \frac1k
+$$</p>
+<p>is divergent, yet <em>has finite value in floating-point arithmetic</em></p>
+<p>Possible Explanations:</p>
+<ul>
+<li>The partial sum eventually overflows.</li>
+<li>$\frac1k$ eventually underflows.</li>
+<li>Partial sum ceases to change on $\frac1k$ becomes negligible relative to the partial sum
+$$
+\frac1k &lt; \varepsilon_{\text{mach}} \cdot \sum_{i=1}^{k-1} \frac1i
+$$</li>
+</ul>
+<p><strong>IEEE-Standard 754</strong>: For any operation $* \in {+,-,\cdot,/ }$ and any pair of <em>machine numbers</em>, we have</p>
+<p>$$
+x \circledast y = \text{fl}(x * y)
+$$</p>
+<p>which means $x \circledast y = (1 + \varepsilon) \cdot (x*y)$ for sum $|\varepsilon| \le \varepsilon_{\text{mach}}$</p>
+<p>Floating-point addition and multiplication are <strong>commutative but not associative</strong>.</p>
+<p>e.g. If $\varepsilon$ is a positive floating-point number that is slightly smaller than $\varepsilon_{\text{mach}}$ then $(1 \oplus \varepsilon) \oplus \varepsilon = 1$ but $1 \oplus (\varepsilon \oplus \varepsilon) &gt; 1$</p>
+<p><strong>Cancellation</strong></p>
+<p>Consider $\ominus$: If the two $p$-digit numbers having same sign and similar magnitudes yields results with <strong>fewer</strong> than $p$ digits, so it is usually exactly representable. The leading digits of the two numbers <strong>cancel</strong> (i.e. their difference is zero).</p>
+<p>e.g.
+$$
+1.92403 \cdot 10^2 \ominus 1.92275 \cdot 10^2 = 1.28000 \cdot 10^{-1}
+$$</p>
+<p>which is correct and exactly representable, but has only $3$ significant digits.</p>
+<p>BUT, despite the exactness, cancellation often implies <strong>serious loss of information</strong>!</p>
+<p>e.g. If $\varepsilon$ is a positive floating-point number that is slightly smaller than $\varepsilon_{\text{mach}}$ then</p>
+<p>$$
+(1 \oplus \varepsilon) \ominus (1 \ominus \varepsilon) = 1 \ominus 1 = 0
+$$</p>
+<p>The true result of the computation $2 \varepsilon$ has been completely lost!</p>
+<p>e.g. Evaluating alternating series such as</p>
+<p>$$
+e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots
+$$</p>
+<p>for $x&lt;0$ can give a disastrous result due to catastrophic cancellation.</p>
+<p>e.g. Quadratic Formula: The two solutions of the quadratic equation $ax^2 + bx + c = 0$ are given by</p>
+<p>$$
+x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
+$$</p>
+<p>A naive use of this formula can suffer from <strong>overflow, underflow or severe cancellation</strong>.</p>
+<p>But the cancellation between $-b$ and the square root can be avoided by computing</p>
+<p>$$
+x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \cdot \frac{-b \pm \sqrt{b^2-4ac}}{-b \pm \sqrt{b^2-4ac}} = \frac{2c}{-b \mp \sqrt{b^2-4ac}}
+$$</p>
+<p>Cancellation inside the square root <strong>cannot</strong> be easily avoided without using higher precision.</p>
+<p>e.g. Standard Deviation: The mean and standard deviation of sequence $\{x_i\}_{i=1}^n$ are given by:
+$$
+\bar{x} = \frac1n \sum_{i=1}^n x_i
+$$</p>
+<p>$$
+\sigma^2 = \frac1{n-1} \sum_{i=1}^n (x_i - \bar{x})^2.
+$$</p>
+<p>The mathematically equivalent formula</p>
+<p>$$
+\sigma^2 = \frac1{n-1}\left( \sum_{i=1}^n x_i^2 - n \bar{x}^2 \right)
+$$</p>
+<p>avoids making two passes through the data.</p>
 
                     </main>
 

@@ -6070,6 +6070,95 @@ $$</p>
 <p><strong>Solving $Ax=b$</strong></p>
 <p>Gradient Descent</p>
 <p>Steepest Descent</p>
+<h2 id="l3-transformation"><a class="header" href="#l3-transformation">L3 Transformation</a></h2>
+<h3 id="condition-number"><a class="header" href="#condition-number">Condition Number</a></h3>
+<p>For a linear system $Ax=b$, obviously $x=A^{-1}b$. Apply a small perturbation $\delta$: $A(x+\delta)=b+\delta$, that is adding an error in $x$, we can get the relative error in $b$:</p>
+<p>$$
+\frac{\Vert A^{-1} \delta \Vert}{\Vert A^{-1} b \Vert} \quad \text{v.s.} \quad \frac{\Vert \delta \Vert}{\Vert b \Vert}
+$$</p>
+<p>Consider:</p>
+<p>$$
+\begin{aligned}
+&amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert A^{-1} b \Vert} / \frac{\Vert \delta \Vert}{\Vert b \Vert} \right) \\
+= &amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert \delta \Vert} \times \frac{\Vert b \Vert}{\Vert A^{-1} b \Vert} \right) \\
+= &amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert \delta \Vert} \times \frac{\Vert Ax \Vert}{\Vert x \Vert} \right) \\
+= &amp; \Vert A^{-1} \Vert \times \Vert A \Vert \\
+= &amp; \text{Cond}(A)
+\end{aligned}
+$$</p>
+<p><strong>Condition Number</strong> of a function measures how much the output can change for a small change in the input.</p>
+<p>$$
+\sigma_n = \max \left( \frac{\Vert Ax \Vert}{\Vert x \Vert} \right), \sigma_1 = \min \left( \frac{\Vert Ax \Vert}{\Vert x \Vert} \right)
+$$</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li>For any matrix $A$, $\text{Cond}(A) \ge 1$</li>
+<li>For the identity matrix $I$, $\text{Cond}(I) = 1$</li>
+<li>For any matrix $A$ and nonzero scalar $c$, $\text{Cond}(cA) = \text{Cond}(A)$</li>
+<li>For any diagonal matrix $D=\text{diag}(d_i)$, $\text{Cond}(D) = \frac{\max \vert d_i \vert}{\min \vert d_i \vert}$</li>
+</ul>
+<h3 id="transformations-in-cg"><a class="header" href="#transformations-in-cg">Transformations in CG</a></h3>
+<p><strong>Modeling</strong>:</p>
+<ul>
+<li>Define shapes in convenient coordinates</li>
+<li>Enable multiple copies of the same object</li>
+<li>Efficiently represent hierarchical scenes</li>
+</ul>
+<p><strong>Viewing</strong>:</p>
+<ul>
+<li>World coordinates to camera coordinates</li>
+<li>Parallel / perspective projections from 3D to 2D</li>
+</ul>
+<h3 id="transformation-matrices-and-linear"><a class="header" href="#transformation-matrices-and-linear">Transformation (Matrices and Linear)</a></h3>
+<p><strong>Translation</strong>:
+$$
+x' = x+t_x \quad y' = y+t_y
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f3034dc3a.png" height="100px">
+</p>
+<p><strong>Scale</strong>:
+$$
+x' = sx \quad y' = sy
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f329c81a7.png" height="100px">
+</p>
+<p><strong>Shear</strong>:
+$$
+x' = x+ay \quad y' = y
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f345a4784.png" height="100px">
+</p>
+<p><strong>Rotation</strong>:
+$$
+R \theta = [\cos \theta, -\sin \theta; \sin \theta, \cos \theta]
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f44953068.png" height="100px">
+</p>
+<p><strong>Reflection</strong>:
+$$
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix} =
+\begin{bmatrix}
+-1 &amp; 0 \\
+0 &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+$$</p>
+<h3 id="composing-transforms"><a class="header" href="#composing-transforms">Composing Transforms</a></h3>
+<p>?</p>
+<h3 id="homogeneous-coordinates"><a class="header" href="#homogeneous-coordinates">Homogeneous Coordinates</a></h3>
+<blockquote>
+<p>Unfinished</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mat3350-introduction-to-information-theory"><a class="header" href="#mat3350-introduction-to-information-theory">MAT3350 Introduction to Information Theory</a></h1>
 <p>Prof. Kaiming SHEN @ SSE</p>
 <p>Grades:</p>
@@ -9113,27 +9202,111 @@ $$</p>
 </ul>
 <p>Rounding to nearest is the most accurate and is the default rounding rule in IEEE systems.</p>
 <p><strong>Matchine Precision</strong></p>
-<p>The accuracy of a floating-point system is characterized by the <strong>unit roundoff</strong>(machine precision or machine epsilon), denoted by $\epsilon_{\text{mach}}$:</p>
+<p>The accuracy of a floating-point system is characterized by the <strong>unit roundoff</strong>(machine precision or machine epsilon), denoted by $\varepsilon_{\text{mach}}$:</p>
 <ul>
-<li>With rounding by chopping: $\epsilon_{\text{mach}} = \beta^{1-p}$</li>
-<li>With rounding to nearest: $\epsilon_{\text{mach}} = \frac12 \beta^{1-p}$</li>
+<li>With rounding by chopping: $\varepsilon_{\text{mach}} = \beta^{1-p}$</li>
+<li>With rounding to nearest: $\varepsilon_{\text{mach}} = \frac12 \beta^{1-p}$</li>
 </ul>
-<p>Alternatively, $\epsilon_{\text{mach}}$ is defined as the smallest number $\epsilon$ such that $\text{fl}(1+\epsilon) &gt; 1$.</p>
+<p>Alternatively, $\varepsilon_{\text{mach}}$ is defined as the smallest number $\varepsilon$ such that $\text{fl}(1+\varepsilon) &gt; 1$.</p>
 <p><strong>Proposition: Rounding</strong></p>
 <p>For every $x \in \mathbb{R}$ in the range of the floating-point system, we have:</p>
 <p>$$
-|\text{fl}(x)-x| \le \epsilon_{\text{mach}}|x|
+|\text{fl}(x)-x| \le \varepsilon_{\text{mach}}|x|
 $$</p>
 <p>or we can write in a more common way:</p>
 <p>$$
-\frac{|\text{fl}(x)-x|}{|x|} \le \epsilon_{\text{mach}}
+\frac{|\text{fl}(x)-x|}{|x|} \le \varepsilon_{\text{mach}}
 $$</p>
 <p>For IEEE floating-point systems:</p>
 <ul>
-<li>$\epsilon_{\text{mach}} = 2^{-24} \approx 10^{-7}$ in single precision.</li>
-<li>$\epsilon_{\text{mach}} = 2^{-53} \approx 10^{-16}$ in double precision.</li>
-<li>$\epsilon_{\text{mach}} = 2^{-113} \approx 10^{-36}$ in quadruple precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-24} \approx 10^{-7}$ in single precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-53} \approx 10^{-16}$ in double precision.</li>
+<li>$\varepsilon_{\text{mach}} = 2^{-113} \approx 10^{-36}$ in quadruple precision.</li>
 </ul>
+<p><strong>Subnormals and Gradual Underflow</strong></p>
+<p>?</p>
+<p><strong>Exceptional Values</strong></p>
+<p>IEEE floating-point standards:</p>
+<ul>
+<li><strong>Inf</strong>: "infinity", results from dividing a finite number by zero ($1/0$)</li>
+<li><strong>NaN</strong>: "not a number", results from undefined or interminate operations such as $0/0, 0\cdot \text{Inf}$ or $\text{Inf}/\text{Inf}$.</li>
+</ul>
+<h2 id="l3-floating-point-arithmetic-and-error-analysis"><a class="header" href="#l3-floating-point-arithmetic-and-error-analysis">L3 Floating-Point Arithmetic and Error Analysis</a></h2>
+<h3 id="floating-point-arithmetic-and-cancellation"><a class="header" href="#floating-point-arithmetic-and-cancellation">Floating-Point Arithmetic and Cancellation</a></h3>
+<p><strong>Floating-Point Arithmetic</strong>:</p>
+<ul>
+<li>Addtion or Subtraction ($\oplus, \ominus$)</li>
+<li>Multiplication ($\odot$)</li>
+<li>Division ($\oslash$)</li>
+</ul>
+<p>Results of these floating-point operations may <strong>diffier</strong> from results of the corresponding real arithmetic operation.</p>
+<p>e.g. Let us set $\beta=10$ and $p=6$, and $x=1.92403 \cdot 10^2$ and $y=6.35782 \cdot 10^{-1}$ be given. We can get
+$$
+x \oplus y = 1.93039 \cdot 10^2
+$$
+(use rounding to nearest)</p>
+<p>Comments: The real result may fail to be representable because its exponent is byond the available range. Overflow is a serious problem as there is <strong>no good approximation</strong> to arbitrarily large numbers in floating-point systems.</p>
+<p>e.g. Evaluating a Divergent Series:</p>
+<p>$$
+\sum_{k=1}^\infin \frac1k
+$$</p>
+<p>is divergent, yet <em>has finite value in floating-point arithmetic</em></p>
+<p>Possible Explanations:</p>
+<ul>
+<li>The partial sum eventually overflows.</li>
+<li>$\frac1k$ eventually underflows.</li>
+<li>Partial sum ceases to change on $\frac1k$ becomes negligible relative to the partial sum
+$$
+\frac1k &lt; \varepsilon_{\text{mach}} \cdot \sum_{i=1}^{k-1} \frac1i
+$$</li>
+</ul>
+<p><strong>IEEE-Standard 754</strong>: For any operation $* \in {+,-,\cdot,/ }$ and any pair of <em>machine numbers</em>, we have</p>
+<p>$$
+x \circledast y = \text{fl}(x * y)
+$$</p>
+<p>which means $x \circledast y = (1 + \varepsilon) \cdot (x*y)$ for sum $|\varepsilon| \le \varepsilon_{\text{mach}}$</p>
+<p>Floating-point addition and multiplication are <strong>commutative but not associative</strong>.</p>
+<p>e.g. If $\varepsilon$ is a positive floating-point number that is slightly smaller than $\varepsilon_{\text{mach}}$ then $(1 \oplus \varepsilon) \oplus \varepsilon = 1$ but $1 \oplus (\varepsilon \oplus \varepsilon) &gt; 1$</p>
+<p><strong>Cancellation</strong></p>
+<p>Consider $\ominus$: If the two $p$-digit numbers having same sign and similar magnitudes yields results with <strong>fewer</strong> than $p$ digits, so it is usually exactly representable. The leading digits of the two numbers <strong>cancel</strong> (i.e. their difference is zero).</p>
+<p>e.g.
+$$
+1.92403 \cdot 10^2 \ominus 1.92275 \cdot 10^2 = 1.28000 \cdot 10^{-1}
+$$</p>
+<p>which is correct and exactly representable, but has only $3$ significant digits.</p>
+<p>BUT, despite the exactness, cancellation often implies <strong>serious loss of information</strong>!</p>
+<p>e.g. If $\varepsilon$ is a positive floating-point number that is slightly smaller than $\varepsilon_{\text{mach}}$ then</p>
+<p>$$
+(1 \oplus \varepsilon) \ominus (1 \ominus \varepsilon) = 1 \ominus 1 = 0
+$$</p>
+<p>The true result of the computation $2 \varepsilon$ has been completely lost!</p>
+<p>e.g. Evaluating alternating series such as</p>
+<p>$$
+e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots
+$$</p>
+<p>for $x&lt;0$ can give a disastrous result due to catastrophic cancellation.</p>
+<p>e.g. Quadratic Formula: The two solutions of the quadratic equation $ax^2 + bx + c = 0$ are given by</p>
+<p>$$
+x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
+$$</p>
+<p>A naive use of this formula can suffer from <strong>overflow, underflow or severe cancellation</strong>.</p>
+<p>But the cancellation between $-b$ and the square root can be avoided by computing</p>
+<p>$$
+x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \cdot \frac{-b \pm \sqrt{b^2-4ac}}{-b \pm \sqrt{b^2-4ac}} = \frac{2c}{-b \mp \sqrt{b^2-4ac}}
+$$</p>
+<p>Cancellation inside the square root <strong>cannot</strong> be easily avoided without using higher precision.</p>
+<p>e.g. Standard Deviation: The mean and standard deviation of sequence $\{x_i\}_{i=1}^n$ are given by:
+$$
+\bar{x} = \frac1n \sum_{i=1}^n x_i
+$$</p>
+<p>$$
+\sigma^2 = \frac1{n-1} \sum_{i=1}^n (x_i - \bar{x})^2.
+$$</p>
+<p>The mathematically equivalent formula</p>
+<p>$$
+\sigma^2 = \frac1{n-1}\left( \sum_{i=1}^n x_i^2 - n \bar{x}^2 \right)
+$$</p>
+<p>avoids making two passes through the data.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="stochastic-processes"><a class="header" href="#stochastic-processes">Stochastic Processes</a></h1>
 <h2 id="l0-examples-of-stochastic-processes"><a class="header" href="#l0-examples-of-stochastic-processes">L0 Examples of Stochastic Processes</a></h2>
 <h3 id="example-1-discrete-steps-in-time"><a class="header" href="#example-1-discrete-steps-in-time">Example 1: Discrete Steps in Time</a></h3>
@@ -9161,7 +9334,7 @@ $$</p>
 </p>
 <p>Consider Corridor A and Corridor B, passengers arrive at steady pace $\lambda_1$ and $\lambda_2$ for each corridor.</p>
 <p><strong>The Superposition Property</strong>: When independent Poisson streams merge, the combined stream is <strong>still a textbook Poisson process</strong>. And the combined rate simply adds up: $\lambda_{\text{total}} = \lambda_1 + \lambda_2$</p>
-<h2 id="l1-review-of-probability-tools"><a class="header" href="#l1-review-of-probability-tools">L1 Review of Probability Tools</a></h2>
+<h2 id="l1-l2-review-of-probability-tools"><a class="header" href="#l1-l2-review-of-probability-tools">L1-L2(?) Review of Probability Tools</a></h2>
 <p>Mostly STA2001 contents.</p>
 <p><strong>The Inclusion-Exclusion Principle (De Moivre's Formula)</strong>:</p>
 <p>$$
@@ -9178,7 +9351,7 @@ $$</p>
 <p>Suppose that $X_n$ is a binomial r.v. with parameters $(n, p_n)$, and let $\lambda_n = n p_n \to \lambda$ when $n \to \infin$.</p>
 <p>Then for any fixed $i$, we have</p>
 <p>$$
-P{X_n=i} = \lim_{n \to \infin} \frac{n!}{i!(n-i)!} p_n^i(1-p_n)^{n-i} \rightarrow e^{-\lambda}\frac{\lambda^i}{i!}
+P\{X_n=i\} = \lim_{n \to \infin} \frac{n!}{i!(n-i)!} p_n^i(1-p_n)^{n-i} \rightarrow e^{-\lambda}\frac{\lambda^i}{i!}
 $$</p>
 <p align="center">
   <img src="https://img.skyzhou.top/i/2026/09/09/6aa10b2a2e18c.png" height="200px">
@@ -9200,7 +9373,7 @@ f(x) = F'(x) = \lim_{h\to 0} \frac{F(x+h)-f(x)}{h}
 $$</p>
 <p>we have for small $h$,
 $$
-P{x &lt; X \le x+h} = F(x+h) - F(x) \approx h \cdot f(x)
+P\{x &lt; X \le x+h\} = F(x+h) - F(x) \approx h \cdot f(x)
 $$</p>
 <p><strong>Expectation of R.V.</strong></p>
 <p>For discrete r.v. $X$ with pmf $P(x)$, we have definition:</p>
@@ -9224,7 +9397,7 @@ E[N] &amp;=&amp;&amp; 1\cdot P(N=1) + 2\cdot P(N=2) + 3\cdot P(N=3) \\
 $$</p>
 <p>We call it the formula of integer random variables.</p>
 <p>e.g. There are $m$ kinds of cards, the probability of choosing the $i$ th card is $p_i$, we want to know the expectation $E[N]$ of getting all kinds of cards.</p>
-<p>Consider $A_i = {\text{didn't get }i\text{ th card in the previous } n \text{ times}}$, then we have:</p>
+<p>Consider $A_i = \{\text{didn't get }i\text{ th card in the previous } n \text{ times}\}$, then we have:</p>
 <p>$$
 \{N &gt; n\} = A_1 \cup A_2 \cup \cdots \cup A_m
 $$</p>
@@ -9262,6 +9435,74 @@ $$</p>
 <li>$\text{cov}(X,Y) = 0$.</li>
 <li>$X$ and $Y$ are <strong>NOT</strong> independent.</li>
 </ol>
+<p>Consider $Y=\epsilon X$ as</p>
+<p>$$
+Y = \begin{cases}
+X, &amp; 50\% \\
+-X, &amp; 50\%
+\end{cases}
+$$</p>
+<p>Firstly, since $X \sim N(0,1)$ is symmetrical within $x=0$, we have $Y$ for half time $X$ and half time $-X$. Thus $Y \sim N(0,1)$ Q.E.D.</p>
+<p>Secondly, consider $XY=\epsilon X^2$</p>
+<p>$$
+\text{cov}(X,Y) = E[XY]-E[X]E[Y] = E[XY] = E[\epsilon X^2] = 0
+$$</p>
+<p>which is uncorrelated.</p>
+<p>Thirdly, since $Y=\epsilon X, \epsilon = \pm1$, we always have</p>
+<p>$$
+Y^2 = X^2
+$$</p>
+<p>Thus, <strong>if</strong> $X,Y$ are independent, we have</p>
+<p>$$
+E[X^2 Y^2] = E[X^2] E[Y^2] = 1
+$$</p>
+<p>But actually, we have $Y^2 = X^2$, and</p>
+<p>$$
+E[X^2 Y^2] = E[X^4] = 3 \not= 1
+$$</p>
+<p>Thus, $X$ and $Y$ are <strong>not</strong> independent.</p>
+<p><strong>Multivariate Change of R.V.s</strong></p>
+<p>Let $f_{X_1,X_2}(x_1,x_2)$ be the <em>joint density function</em> of two continuous r.v.s $X_1$ and $X_2$.</p>
+<p>Assume that the map $(x_1,x_2)\mapsto (y_2,y_2)$ where
+$$
+\begin{cases}
+y_1 = g_1 (x_1, x_2) \\
+y_2 = g_2 (x_1, x_2)
+\end{cases}
+$$</p>
+<p>has a unique inverse function</p>
+<p>$$
+\begin{cases}
+x_1 = h_1(y_1,y_2) \\
+x_2 = h_2(y_1,y_2)
+\end{cases}
+$$</p>
+<p>Then $Y_1 = g_1(X_1,X_2)$ and $Y_2 = g_2(X_1,X_2)$ are jointly continuous with joint density function givenby</p>
+<p>$$
+f_{Y_1,Y_2}(y_1,y_2) = f_{X_1,X_2}(h_1(y_1,y_2), h_2(y_1,y_2)) |J|
+$$</p>
+<p>where</p>
+<p>$$
+J = \left| \begin{matrix} \frac{\partial x_1}{\partial y_1} &amp; \frac{\partial x_1}{\partial y_2} \\  \frac{\partial x_2}{\partial y_1} &amp; \frac{\partial x_2}{\partial y_2} \end{matrix} \right| = \frac{\partial x_1}{\partial y_1} \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \frac{\partial x_2}{\partial y_1}
+$$</p>
+<p><strong>???</strong></p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7aac91fcb0.png" height="550px">
+</p>
+<p><strong>Order Statistics</strong></p>
+<p>Let $X_1, X_2, \cdots, X_n$ be a i.i.d. sample of continuous r.v.'s with common cdf $F(x)$ and pdf $f(x)$.</p>
+<p>The <strong>order statistics</strong> associated to the sample are the list of their sorted values $(X_{(1)}, X_{(2)}, \cdots, X_{(n)})$, where</p>
+<p>$$
+X_{(1)} &lt; X_{(2)} &lt; \cdots &lt; x_{(n)}
+$$</p>
+<p><strong>Theorem</strong>: For $1 \le i \le n$, the $i$-th order statistic $X_{(i)}$ has pdf</p>
+<p>$$
+f_{(i)}(x) = \frac{n!}{(n-i)!(i-1)!} f(x) (F(x))^{i-1} (1-F(x))^{n-i}
+$$</p>
+<p><strong>Theorem</strong>: Jointly, the $n$ order statistics has pdf</p>
+<p>$$
+f_{(1,2,\cdots,n)}(x_1,x_2, \cdots, x_n) = n! \prod_{i=1}^n f(x_i), \quad x_1 &lt; x_2 &lt; \cdots &lt; x_n
+$$</p>
 
                     </main>
 

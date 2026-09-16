@@ -324,6 +324,95 @@ $$</p>
 <p><strong>Solving $Ax=b$</strong></p>
 <p>Gradient Descent</p>
 <p>Steepest Descent</p>
+<h2 id="l3-transformation"><a class="header" href="#l3-transformation">L3 Transformation</a></h2>
+<h3 id="condition-number"><a class="header" href="#condition-number">Condition Number</a></h3>
+<p>For a linear system $Ax=b$, obviously $x=A^{-1}b$. Apply a small perturbation $\delta$: $A(x+\delta)=b+\delta$, that is adding an error in $x$, we can get the relative error in $b$:</p>
+<p>$$
+\frac{\Vert A^{-1} \delta \Vert}{\Vert A^{-1} b \Vert} \quad \text{v.s.} \quad \frac{\Vert \delta \Vert}{\Vert b \Vert}
+$$</p>
+<p>Consider:</p>
+<p>$$
+\begin{aligned}
+&amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert A^{-1} b \Vert} / \frac{\Vert \delta \Vert}{\Vert b \Vert} \right) \\
+= &amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert \delta \Vert} \times \frac{\Vert b \Vert}{\Vert A^{-1} b \Vert} \right) \\
+= &amp; \max \left( \frac{\Vert A^{-1} \delta \Vert}{\Vert \delta \Vert} \times \frac{\Vert Ax \Vert}{\Vert x \Vert} \right) \\
+= &amp; \Vert A^{-1} \Vert \times \Vert A \Vert \\
+= &amp; \text{Cond}(A)
+\end{aligned}
+$$</p>
+<p><strong>Condition Number</strong> of a function measures how much the output can change for a small change in the input.</p>
+<p>$$
+\sigma_n = \max \left( \frac{\Vert Ax \Vert}{\Vert x \Vert} \right), \sigma_1 = \min \left( \frac{\Vert Ax \Vert}{\Vert x \Vert} \right)
+$$</p>
+<p><strong>Properties</strong>:</p>
+<ul>
+<li>For any matrix $A$, $\text{Cond}(A) \ge 1$</li>
+<li>For the identity matrix $I$, $\text{Cond}(I) = 1$</li>
+<li>For any matrix $A$ and nonzero scalar $c$, $\text{Cond}(cA) = \text{Cond}(A)$</li>
+<li>For any diagonal matrix $D=\text{diag}(d_i)$, $\text{Cond}(D) = \frac{\max \vert d_i \vert}{\min \vert d_i \vert}$</li>
+</ul>
+<h3 id="transformations-in-cg"><a class="header" href="#transformations-in-cg">Transformations in CG</a></h3>
+<p><strong>Modeling</strong>:</p>
+<ul>
+<li>Define shapes in convenient coordinates</li>
+<li>Enable multiple copies of the same object</li>
+<li>Efficiently represent hierarchical scenes</li>
+</ul>
+<p><strong>Viewing</strong>:</p>
+<ul>
+<li>World coordinates to camera coordinates</li>
+<li>Parallel / perspective projections from 3D to 2D</li>
+</ul>
+<h3 id="transformation-matrices-and-linear"><a class="header" href="#transformation-matrices-and-linear">Transformation (Matrices and Linear)</a></h3>
+<p><strong>Translation</strong>:
+$$
+x' = x+t_x \quad y' = y+t_y
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f3034dc3a.png" height="100px">
+</p>
+<p><strong>Scale</strong>:
+$$
+x' = sx \quad y' = sy
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f329c81a7.png" height="100px">
+</p>
+<p><strong>Shear</strong>:
+$$
+x' = x+ay \quad y' = y
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f345a4784.png" height="100px">
+</p>
+<p><strong>Rotation</strong>:
+$$
+R \theta = [\cos \theta, -\sin \theta; \sin \theta, \cos \theta]
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/14/6aa7f44953068.png" height="100px">
+</p>
+<p><strong>Reflection</strong>:
+$$
+\begin{bmatrix}
+x' \\
+y'
+\end{bmatrix} =
+\begin{bmatrix}
+-1 &amp; 0 \\
+0 &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+$$</p>
+<h3 id="composing-transforms"><a class="header" href="#composing-transforms">Composing Transforms</a></h3>
+<p>?</p>
+<h3 id="homogeneous-coordinates"><a class="header" href="#homogeneous-coordinates">Homogeneous Coordinates</a></h3>
+<blockquote>
+<p>Unfinished</p>
+</blockquote>
 
                     </main>
 
