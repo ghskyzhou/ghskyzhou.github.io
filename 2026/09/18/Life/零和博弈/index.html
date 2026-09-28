@@ -1,0 +1,917 @@
+
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark">
+
+<head>
+  <meta name="baidu-site-verification" content="codeva-S83EM6yG58" />
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>零和博弈、社会与 AI —— 覆水难收 - SkyBlog</title>
+
+  
+    <meta name="description" content="前言我感觉好几个月之前我就想写一篇类似的文章，但是由于各种原因，一直迟迟没有动笔。或许是觉得大脑里的想法太多，过于庞大但又很混乱，没法形成系统的文字，亦或是缺少一个契机，不知道该从何下手去分析。 这篇文章，一开始我是想用 AI 辅助思考来写的，但是想了想，最后还是打算纯自己手写，不加任何 AI 的想法或者文字。实际上，我运营的这个 SkyBlog 大部分内容都是我一个字一个字敲出来的，有时候可能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="零和博弈、社会与 AI —— 覆水难收">
+<meta property="og:url" content="http://skyzhou.top/2026/09/18/Life/%E9%9B%B6%E5%92%8C%E5%8D%9A%E5%BC%88/index.html">
+<meta property="og:site_name" content="SkyBlog">
+<meta property="og:description" content="前言我感觉好几个月之前我就想写一篇类似的文章，但是由于各种原因，一直迟迟没有动笔。或许是觉得大脑里的想法太多，过于庞大但又很混乱，没法形成系统的文字，亦或是缺少一个契机，不知道该从何下手去分析。 这篇文章，一开始我是想用 AI 辅助思考来写的，但是想了想，最后还是打算纯自己手写，不加任何 AI 的想法或者文字。实际上，我运营的这个 SkyBlog 大部分内容都是我一个字一个字敲出来的，有时候可能">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-26T10:40:19.235Z">
+<meta property="article:author" content="Sky Zhou">
+<meta name="twitter:card" content="summary">
+  
+
+  <meta property="og:image" content="https://img.z4a.net/images/2025/01/16/Lika.gif">
+
+  
+  
+  
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://img.skyzhou.top/i/2025/04/19/6803a397e9de1.gif" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">SkyBlog</div><div class="sub normal cap">頑張って！</div><div class="sub hover cap" style="opacity:0"> Designed by Sky</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="Blog" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="Favorite Sites" href="/favsites/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+<div class="widget-wrapper post-list" id="">
+  <div class="widget-header">
+    <span class="title">全部分类</span>
+  </div>
+  <div class="widget-body">
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Algorithm</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2025/10/25/Algorithm/ACM_XCPC/">
+              <span class="title">2025 ACM XCPC</span>
+            </a>
+          
+            <a href="/2025/10/09/Algorithm/Middle_OI/">
+              <span class="title">OI中的基础模拟、数学、STL</span>
+            </a>
+          
+            <a href="/2025/09/24/Algorithm/FFT_and_NTT/">
+              <span class="title">FFT and NTT</span>
+            </a>
+          
+            <a href="/2025/08/11/Algorithm/DP_and_Matrix/">
+              <span class="title">DP与矩阵</span>
+            </a>
+          
+            <a href="/2025/04/30/Algorithm/ACM_Templates/">
+              <span class="title">ACM 模板</span>
+            </a>
+          
+            <a href="/2025/03/20/Algorithm/LaTeX_Mathematics/">
+              <span class="title">$\LaTeX$数学公式</span>
+            </a>
+          
+            <a href="/2025/02/23/Algorithm/Dynamic_Programming_Deepseek/">
+              <span class="title">DP by Deepseek</span>
+            </a>
+          
+            <a href="/2025/02/10/Algorithm/Dynamic_Programming/">
+              <span class="title">Dynamic Programming</span>
+            </a>
+          
+            <a href="/2025/01/15/Algorithm/Skyzhou_Luogu_Blog/">
+              <span class="title">Skyzhou&#39;s Luogu Blog</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">CUHKSZ</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/03/05/CUHKSZ/APA_Cite/">
+              <span class="title">APA Cite by ChatGPT</span>
+            </a>
+          
+            <a href="/2025/04/13/CUHKSZ/CUHKSZ_Notes/">
+              <span class="title">CUHKSZ Notes</span>
+            </a>
+          
+            <a href="/2025/03/19/CUHKSZ/CUHKSZ_CS/">
+              <span class="title">CUHKSZ-CS修读计划</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Japanese</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/05/18/Japanese/JPN_Kunyomi/">
+              <span class="title">動詞と形容詞の訓読み表</span>
+            </a>
+          
+            <a href="/2025/06/23/Japanese/JPN_N5/">
+              <span class="title">日本語文法 N5</span>
+            </a>
+          
+            <a href="/2025/01/22/Japanese/JPN_UTokyo/">
+              <span class="title">东京大学CS修考</span>
+            </a>
+          
+            <a href="/2025/01/19/Japanese/JPN_Main/">
+              <span class="title">日本語の勉強</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Life</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/09/18/Life/%E9%9B%B6%E5%92%8C%E5%8D%9A%E5%BC%88/">
+              <span class="title">零和博弈、社会与 AI —— 覆水难收</span>
+            </a>
+          
+            <a href="/2025/12/31/Life/2025_Year_Conclusion/">
+              <span class="title">2025 年度总结</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Reading</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/09/05/Reading/Geometry_Relativity_and_the_Fouth_Dimension/">
+              <span class="title">Geometry, Relativity and the Fourth Dimension</span>
+            </a>
+          
+            <a href="/2026/07/27/Reading/Computational_Geometry/">
+              <span class="title">Computational Geometry - Algorithms and Applications</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Research</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/06/06/Research/Differential_Privacy/">
+              <span class="title">Differential Privacy</span>
+            </a>
+          
+            <a href="/2026/05/31/Research/Computer_Graphics/">
+              <span class="title">Computer Graphics</span>
+            </a>
+          
+            <a href="/2026/05/17/Research/MDS/">
+              <span class="title">Motif Densest Subgraph Discovery</span>
+            </a>
+          
+            <a href="/2025/06/08/Research/Frank-Wolfe/">
+              <span class="title">Frank-Wolfe Algorithm</span>
+            </a>
+          
+            <a href="/2025/06/02/Research/Densest_Subgraph_Discovery/">
+              <span class="title">DSD &amp; CSD 密集子图挖掘</span>
+            </a>
+          
+            <a href="/2025/04/22/Research/Clique/">
+              <span class="title">Clique and S-Bundle</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Software</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/04/09/Software/Web_Experience/">
+              <span class="title">如何搭建一个网站？</span>
+            </a>
+          
+            <a href="/2026/01/18/Software/Linux_Computer/">
+              <span class="title">X250 Arch Linux 装机实录</span>
+            </a>
+          
+            <a href="/2025/07/12/Software/RealCPP/">
+              <span class="title">Real C++</span>
+            </a>
+          
+            <a href="/2025/05/15/Software/Python_Snake_Game/">
+              <span class="title">Python Snake Game</span>
+            </a>
+          
+            <a href="/2025/05/01/Software/CFAt_Tg_Bot/">
+              <span class="title">CF/At Notification TG Bot</span>
+            </a>
+          
+            <a href="/2025/02/22/Software/Java_Gomoku/">
+              <span class="title">Java Gomoku Game</span>
+            </a>
+          
+            <a href="/2025/01/16/Software/Java_Chat_Room/">
+              <span class="title">Java Chat Room</span>
+            </a>
+          
+        </div>
+      </details>
+    
+      <details class="category-details">
+        <summary class="category-summary">
+          <span class="name">Travel</span>
+        </summary>
+        <div class="post-list-inner">
+          
+            <a href="/2026/07/21/Travel/2026_Summer_Japan/">
+              <span class="title">2026 暑假日本行</span>
+            </a>
+          
+            <a href="/2026/02/21/Travel/Hokkaido/">
+              <span class="title">春节北海道之旅</span>
+            </a>
+          
+            <a href="/2025/06/13/Travel/Waseda_Summer/">
+              <span class="title">Waseda Summer留学游记</span>
+            </a>
+          
+        </div>
+      </details>
+    
+  </div>
+</div>
+
+<widget class="widget-wrapper slide-up tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/ACM/" style="font-size: 20.5px; color: #7ab9f5" class="tag -6">ACM</a> <a href="/tags/CS/" style="font-size: 22px; color: #87cefa" class="tag -10">CS</a> <a href="/tags/C/" style="font-size: 21px; color: #7ec0f7" class="tag -8">C++</a> <a href="/tags/Play/" style="font-size: 20px; color: #76b2f4" class="tag -5">Play</a> <a href="/tags/Code/" style="font-size: 21.5px; color: #83c7f8" class="tag -9">Code</a> <a href="/tags/AI/" style="font-size: 19px; color: #6da3f0" class="tag -3">AI</a> <a href="/tags/JPN/" style="font-size: 20.5px; color: #7ab9f5" class="tag -6">JPN</a> <a href="/tags/Geometry/" style="font-size: 18.5px; color: #689cef" class="tag -1">Geometry</a> <a href="/tags/ENG/" style="font-size: 18px; color: #6495ed" class="tag -0">ENG</a> <a href="/tags/Graph/" style="font-size: 19.5px; color: #71aaf2" class="tag -4">Graph</a> <a href="/tags/Graphics/" style="font-size: 18px; color: #6495ed" class="tag -0">Graphics</a> <a href="/tags/Tools/" style="font-size: 18px; color: #6495ed" class="tag -0">Tools</a> <a href="/tags/Java/" style="font-size: 18.5px; color: #689cef" class="tag -1">Java</a> <a href="/tags/Python/" style="font-size: 18px; color: #6495ed" class="tag -0">Python</a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Life/">Life</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-17T16:00:00.000Z">2026-09-18</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-26T10:40:19.235Z">2026-09-26</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>零和博弈、社会与 AI —— 覆水难收</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content slide-up"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我感觉好几个月之前我就想写一篇类似的文章，但是由于各种原因，一直迟迟没有动笔。或许是觉得大脑里的想法太多，过于庞大但又很混乱，没法形成系统的文字，亦或是缺少一个契机，不知道该从何下手去分析。</p>
+<p>这篇文章，一开始我是想用 AI 辅助思考来写的，但是想了想，最后还是打算纯自己手写，不加任何 AI 的想法或者文字。实际上，我运营的这个 SkyBlog 大部分内容都是我一个字一个字敲出来的，有时候可能 AI 生成的确实很快很好，但那不是<strong>我</strong>给大家呈现的内容，哪怕是只有自己看，也没那么有感觉。</p>
+<p>这两天受邀参加了 2026 全国大学生数学建模竞赛，我感觉我从中学到的最多的东西，不是数学建模（当然学到了一点数学建模吧），而是对 AI 工具高强度的使用。这比赛我从小学开始的时候看“超级数学建模”的微信公众号就有关注了，上大学之后，大二的时候参加过一次，但是那时候可能配合不太好，数据题也无从下手，最后连省奖都没混到。但这一次我觉得还算是比较认真，从开赛一直到结束，基本上大部分时间都在搞这个比赛，选题、解析、想法、实现、实验、论文什么的。</p>
+<p>在参加比赛的过程中，我再次体会到了<strong>零和博弈</strong>带来的焦虑和恐惧感，再加上之前上大学两年对 <strong>AI</strong> 的一些理解和思考，深有感触，故撰写此文。文笔不佳，逻辑有不严密之处，请读者包涵。</p>
+<blockquote>
+<p>这篇文章可能会持续更新，但具体能写多少其实我现在心理也没个底。</p>
+</blockquote>
+<h2 id="零和博弈"><a href="#零和博弈" class="headerlink" title="零和博弈"></a>零和博弈</h2><p>首先，我们来看看零和博弈的定义：</p>
+<blockquote>
+<p>“零和博弈，又称零和游戏或零和赛局（英语：Zero-sum game），源自于博弈论，属非合作博弈，其与非零和博弈为相对概念。零和博弈表示所有博弈方的利益之和为零，即一方有收入，他方必有所失。”</p>
+<p>——Wikipedia</p>
+</blockquote>
+<p>核心其实就是第二句话，“<strong>所有博弈方的利益之和为零，即一方有收入，他方必有所失。</strong>”这里其实收益之和为零并不是真正的所有人都没有收益，更多情况下是，总的收益是固定的，一方所得另一方必所失，可以举几个简单的例子：</p>
+<ul>
+<li><strong>赌博</strong>（德州扑克、麻将等）：最经典的零和博弈，一开始奖池是空的，每个人入场提供利益，然后只要有人获得利益，就必然有人失去对应的利益。</li>
+<li><strong>高考</strong>：如果假设每个学校在各个省份录取人数固定不变的话，对于个人来说就是零和博弈，因为有人分数高排名往前，就意味着有很多人排名会往后掉，但实际情况略微复杂，考虑到扩招以及人数样本极其庞大，大部分时候可以视作非零和博弈。从全国视角来看，不同省份的博弈竞争力度相差其实也很大，这里不方便展开。</li>
+<li><strong>本科绩点</strong>：这里要分为两种，一种是内地大部分大学采取的绝对分制度，其实是典型的非零和博弈，因为大家只需要通过考试或者都拿到 90 分以上，那么就能获得对应的绩点；另一种是类似于港中深这种拉 curve 的学校，那么就是类似于高考的近似零和博弈，甚至在个人体验中，有出现 98&#x2F;100 分但只能拿到 A- 的情况，所以我认为很多时候是强零和博弈。</li>
+<li><strong>正常贸易</strong>：比如你有苹果，我有橘子，而你想要橘子，我想要苹果，那么这个时候进行交易，互换双方的物品，这时候其实双方都获得了欲望的满足，即可以理解为获得了利益，那么这种时候是典型的非零和博弈。</li>
+</ul>
+<p>博弈发生在我们生活的每一个角落，由上面的例子其实也能看出，零和博弈大部分时候在涉及到<strong>竞争、排名</strong>的时候出现，而非零和博弈则常常位于<strong>考级、交易</strong>等地方（其实有时候考级是赋分制，具有零和博弈色彩，有时候又是纯绝对分制，不具有零和博弈色彩，具体得看制定等级的委员会），而产生强烈竞争的地方往往是总利益不变或者是利益增加速度赶不上竞争者数量增加的速度。</p>
+<p>中国现在的社会正处以一种具有强烈零和博弈色彩，但本质上是资源分配不均的时期。在《小岛经济学：鱼、美元和经济的故事》一书中，用生动形象的例子解释了什么是经济，其实本质上就是生产力和利益的交换。从书上的例子来看，一个正常发展的社会，我觉得应该是正和博弈的，就是虽然大家都在博弈但是，在竞争的过程中是会有产生利益而且让更多人受益的一个选项，这样整体上才能促进社会经济发展。根据维基百科，<em>利益是受客观规律制约的，为了满足生存和发展而产生的，人们对于一定对象的各种客观需求</em>。大部分情况下我们会认为钱是利益，但这只是最表象的，因为钱表示的是你掌握的一种生产能力，以及用来更别人交换的工具，它可以满足人的食欲、社交欲、权力欲甚至是性欲，而且人类自身通过寻找满足欲望的过程其实就是底层代码，大部分人是根本没法改变的。有些时候，名誉、排名什么的也是利益，就是任何能满足需求的东西。那么，为了满足这个需求，人类就会开始寻找手段，逐渐利用不良手段来获得利益。</p>
+<p>几乎所有人都是<strong>自私</strong>的，站在这个出发点上去分析，其实社会上的大部分行为都可以得到较好的解释。然而在生产力趋于饱和的时候，我们产生的“经济”总量就会趋向稳定，那么这个时候就会出现零和博弈，有人获得更多利益的同时就一定会有人获得更少的利益，来维持总量的平衡。在加上我上面说的<strong>不择手段</strong>，其实就能很好得解释现在为什么 AI 发展浪潮如此迅猛而且势头依旧在增长。</p>
+<p>准确的来看，我们可以将这种社会竞争理解为<strong>半零和博弈</strong>，即处于零和博弈和纯非零和博弈之间的一种特殊情景。在半零和博弈中，部分资源利益是固定且具对抗性的，但同时存在增量空间或可变因素，导致各方总收益加和既不完全为零，也不是完全不受限制的共赢。感觉非常适合描述现在的情形：增量空间有限的社会，其实是有办法通过合作、技术或者外部环境扩张来增加总体收益的可能，但这种道路上充斥着你死我活的竞争，导致很容易出现赢者通吃的局面。</p>
+<h2 id="AI-的发展"><a href="#AI-的发展" class="headerlink" title="AI 的发展"></a>AI 的发展</h2><p>其实这个模型应该不止能用在现在 AI 发展的事情上，但是我觉得 AI 的发展应该是目前最有代表性而且最有讨论价值的事情。</p>
+<p>人工智能这个概念其实几十年前就有人提出来了，但是前面的发展大部分都是比较画饼和空虚的，或者说远远没有达到大部分人对它的期待。在我印象里，直到我高中的时候 <strong>ChatGPT</strong> 横空出世，之前其实都没有多少人热衷于讨论相关的事情。</p>
+<p>ChatGPT 的出现我觉得是标志着人类正式进入 LLM 时代的<strong>里程碑</strong>，自此之后中国和美国的 AI 竞争就没有停下来过，而且其研究的加速度还在增加，人类似乎真的找到了进入未来全智能时代的钥匙一般，不停地、疯狂地去做相关研究。据我上大学以来的观察，其实很多教授和博士生一开始根本不是做 AI &#x2F; 泛 AI 方向的，但是这两年都是因为这个”好发论文”，“能做出研究”就加入了 LLM &#x2F; agent 等等泛 AI 领域大军，有些是结合本来做了几十年的方向，有些干脆不演了，直接大大方方搞人工智能、机器学习之类的。</p>
+<p>为什么会出现这种情况呢？现在甚至会给所有人隐约有一种<strong>覆水难收</strong>的感觉，我觉得这种现象其实很有意思，它反映的不只是人类对科技进步的渴望，我觉得更都得是对生产工具的掌握。纵观整个人类发展史，每一次生产工具的更新都对生产力造成了极大的改变，然后引发一次经济的飞升。我希望现在的 AI 发展也能有同样的效果，但在真正实现大部分人的经济提升之前，一定是会有一段腥风血雨的<strong>转型期</strong>，也就是当下。</p>
+<p>我们或许能感受到，当越来越多的人加入 AI 研究大军，当社会上甚至很多底层的人都知道并且讨论这些事情，当你每天早上起来打开社交软件都能看到什么新的模型发布、什么跑出了 SOTA、什么 agent 又能替代什么事情的时候，这个 AI 发展真的在<strong>步入高潮</strong>。但这玩意其实就跟股票市场一样，涨的时候所有人都知道在涨，但几乎所有人都不知道它会涨到什么程度，会在哪个时间节点到高峰甚至开始下跌。现在大家面临的就是这样一个问题，而且这个东西是会<strong>不断迭代</strong>的。</p>
+<p>一开始 LLM 这个东西刚出来的时候，其实感觉也只是很笨的聊天机器，你跟它稍微说点专业的内容就能感觉到幻觉极其严重，到后来，感觉是一年的 AI，已经能秒杀大部分很普通的程序员，来代替一些枯燥无谓的生活，其准确率虽然不能说是 100%，但是拿来应付大部分的社会工作其实是没问题的，那个时候哦我记得我还在打 Codeforces 和算法竞赛，然后我觉得虽然它很强，但是在算法竞赛方面我们普通人能用到的模型其实很多时候还不如我（虽然我也一般般），但你说到现在，这几年过来，很多 AI 已经发展成了非常聪明强力的 agent，算法竞赛这种早就被秒杀了（甚至根据北京大学 Qingyu 的小实验，当下人们能用到的最新模型将很多题目原本以为的最低时间复杂度给爆了，其中很多细节人类真的没法观察出来），以及 OpenAI 用自研内部模型解决了千禧年问题 NS 方程（当然这个事情有很大争议，据说是窃取别人的成果，这个我也没详细调查），还有现在几乎所有程序员都在使用的 Claude Code, Codex 等工具。我们真的能切身感受到这个东西的发展势头它已经<strong>压不住了</strong>。</p>
+<p>人们或许会画饼、会口嗨，但是人们对于自己手里的钱可不会乱丢到什么地方，毕竟大部分人都是自己一点一点赚起来的，自己的这点钱直接代表着过去的努力和机遇。然而，在 2026 年 4 月初到 6 月初，两个月的时间，美股纳斯达克科技指数就是涨了 33%，而且是非常凶猛的趋势，虽然 6 月到 9 月这段时间有所稳定和波动，但依旧在历史最高点附近。以及关于这些 coding agent,人们愿意花每个月 20 美刀起（有些人花 100 美刀甚至更多）来投入到一个有明显限额的模型中，说明人们还是愿意对此拥有一定的信任，不管是投资也好、工具也好，能把钱从人们的钱包里掏出来的，那至少一定是一个看起来“还行”的东西。</p>
+<p>有人说，那发展这么迅速，这种压不住的势头最后势必会引发一系列的问题，其实现在已经有些体现了，就连代表人类最顶尖的很多科研都在被 AI “入侵”。很多博士生本来其实是能自己做出来研究的，但是现在对 AI 的依赖完全无法想象，公司里的程序员我估计也没几个自己敲代码的了，而且这种东西只要出来了，就没办法再回去了，现在是 vibe coding,也没人知道以后会是什么 coding,反正不可能回到古法手敲代码的时代了。还有人觉得，那既然知道 AI 的研究会进入一种不可逆甚至对人类造成很多伤害的地步，那为什么还要继续，不停下来呢？这其实就牵扯到了很多人的利益问题。</p>
+<p>人与人的竞争中，总会有胜利和失败，胜利意味着声誉和钱，那么在 AI 这种极具挑战性的事情上，所有人都在尝试分这块不知道有多大的蛋糕，而且回想起来前两年国内的“外卖大战”，就能想到其实顶层资本家对于想要获取更多利益甚至垄断的渴望。他们会利用给人们短暂的好处，来换取用户和声誉，然后这种传播有时候是指数级的，带来的财富也是。</p>
+<p>我可以明确的说，AI 的发展是<strong>不可逆</strong>的，而且对于这种没有上界的函数，几乎是没法预测它接下来所能具有的能力的，比如说，总有一天 AI 会取代人类所有工作，但是那一天是哪一天，目前没有人知道（至少我们这些拥有普通信息的人肯定是不知道的，处于人类社会顶尖的人或许会有所想法，但也不能随便公之于众，信息差太重要了），有可能是明天，有可能是十年后，一百年后。</p>
+<p>哪怕是人类最引以为傲的科研界，这两天 <strong>NeurlIPS 2026</strong> 中稿结果公布，我感觉是挺震惊的： 2023 年还是投稿 12343 篇，中了 3218 篇，到了 2025 年已经是投稿 21575 篇，中了 5290 篇，今年直接<strong>投了 30709 篇，中了 7900 篇</strong>。我觉得这是一个极强的信号，哪怕它是机器学习顶会而且这两年机器学习爆火，也不意味着它能随便在两三年内多出一倍的会议稿件。说真的，有相当一部分的贡献来自于 ChatGPT &#x2F; Codex 和 Claude，这些 Agent AI 对于科研界，尤其是计算机科学（其他领域其实也差不多）的冲击是极大的，甚至我都不敢想象现在 GPT-6 Astra 横空出世，大部分人只需要花 20 刀即可体验，200 刀即可放心使用的情况下，这种传统知识性质的工作到底该如何进行下去。</p>
+<p>这种不可逆的 AI 发展最终必定会出现一个节点，就是产出人类完全无法理解的内容，然后继续加速推动科技的发展。小时候喜欢看科幻小说，想象未来的场景，很多时候觉得那种什么飞船什么高科技是完全没法实现的，但我觉得现在我真说不清楚这种东西的突破时间了，尤其是一些理论的东西，能快速验证，有时候真的<em>想拦都拦不住</em>。</p>
+<h2 id="何去何从"><a href="#何去何从" class="headerlink" title="何去何从"></a>何去何从</h2><h2 id="引用文献"><a href="#引用文献" class="headerlink" title="引用文献"></a>引用文献</h2><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E9%9B%B6%E5%92%8C%E5%8D%9A%E5%BC%88">维基百科 - 零和博弈</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.amazon.com/dp/B0819TSW6V">Peter Schiff, Andrew Schiff - 小岛经济学：鱼、美元和经济的故事</a></p>
+<p><a target="_blank" rel="noopener" href="https://openai.com/index/navier-stokes-solution/">OpenAI - On the Navier–Stokes Millennium Prize Problem</a></p>
+<p><a target="_blank" rel="noopener" href="https://qoj.ac/blog/qingyu/blog/4412">Qingyu - “GPT 话你知”：被大语言模型超越的那些题目</a></p>
+<p><a target="_blank" rel="noopener" href="https://csconfstats.xoveexu.com/conferences/neurips/2026/?utm_source=chatgpt.com">计算机科学会议统计</a></p>
+
+
+</article>
+<div class="related-wrap slide-up" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/09/05/Reading/Geometry_Relativity_and_the_Fouth_Dimension/">Geometry, Relativity and the Fourth Dimension</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text slide-up" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ghskyzhou/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer slide-up footnote"><hr><div class="text"><p>本站由 <a href="/">Sky Zhou</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。<br>© Copyright skyzhou.top<br>All Rights Reserved<br><a href="https://icp.gov.moe/?keyword=20262006" target="_blank">萌ICP备20262006号</a></p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+<widget class="widget-wrapper user-card ghuser"><div class="widget-body"><div class="avatar" ><img no-lazy src="https://avatars.githubusercontent.com/u/62292370" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><p class="username" ff="title">Skyzhou</p><p class="bio">Learning CS & JPN <br> Email: <a href='mailto:i@skyzhou.top' style='color: #66CCFF; font-weight: bold; text-decoration: none;'>i@skyzhou.top</a></p><div class="buttons"><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=followers"><span class="title">36</span><span class="desc">followers</span></a><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=following"><span class="title">53</span><span class="desc">following</span></a><a class="btn" target="_blank" rel="noopener" href="https://github.com/ghskyzhou?tab=repositories"><span class="title">12</span><span class="desc">repos</span></a></div><a class="follow" target="_blank" rel="noopener" href="https://github.com/ghskyzhou"><svg aria-hidden="true" role="img" class="color-icon-primary" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" style="display:inline-block;user-select:none;vertical-align:text-bottom;overflow:visible"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>Follow</a></div></widget>
+
+<widget class="widget-wrapper slide-up toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E5%92%8C%E5%8D%9A%E5%BC%88"><span class="toc-text">零和博弈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E7%9A%84%E5%8F%91%E5%B1%95"><span class="toc-text">AI 的发展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%95%E5%8E%BB%E4%BD%95%E4%BB%8E"><span class="toc-text">何去何从</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E6%96%87%E7%8C%AE"><span class="toc-text">引用文献</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.skyzhou.top/js/jquery.min.js`,
+    marked: `https://cdn.skyzhou.top/js/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, true);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.skyzhou.top/js/flying-pages.min.js"></script><script defer src="https://cdn.skyzhou.top/js/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.skyzhou.top/css/fancybox.css`,
+    js: `https://cdn.skyzhou.top/js/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://cdn.skyzhou.top/css/swiper-bundle.min.css`);
+      utils.js(`https://cdn.skyzhou.top/js/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script defer src="https://cdn.skyzhou.top/js/scrollreveal.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const slideUp = {
+      distance: `16px`,
+      duration: `400`,
+      interval: `100`,
+      scale: `1`,
+      opacity: 0,
+      easing: "ease-out"
+    };
+    ScrollReveal().reveal('.l_left .slide-up', slideUp);
+    ScrollReveal().reveal('.l_main .slide-up', slideUp);
+    ScrollReveal().reveal('.l_right .slide-up', slideUp);
+  });
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    processEscapes: true
+  }
+});
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

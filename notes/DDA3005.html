@@ -480,8 +480,98 @@ $$</p>
 <li>Total error minimized when $h \approx 2 \sqrt{\frac{\varepsilon}M}$</li>
 <li>Error increases for smaller $h$ because of rounding error and increases for larger $h$ because of truncation error.</li>
 </ul>
+<h3 id="forward-and-backward-error"><a class="header" href="#forward-and-backward-error">Forward and Backward Error</a></h3>
+<p>Suppose we want to compute $y=f(x)$ where $f: \mathbb{R} \to \mathbb{R}$, but we can only obtain an approximate value $\hat{y}$.</p>
+<p><strong>Forward Error</strong>: Difference between computed result $\hat{y}$ and the true output $y$:</p>
+<p>$$
+\Delta y = \hat{y} - y
+$$</p>
+<p><strong>Backward Error</strong>: Difference between actual input $x$ and input $\hat{x}$ for which computed result $\hat{y}$ is exactly correct:</p>
+<p>$$
+\Delta = \hat{x}-x
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/21/6ab0c2bcc1101.png" height="150px">
+</p>
+<p>e.g. Approximating the cosine function $f(x) = \cos(x)$ by truncating its Taylor series after two terms gives</p>
+<p>$$
+\hat{y} = \hat{f}(x) = 1 - \frac{x^2}2
+$$</p>
+<ul>
+<li>
+<p>Forward error is giving by
+$$
+\Delta y = \hat{y}-y = \hat{f}(x) - f(x) = 1 - \frac{x^2}2 - \cos(x).
+$$</p>
+</li>
+<li>
+<p>For $x=1$, this yields:
+$$
+y = f(1) = \cos(1) \approx 0.5403 \\
+\hat{y} = \hat{f}(1) = 1-\frac{1^2}2 = 0.5 \\
+\hat{x} = \arccos(\hat{y}) = \arccos{0.5} \approx 1.0472
+$$</p>
+</li>
+<li>
+<p>Forward error: $\Delta y = \hat{y}-y \approx 0.5 - 0.5403 = -0.0403$</p>
+</li>
+<li>
+<p>Backward error: $\Delta x = \hat{x}-x \approx 1.0472 - 1 = 0.0472$</p>
+</li>
+</ul>
+<h2 id="l5-conditioning-stability-and-accuracy"><a class="header" href="#l5-conditioning-stability-and-accuracy">L5 Conditioning, Stability and Accuracy</a></h2>
+<h3 id="repetition-and-conditioning"><a class="header" href="#repetition-and-conditioning">Repetition and Conditioning</a></h3>
+<p><strong>Condition Number</strong>:</p>
+<p>$$
+\text{cond} = \frac{|\text{relative change in solution}|}{|\text{relative change in input data}|} = \frac{|(f(\hat{x}) - f(x))/f(x)|}{|(\hat{x} - x)/x|} = \frac{|\Delta y/y|}{|\Delta x/x|}
+$$</p>
+<p>The problem is sensitive or ill-conditioned if $\text{cond} \gg 1$</p>
+<p>The condition number is an <strong>amplificaiton factor</strong> relating the forward error to the relative backward error:</p>
+<p>$$
+|\text{relative forward error}| = \text{cond} \cdot |\text{relative backward error}|
+$$</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/21/6ab0c61f0d3ad.png" height="150px">
+</p>
+<p>e.g. Consider a funciton:</p>
+<p>$$
+y = f(x) = x^2
+$$</p>
+<p>if a small change $\Delta x$ happens to $x$, we have</p>
+<p>$$
+\Delta y \approx f'(x) \Delta x = 2x \Delta x
+$$</p>
+<p>So</p>
+<p>$$
+\text{cond} = \frac{|\Delta y/y|}{|\Delta x/x|} = 2
+$$</p>
+<p>It means that the error of output will be  approximatly be $2$ times than $x$, such as if $x$ has error of $1%$, then $y=x^2$ will approximately have error of $2%$.</p>
+<p><strong>Mathematical Definition</strong>: The <strong>(relative) condition number</strong> of a problem $f: \mathbb{R} \to \mathbb{R}$ at a point $x$ can also be defined more rigorously as</p>
+<p>$$
+\text{cond}(x) = \kappa(x) := \lim_{\delta \to 0} \sup_{|\Delta x| \le \delta} \frac{|f(x+\Delta x) - f(x)|}{|f(x)|} \Bigg / \frac{|\Delta x|}{|x|}
+$$</p>
+<p>If $f$ is differential at $x$, then this <em>exactly</em> gives $\text{cond}(x) = \frac{|x f'(x)|}{|f(x)|}$</p>
+<h3 id="stability"><a class="header" href="#stability">Stability</a></h3>
+<p>An algorithm $\hat{f}$ for a problem $f$ is called <strong>stable</strong> if the produced result is relatively insensitive to perturbations during computation.</p>
+<p><strong>Mathematical Definition</strong>: An algorithm $\hat{f}: \mathbb{R}^n \to \mathbb{R}^m$ for a problem $f:\mathbb{R} \to \mathbb{R}^m$ is called <strong>stable</strong> if for all $x \in \mathbb{R}^n$, we have</p>
+<p>$$
+\frac{|\hat{f}(x) - f(\hat{x})|}{|f(x)|} = \mathcal{O}(\varepsilon_{\text{mach}}) \quad \text{for some } \hat{x} \text{ with } \frac{|\hat{x} - x|}{|x|} = \mathcal{O}(\varepsilon_{\text{mach}}).
+$$</p>
+<p><strong>Landau Notation</strong>: big-$\mathcal{O}$ and small-$\mathcal{o}$</p>
+<p>Learned in CSC4120, skipped.</p>
+<p><strong>Taylor Expansion</strong> (review): Let $f: \mathbb{R} \to \mathbb{R}$ be $k$-times diff. at $a \in \mathbb{R}$, we have</p>
+<p>$$
+f(x) = \sum_{i=0}^k \frac{f^{(i)}(a)}{i!} (x-a)^i + R_k(x)
+$$</p>
+<p>where $R_k(x) = \mathcal{o}(|x-a|^k)$ for $x \to a$ and $f^{(i)}(a)$ denotes the $i$-th derivative of $f$ and $a$.</p>
+<p>Taylor's theorem allows to approximate a function by a polynomial expansion close to the reference point $a$.</p>
+<p>e.g. Illustration of Taylor Expansion</p>
+<p align="center">
+  <img src="https://img.skyzhou.top/i/2026/09/21/6ab0d0d619185.png" height="250px">
+</p>
+<h3 id="accuracy-of-algorithms"><a class="header" href="#accuracy-of-algorithms">Accuracy of Algorithms</a></h3>
 <blockquote>
-<p>not finished.</p>
+<p>Not finished.</p>
 </blockquote>
 
                     </main>
