@@ -427,7 +427,7 @@ $$</p>
 <p>A naive use of this formula can suffer from <strong>overflow, underflow or severe cancellation</strong>.</p>
 <p>But the cancellation between $-b$ and the square root can be avoided by computing</p>
 <p>$$
-x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \cdot \frac{-b \pm \sqrt{b^2-4ac}}{-b \pm \sqrt{b^2-4ac}} = \frac{2c}{-b \mp \sqrt{b^2-4ac}}
+x_{1/2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \cdot \frac{-b \mp \sqrt{b^2-4ac}}{-b \mp \sqrt{b^2-4ac}} = \frac{2c}{-b \mp \sqrt{b^2-4ac}}
 $$</p>
 <p>Cancellation inside the square root <strong>cannot</strong> be easily avoided without using higher precision.</p>
 <p>e.g. Standard Deviation: The mean and standard deviation of sequence $\{x_i\}_{i=1}^n$ are given by:
@@ -570,9 +570,20 @@ $$</p>
   <img src="https://img.skyzhou.top/i/2026/09/21/6ab0d0d619185.png" height="250px">
 </p>
 <h3 id="accuracy-of-algorithms"><a class="header" href="#accuracy-of-algorithms">Accuracy of Algorithms</a></h3>
-<blockquote>
-<p>Not finished.</p>
-</blockquote>
+<p>Definition: <strong>Accuracy</strong></p>
+<p>An algorithm $\hat{f}: \mathbb{R}^n \to \mathbb{R}^m$ for a problem $f:\mathbb{R}^n \to \mathbb{R}^m$ is called <strong>accurate</strong> if for all $x \in \mathbb{R}^n$, we have</p>
+<p>$$
+\frac{|\hat{f}(x) - f(x)|}{|f(x)|} = \mathcal{O}(\varepsilon_{\text{mach}}) \quad \text{for } \varepsilon_{\text{mach}} \to 0.
+$$</p>
+<p>Accuracy generally expresses the closeness of a computed solution to the true solution</p>
+<p>Stability alone <strong>does not</strong> gurantee accurate results.</p>
+<p>Theorem: <strong>Accuracy</strong></p>
+<p>Suppose the problem $f: \mathbb{R}^n \to \mathbb{R}^m$ has the <strong>relative condition number</strong> $\text{cond}$ and let $\hat{f}$ be a <strong>stable algorithm</strong> for $f$, then we have:</p>
+<p>$$
+\frac{|\hat{f}(x) - f(x)|}{|f(x)|} \approx \mathcal{O}(\text{cond}(x) \cdot \varepsilon_{\text{mach}})
+$$</p>
+<h2 id="l6-linear-systems-and-matrix-norms"><a class="header" href="#l6-linear-systems-and-matrix-norms">L6 Linear Systems and Matrix Norms</a></h2>
+<h3 id="more-on-asymptotic-notation-complexity-and-flops"><a class="header" href="#more-on-asymptotic-notation-complexity-and-flops">More on Asymptotic Notation: Complexity and Flops</a></h3>
 
                     </main>
 

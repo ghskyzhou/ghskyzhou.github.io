@@ -538,6 +538,89 @@ $$</p>
 &amp;= \sum_{i \in E} \mu_{n-1} (i) p_{ij}, \quad j \in E
 \end{aligned}
 $$</p>
+<blockquote>
+<p>其实 $\mu_n$ 就是概率版的 DP 数组，只是在原概率矩阵上单独抽取了一列而已。</p>
+</blockquote>
+<p>In matrix form:</p>
+<p>$$
+\mu_n = \mu_{n-1} P, \quad n \ge 1
+$$</p>
+<p>In particular:</p>
+<p>$$
+\mu_n = \mu_0 p^n, \quad n \ge 1
+$$</p>
+<p><strong>Important Notations on Transition Probabilities</strong></p>
+<p>(one-step) transition probabilities:</p>
+<p>$$
+p_{ij} = P(X_1 = j | X_0 = j)
+$$</p>
+<p>$n$-step transition probabilities:</p>
+<p>$$
+P_{ij}^{(n)} = P(X_n = j | X_0 = i)
+$$</p>
+<p>$P_{ij}^{(1)} = p_{ij}$</p>
+<h3 id="23-classfication-of-states"><a class="header" href="#23-classfication-of-states">2.3 Classfication of States</a></h3>
+<p><strong>Basic Definition</strong></p>
+<p>State $i$ <strong>leads</strong> to $j$, denoted as $i \to j$, if $P_{ij}^{(n)} &gt; 0$ for some $n \ge 1$.</p>
+<p>State $i$ and $j$ <strong>communicate each other</strong>, denoted as $i \leftrightarrow j$, if $i \to j$ and $j \to i$.</p>
+<p><strong>Transitivity</strong></p>
+<p>The binary relations of leading to and communication are <strong>transitive</strong>:</p>
+<ul>
+<li>if $i \to j$ and $j \to k$, then $i \to k$</li>
+<li>if $i \leftrightarrow j$ and $j \leftrightarrow k$, then $i \leftrightarrow k$</li>
+</ul>
+<p>The state space can be divided into distinct <strong>communication classes</strong>: each class contain states with communicate each other.</p>
+<p>A Markov chain is said to be <strong>irreducible</strong> if all states communicate with each other.</p>
+<blockquote>
+<p>可以类比成图论：$i \to j$ 表示的就是有一条路径能从状态 $i$ 到状态 $j$，$i \leftrightarrow j$ 表示的就是能互相到达。Communication Classes 其实就是图论里的强连通分量（SCC）。</p>
+</blockquote>
+<p><strong>Reccurent states and Transient states</strong></p>
+<p><strong>Definition</strong> Let $i \in E$. The <strong>first hitting time</strong> of state $i$ is</p>
+<p>$$
+\tau_i = \inf \{n \ge 1: X_n = i\}
+$$</p>
+<p>In other words,</p>
+<p>$$
+\{ \tau_i=n \} = \{ X_n = i, X_{n-1} \not= i, \cdots, X_1 \not= i \}
+$$</p>
+<p>And we let</p>
+<p>$$
+f_i = P(\tau &lt; \infin | X_0 = i)
+$$</p>
+<p>be the probability that, starting in the state $i$, the process will ever <strong>re-enter</strong> state $i$.</p>
+<p><strong>Definition of recurrence and transience</strong></p>
+<p>State $i$ is <strong>recurrent</strong> if $f_i=1$, i.e. starting in state $i$, the process will definitely re-enter state $i$.</p>
+<p>Otherwise, $f_i &lt; 1$, the state $i$ is <strong>transient</strong>, i.e. if starting at state $i$, there is a positive probability that the process will not re-enter state $i$:</p>
+<p>$$
+P(\tau = \infin|X_0 = i) = 1-P(\tau &lt; \infin | X_0 = i) = 1-f_i &gt; 0
+$$</p>
+<blockquote>
+<p>$\tau_i$ 表示从 $X_0=i$ 出发，第一次重新回到 $i$ 需要几步。</p>
+<p>$f_i$ 表示从 $i$ 出发，未来至少回来一次的概率。<br />
+如果 $f_i=1$，那么 $i$ 叫做 recurrent state（常返态）；如果 $f_i&lt;1$，那么 $i$ 叫做 transient state（暂态），即会出现一个概率使得离开 $i$ 之后就永远回不来了。</p>
+</blockquote>
+<p>Define the probability that, starting at state $i$, the first visit to state $i$ happens at time $n$:</p>
+<p>$$
+f_{ii}^{(n)} = P(\tau_i = n | X_0 = i)
+$$</p>
+<p>By definition,</p>
+<p>$$
+f_{ii}^{(1)} = P(X_1 = i | X_0 = i) = p_{ii}
+$$</p>
+<p>Since</p>
+<p>$$
+P(\tau_i &lt; \infin | X_0 = i) = \sum_{n=1}^\infin P(\tau_i = n | X_0 = i)
+$$</p>
+<p>we have</p>
+<p>$$
+f_i = \sum_{n=1}^\infin f_{ii}^{(n)}
+$$</p>
+<p>A <strong>Convolution</strong> Formula: The following recursion holds</p>
+<p>$$
+p_{ii}^{(n)} = \sum_{k=1}^n f_{ii}^{(k)} P_{ii}^{n-k}, \quad n \ge 1
+$$</p>
+<p>Theorem:</p>
+<p>A state $i$ is transient if and only if $\sum_{n=1}^\infin P_{ii}^{(n)} &lt; \infin$</p>
 
                     </main>
 
